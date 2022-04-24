@@ -2,10 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { productRouter } = require("./routes/products");
+const { chatRouter } = require("./routes/chat");
+const blogRoute = require("./routes/blog");
+const userRoute = require("./routes/user");
+const { orderRouter } = require("./routes/orders");
 const app = express();
-
-const blogRoute = require('./routes/blog');
-const userRoute = require('./routes/user');
 
 app.use(cors());
 
@@ -28,9 +29,11 @@ app.get("/", (req, res) => {
   res.send("I am root");
 });
 
-app.use("/products",productRouter);
-app.use('/blogs', blogRoute);
-app.use('/user', userRoute);
+app.use("/products", productRouter);
+app.use("/blogs", blogRoute);
+app.use("/chat", chatRouter);
+app.use("/user", userRoute);
+app.use("/order", orderRouter);
 
 const port = process.env.port || 5000;
 app.listen(port, () => {

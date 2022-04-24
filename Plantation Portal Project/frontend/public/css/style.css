@@ -41,15 +41,22 @@ p {
 
 ul,
 ol {
-	list-style: none;
+	/* list-style: none; */
 	padding: 0;
 	margin: 0;
 }
 
 ul li,
 ol li {
-	display: block;
+	display: block;	
 }
+
+.listStyling{
+	font-size: 15px;
+    font-family: sans-serif;
+	margin-left: 22px;
+}
+
 
 dl {
 	margin: 0;
@@ -111,9 +118,9 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6, [class*='heading-'] {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-weight: 400;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	font-weight: 400 !important;
 	font-family: "Mangaba", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 	letter-spacing: .05em;
 	color: #151515;
@@ -129,7 +136,7 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover, [class*=
 
 h1,
 .heading-1 {
-	font-size: 50px;
+	/* font-size: 50px; */
 	line-height: 0.88;
 	letter-spacing: .075em;
 } 
@@ -137,7 +144,7 @@ h1,
 @media (min-width: 768px) {
 	h1,
 	.heading-1 {
-		font-size: 70px;
+		font-size: 70px !important;
 	}
 }
 
@@ -151,14 +158,14 @@ h1,
 @media (min-width: 1200px) {
 	h1,
 	.heading-1 {
-		font-size: 170px;
+		font-size: 160px !important;
 		line-height: 0.94118;
 	}
 }
 
 h2,
 .heading-2 {
-	font-size: 36px;
+	font-size: 36px !important;
 	line-height: 1;
 	letter-spacing: 0.005em;
 }
@@ -166,21 +173,21 @@ h2,
 @media (min-width: 768px) {
 	h2,
 	.heading-2 {
-		font-size: 50px;
+		font-size: 50px !important;
 	}
 }
 
 @media (min-width: 992px) {
 	h2,
 	.heading-2 {
-		font-size: 60px;
+		font-size: 60px !important;
 	}
 }
 
 @media (min-width: 1200px) {
 	h2,
 	.heading-2 {
-		font-size: 80px;
+		font-size: 80px !important;
 		line-height: 0.875;
 	}
 }
@@ -203,7 +210,7 @@ h3,
 @media (min-width: 992px) {
 	h3,
 	.heading-3 {
-		font-size: 50px;
+		font-size: 50px !important;
 		line-height: 1.2;
 	}
 }
@@ -228,14 +235,14 @@ h5,
 .heading-5 {
 	font-size: 20px;
 	font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	line-height: 1.3;
+	line-height: 1.3 !important;
 	letter-spacing: 0;
 }
 
 @media (min-width: 768px) {
 	h5,
 	.heading-5 {
-		font-size: 20px;
+		font-size: 20px !important;
 	}
 }
 
@@ -4829,7 +4836,7 @@ html.boxed body {
 }
 
 .text-primary {
-	color: #3c6a36;
+	color: #3c6a36 !important;
 }
 
 .text-secondary {
@@ -12304,4 +12311,13 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 	  margin: 0;
 	  padding: 14px;
 	}
+  }
+
+  .categoryList{
+	  font-size: 1.75rem !important;
+  }
+
+  .filtersList{
+	font-size: 1.75rem !important;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif !important;
   }

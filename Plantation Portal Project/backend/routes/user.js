@@ -1,7 +1,7 @@
 const router = require('express').Router();
 let User = require('../models/user.model');
 
-router.route('/add').post((req, res) => {
+router.route('/add').post(async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const fname = req.body.fname;
@@ -18,9 +18,8 @@ router.route('/add').post((req, res) => {
       type
     });
   
-    newUser.save()
-    .then(() => res.json('User added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    const user = await newUser.save()
+    return res.status(200).json(user);
 });
 
 router.route('/login').post((req, res) => {
@@ -30,12 +29,12 @@ router.route('/login').post((req, res) => {
     User.findOne({email:email},(err,user)=>{
         if(user){
             if(password === user.password){
-                res.send({message:"login sucess",user:user})
+                res.status(200).send({message:"login sucess",user:user})
             }else{
-                res.send({message:"wrong credentials"})
+                res.status(201).send({message:"wrong credentials"})
             }
         }else{
-            res.send("not register")
+            res.status(201).send("not register")
         }
     })
 });
