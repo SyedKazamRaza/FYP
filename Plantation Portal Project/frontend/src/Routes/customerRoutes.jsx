@@ -1,26 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
-import SampleLogin from "../Customer/sampleLogin";
+// import SampleLogin from "../Customer/sampleLogin";
 import Shop from "../Customer/shop/shop"; //1
 import Footer from "../Customer/footer";
 import SingleProduct from "../Customer/singleProduct/singleProduct"; //3
 import Chatpanel from "../Customer/chatpanel/chatpanel";
-import Home from "../Customer/home/home";
 import Header from "../Customer/homeNavbar/Header";
 import ShowCart from "../Customer/showCart/showCart";
-
 import Homepage from "../Customer/homepage";
+import Checkout from "../Customer/checkout/checkout";
+import Shipping from "../Customer/shipping/shipping";
+import OrderDetails from "../Customer/orderDetails/orderDetails";
 
 import { CartProvider } from "../Customer/CartContext";
 import { UserProvider } from "../Customer/userContext";
 
-
-
 function CustomerRoutes(props) {
-
   return (
     <CartProvider>
-      <UserProvider>  
+      <UserProvider>
         <Header />
         <Routes>
           {/* <Route path="/login" exact element={<SampleLogin />} /> */}
@@ -29,9 +27,14 @@ function CustomerRoutes(props) {
           
         <Route path="/" exact element={<Home />} /> */}
 
+          {/* <Route path="/sample" exact element={<SampleLogin />} /> */}
+
           <Route path="/shop" exact element={<Shop />} />
           <Route path="/single" exact element={<SingleProduct />} />
           <Route path="/cart" exact element={<ShowCart />} />
+          <Route path="/checkout" exact element={<Checkout />} />
+          <Route path="/shipping" exact element={<Shipping />} />
+          <Route path="/confirmation" exact element={<OrderDetails />} />
 
           <Route
             path="/chat"
@@ -41,29 +44,12 @@ function CustomerRoutes(props) {
             }
           />
 
-          <Route
-            path="/chat"
-            exact
-            element={
-              <Chatpanel userId="61d9354e52dbabae9bd6053f" role="seller" />
-            }
-          />
-          <Route
-            path="/"
-            exact
-            element={<Homepage category="home" />}
-          />
-          <Route
-            path="/login"
-            exact
-            element={<Homepage category="login"  />}
-          />
+          <Route path="/" exact element={<Homepage category="home" />} />
+          <Route path="/login" exact element={<Homepage category="login" />} />
           <Route
             path="/register"
             exact
-            element={
-              <Homepage category="register"  />
-            }
+            element={<Homepage category="register" />}
           />
 
           <Route

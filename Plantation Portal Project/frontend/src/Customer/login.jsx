@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { ReactSession } from "react-client-session";
+import { useNavbarUpdate } from "./userContext";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useUserUpdate } from "../Customer/userContext";
 
 function Login(props) {
   const { setLoginUser } = useUserUpdate();
+  const {changeNavBold} = useNavbarUpdate();
+
+  let location = useLocation();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = { email, password };
@@ -23,7 +26,13 @@ function Login(props) {
           setLoginUser(res.data.user);
           // ReactSession.set("user", res.data.user);
           // console.log(ReactSession.get("user"));
-          navigate("/shop");
+          // alert(location.state)
+          if (location.state && (location.state.nextScreen === "checkout")) {
+            navigate("/checkout");
+          } else {
+            changeNavBold('shop');
+            navigate("/shop");
+          }
         } else {
           alert("Invalid credientials");
         }

@@ -10,6 +10,10 @@ const orderSchema = new mongoose.Schema({
   dateTime: { type: String, required: true },
   totalBill: { type: Number, required: true },
   productsDetail: { type: Array, required: true },
+  
+  billingAddress:{ type: Object, required: true },
+  paymentMethod:  { type: String, required: true },
+  shippingDetails:  { type: Object, required: true },
 });
 
 const Order = mongoose.model("Order", orderSchema);

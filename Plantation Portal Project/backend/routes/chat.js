@@ -2,7 +2,7 @@ const router = require("express").Router();
 const _ = require("lodash");
 const { Chat } = require("../models/chatModel");
 const { Store } = require("../models/storeModel");
-const {Users} = require("../models/user.model")
+const {User} = require("../models/user.model")
 
 router.get("/", (req, res) => {
   res.send("I am chat panel");
@@ -150,11 +150,11 @@ router.get("/allChats/:id/:role", async (req, res) => {
     let usersArr = [];
     if (sellerChat) {
       for (let user of sellerChat) {
-        const receiverUser = await Users.findOne({ _id: user.firstUser });
+        const receiverUser = await User.findOne({ _id: user.firstUser });
         if (receiverUser) {
-          const store = _.pick(receiverUser, ["username"]);
+          const store = _.pick(receiverUser, ["fname","lname"]);
           const obj = {
-            store: store.username,
+            store: store.fname +" "+ store.lname,
             lastMsg: user.lastMSg,
             lastMSgPerson: user.lastMSgPerson,
             secondUserID: user.firstUser,

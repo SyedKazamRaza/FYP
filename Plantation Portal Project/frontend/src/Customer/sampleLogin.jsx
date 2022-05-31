@@ -27,6 +27,10 @@ function SampleLogin(props) {
         <Chatpanel userId={userid} role={role} />
       ) : (
         <form onSubmit={submitForm}>
+                  <br />
+                  <br />
+                  <br />
+
           <input
             type="text"
             name="id"
@@ -44,6 +48,10 @@ function SampleLogin(props) {
           />
           <br />
           <button type="submit">Login</button>
+          <br />
+          <br />
+          <br />
+
         </form>
       )}
     </div>

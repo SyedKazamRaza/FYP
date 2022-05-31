@@ -35,24 +35,32 @@ function getCurrentDateTime() {
 
 router.post("/newOrder", async (req, res) => {
   try {
-    // console.log(req.body);
+    console.log("Order data at server:");
+    console.log(req.body);
+
     const userId = req.body[0]._id;
     let dateOfOrder = getCurrentDateTime();
     const totalBill = req.body[1]; //total bill
     const productsArr = req.body[2]; //all cart products
+    const shippingDetails = req.body[3];
+    const paymentMethod = req.body[4];
+    const billingAddress = req.body[5];
 
     const neworder = {
       userId: userId,
       orderStatus: "pending",
       dateTime: dateOfOrder,
       totalBill: totalBill,
+      paymentMethod: paymentMethod,
+      billingAddress: billingAddress,
       productsDetail: productsArr,
+      shippingDetails: shippingDetails,
     };
 
     let placeOrder = new Order(neworder);
     const order = await placeOrder.save();
-    // console.log("New order is: ", order);
-    return res.status(200).send("Placed new Order.");
+    console.log("New order is: ", order);
+    return res.status(200).json(order);
   } catch (err) {
     console.log(err);
   }

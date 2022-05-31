@@ -3,18 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useCartUpdate } from "../CartContext";
 import { useUser } from "../userContext";
-import {useNavbarUpdate} from "../userContext"
+import { useNavbarUpdate } from "../userContext";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import axios from "axios";
 
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { injectStyle } from "react-toastify/dist/inject-style";
-
-
-if (typeof window !== "undefined") {
-  injectStyle();
-}
 
 function ShowCart(props) {
   const cartProducts = useCart();
@@ -22,7 +13,7 @@ function ShowCart(props) {
   const user = useUser();
   const navigate = useNavigate();
 
-  const {changeNavBold} = useNavbarUpdate();
+  const { changeNavBold } = useNavbarUpdate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,40 +28,6 @@ function ShowCart(props) {
     setTotalBill(sum);
   }, [cartProducts]);
 
-  const placeNewOrder = (user) => {
-    console.log(user);
-    console.log(cartProducts);
-
-    const dataToSend = [user, totalBill, cartProducts];
-
-    axios
-      .post("http://localhost:5000/order/newOrder", dataToSend)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data);
-          notifySuccess();
-          EmptyCart();
-          navigate("/shop");
-        } else {
-          console.log(response.data);
-        }
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const notifySuccess = () => {
-    // Calling toast method by passing string
-    toast.dark("Order Placed.", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      background: "#34A853",
-    });
-  };
 
   return (
     <div>
@@ -282,7 +239,7 @@ function ShowCart(props) {
                             <h5>Shipping</h5>
                           </td>
                           <td>
-                            <h5>Rs 2000.00</h5>
+                            <h5>Rs 200.00</h5>
                           </td>
                         </tr>
 
@@ -294,7 +251,7 @@ function ShowCart(props) {
                             <h5>Total Bill</h5>
                           </td>
                           <td>
-                            <h5>Rs {totalBill + 2000}.00</h5>
+                            <h5>Rs {totalBill + 200}.00</h5>
                           </td>
                         </tr>
 
@@ -304,7 +261,7 @@ function ShowCart(props) {
                               <div
                                 className="button button-block button-shopping fas fa-arrow-left"
                                 onClick={() => {
-                                  changeNavBold('shop');
+                                  changeNavBold("shop");
                                   navigate("/shop");
                                 }}
                                 style={{
@@ -331,10 +288,14 @@ function ShowCart(props) {
                                 onClick={() => {
                                   console.log(user);
                                   if (user._id) {
-                                    placeNewOrder(user);
+                                    // placeNewOrder(user);
+                                    navigate("/checkout");
                                     console.log("Placing order");
                                   } else {
-                                    navigate("/login");
+                                    navigate("/login", {
+                                      state: { nextScreen: "checkout" },
+                                    });
+                                    // navigate("/login");
                                     console.log("User must be login first");
                                   }
                                 }}

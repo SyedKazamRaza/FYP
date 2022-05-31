@@ -1,0 +1,555 @@
+label {
+  margin-bottom: 0;
+}
+
+p {
+  margin: 0;
+}
+button {
+  cursor: pointer;
+}
+
+button:focus {
+  outline: 0;
+  box-shadow: none;
+}
+.table {
+  text-align: justify;
+}
+.login {
+  font-size: 15px;
+  text-transform: initial;
+  float: right;
+}
+.login:hover {
+  color: #eda407;
+}
+
+.container_checkout {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.container_checkout h2 {
+  border-bottom: 1px solid #dddddd;
+  font-size: 38px !important;
+  font-weight: 500;
+  color: #222;
+  padding-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.form-label {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  padding-left: 22px;
+  padding-right: 22px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 27px;
+  letter-spacing: 0.025em;
+  pointer-events: none;
+  text-align: left;
+  z-index: 9;
+  transition: 0.25s;
+  transform: translateY(-50%);
+  margin-bottom: 0;
+  color: #151515;
+}
+
+.form-label.focus {
+  opacity: 0;
+}
+
+.form-label-disabled {
+  color: #9b9b9b;
+}
+
+.form-validation {
+  position: absolute;
+  right: 8px;
+  top: 0;
+  z-index: 11;
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: 0;
+  color: #f5543f;
+  transition: 0.3s;
+}
+
+.form-validation-left .form-validation {
+  top: 100%;
+  right: auto;
+  left: 0;
+}
+
+.shipping_details h3 {
+  font-size: 48px;
+  color: #222;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.shipping_details .contact_form .form-group {
+  margin-bottom: 20px;
+}
+
+.shipping_details .contact_form .form-group .placeholder::before {
+  font-size: 14px;
+  color: #999999;
+}
+
+.shipping_details .contact_form .form-group input {
+  font-size: 14px;
+  border-radius: 3px;
+  color: #999999;
+  border-color: #eeeeee;
+}
+
+.shipping_details .contact_form .form-group input.placeholder {
+  color: #999999;
+  font-size: 14px;
+}
+
+.shipping_details .contact_form .form-group input:-moz-placeholder {
+  color: #999999;
+  font-size: 14px;
+}
+
+.shipping_details .contact_form .form-group input::-webkit-input-placeholder {
+  color: #999999;
+  font-size: 14px;
+}
+
+.shipping_details .contact_form .form-group .form-control {
+  border-color: #eeeeee;
+  font-size: 14px;
+  color: #777777;
+}
+
+.shipping_details .contact_form .form-group .form-control::placeholder {
+  color: #777777;
+}
+
+.shipping_details .contact_form .form-group label {
+  color: #999999;
+}
+
+.shipping_details .contact_form .form-group textarea {
+  height: 150px;
+  border-radius: 3px;
+  margin-top: 15px;
+}
+
+.shipping_details .contact_form .form-group .country_select {
+  width: 100%;
+  height: 40px;
+  border-color: #eeeeee;
+}
+
+.shipping_details .contact_form .form-group .creat_account #f-option2 {
+  margin-right: 5px;
+}
+
+.shipping_details .contact_form .form-group .creat_account #f-option3 {
+  margin-right: 5px;
+}
+
+.shipping_details .contact_form .form-group .creat_account a {
+  color: #3c6a36;
+}
+
+.shipping_details .contact_form .form-group .creat_account a {
+  color: #3c6a36;
+}
+
+.form-group {
+  margin-bottom: 0;
+  position: relative;
+}
+
+.form-group .info {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  color: #3c6a36;
+}
+
+.form-control {
+  border-radius: 30px;
+  height: 50px;
+  border-color: #eeeeee;
+  padding-left: 20px;
+  font-size: 14px;
+  color: #000 !important;
+}
+
+.form-group input.placeholder {
+  font-size: 14px;
+  color: #999999;
+  font-weight: normal;
+}
+
+.form-group input:-moz-placeholder {
+  font-size: 14px;
+  color: #999999;
+  font-weight: normal;
+}
+.form-group input::-webkit-input-placeholder {
+  font-size: 14px;
+  color: #999999;
+  font-weight: normal;
+}
+
+.form-group:last-child {
+  margin-bottom: 0px;
+}
+
+.form-group {
+  text-transform: uppercase;
+}
+
+.check_title h2 {
+  border-bottom: 1px solid #dddddd;
+  font-size: 38px;
+  font-weight: 500;
+  color: #222;
+  padding-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.check_title h2 a {
+  color: #3c6a36;
+  text-decoration: underline;
+  line-height: 40px !important;
+  padding-left: 30px;
+  margin-bottom: 0px;
+}
+/* email{
+    padding:100px;
+} */
+
+.returning_customer p {
+  margin-top: 15px;
+  padding-left: 30px;
+  margin-bottom: 25px;
+}
+
+.returning_customer .contact_form {
+  max-width: 710px;
+  margin-left: 5px;
+}
+
+.returning_customer .contact_form .form-group {
+  margin-bottom: 20px;
+}
+
+.returning_customer .contact_form .form-group input {
+  border: 1px solid #eeeeee;
+  height: 40px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.returning_customer .contact_form .form-group input.placeholder {
+  font-size: 14px;
+  color: #999999;
+  font-weight: normal;
+}
+
+.returning_customer .contact_form .form-group input:-moz-placeholder {
+  font-size: 14px;
+  font-weight: normal;
+}
+.returning_customer .contact_form .form-group input::-webkit-input-placeholder {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.returning_customer .contact_form .form-group {
+  line-height: 38px;
+  padding: 0px 38px;
+  text-transform: uppercase;
+  margin-right: 10px;
+  border-radius: 2px;
+  border: none;
+}
+
+.returning_customer .contact_form .form-group .creat_account {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.returning_customer .contact_form .form-group .creat_account input {
+  height: auto;
+  margin-right: 10px;
+}
+
+.returning_customer .contact_form .form-group {
+  display: block;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #777;
+  font-weight: normal;
+}
+
+.input-group .form-control {
+  font-size: 14px;
+  line-height: 29px;
+  border: 0px;
+  width: 100%;
+  font-weight: 300;
+  color: #fff;
+  padding-left: 20px;
+  border-radius: 45px;
+  z-index: 0;
+  background: #3c6a36;
+}
+
+.order_box {
+  margin-right: 0px;
+  background: #fdfdfd;
+  padding: 30px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.06) inset;
+}
+
+.order_box h2 {
+  border-bottom: 1px solid #dddddd;
+  font-size: 38px;
+  font-weight: 500;
+  color: #222;
+  padding-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.order_box h4:after {
+  content: "";
+  height: 4px;
+  width: 4px;
+  background: #fff;
+  border-radius: 50%;
+  display: block;
+  position: absolute;
+  left: 5px;
+  top: 8px;
+}
+
+.order_box .creat_account {
+  margin-bottom: 15px;
+}
+
+.order_box .creat_account label {
+  padding-left: 10px;
+  font-size: 12px;
+  color: #222;
+}
+
+.order_box .creat_account a {
+  color: #eda407;
+}
+
+.order_box {
+  display: block;
+  line-height: 38px;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 2px;
+}
+.order_box:hover:before {
+  left: 310px;
+}
+
+.checkbox_btn input[type="checkbox"]:checked ~ .check {
+  border: 1px solid #eda407;
+  background: #eda407;
+  margin-left: 0px;
+}
+
+.radion_btn input[type="radio"]:checked ~ .check::before {
+  background: #fff;
+}
+
+.radion_btn input[type="radio"]:checked ~ label {
+  color: #000;
+}
+
+.order_box .creat_account a {
+  font-size: 12px;
+  color: #3c6a36;
+}
+
+.form-group .creat_account {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: left;
+  float: left;
+}
+
+.form-group .creat_account input {
+  height: auto;
+  margin-right: 10px;
+  position: relative;
+  top: 2px;
+}
+
+.text-center [class*="text-width-"] {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.shipping_details h3 {
+  font-size: 18px;
+  color: #222;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.review_box .contact_form {
+  margin-top: 15px;
+}
+
+.form-group input.placeholder {
+  font-size: 14px;
+  color: #999999;
+  font-weight: normal;
+}
+
+.form-group input:-moz-placeholder {
+  font-size: 14px;
+  color: #999999;
+  font-weight: normal;
+}
+
+.form-group input::-moz-placeholder {
+  font-size: 14px;
+  color: #999999;
+  font-weight: normal;
+}
+
+.form-group input::-webkit-input-placeholder {
+  font-size: 14px;
+  color: #5a5353;
+  font-weight: normal;
+}
+
+.form-group:last-child {
+  margin-bottom: 0px;
+}
+
+.form-group {
+  text-transform: uppercase;
+}
+
+.row + {
+  margin-top: 20px;
+}
+
+.form-wrap + {
+  margin-top: 15px;
+}
+
+.checkbox .checkbox-custom,
+.checkbox-custom {
+  opacity: 0;
+}
+
+.checkbox {
+  position: relative;
+  padding-left: 2px;
+  letter-spacing: 0.025em;
+  color: #9b9b9b;
+  cursor: pointer;
+}
+.button-payment,
+.button-payment:focus {
+  color: #151515;
+  position: relative;
+  display: block;
+  width: 300px;
+  background-color: transparent;
+  border-color: #151515;
+}
+
+.button-payment:hover,
+.button-payment:active {
+  color: #ffffff;
+  background-color: #3c6a36;
+  border-color: #3c6a36;
+}
+
+.button-cart,
+.button-cart:focus {
+  position: relative;
+  display: block;
+  width: 300px;
+  color: #151515;
+  background-color: transparent;
+  border-color: #f1efeb;
+}
+
+.button-cart:hover,
+.button-cart:active {
+  color: #ffffff;
+  background-color: #3c6a36;
+  border-color: #3c6a36;
+}
+.button-area {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* below css lines are copied from cart.css */
+
+.prodTabel tbody tr td p {
+  margin-bottom: 0px;
+}
+
+.prodTabel tbody tr td h5 {
+  color: #222;
+  margin-bottom: 0px;
+  font-size: 15px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.prodTabel tbody tr td h4 {
+    font-weight: bold;
+    /* font-weight: bold; */
+  margin-bottom: 0px;
+  color: #222;
+  font-size: 15px;
+  text-transform: capitalize;
+}
+
+.prodTabel th,
+.prodTabel td {
+  padding: 0.75rem 1.5rem;
+  border-color: #eeeeee;
+}
+
+.prodTabel thead tr th {
+  border-top: 0px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #eda407;
+  border-bottom: 0px !important;
+}
+
+.prodTabel tbody tr td {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  vertical-align: middle;
+  align-self: center;
+}
+
+.prodTabel tbody tr td .media .d-flex {
+  padding-right: 30px;
+}

@@ -1,0 +1,25 @@
+.billing-title {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.3em;
+    margin-bottom: 15px;
+    border-color: #dddddd;
+  }
+  .billing-alert {
+    font-size: 18px;
+    color: #eda407;
+    margin-bottom: 30px;
+  }
+  .confirmation-card {
+    padding: 38px;
+    background: #fafafa;
+    text-align: justify;
+    border: 1px solid #eeeeee;
+  }
+  .confirmation-card h3{
+    font-size: 29px;
+  }
+  .confirmation-card tr td:last-child {
+    color: #222;
+    padding-left: 25px;
+  }

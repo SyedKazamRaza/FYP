@@ -24,6 +24,7 @@ import { useRef } from "react";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    textAlign: "left !important"
   },
   paper: {
     padding: theme.spacing(2),
@@ -211,8 +212,7 @@ function Chatpanel(props) {
       .catch((err) => console.log(err));
     // scrollToBottom();
 
-    console.log(stores);
-    console.log("......................................");
+  
 
   }, [msgAdded]);
   function setMessage(event) {
@@ -358,7 +358,7 @@ function Chatpanel(props) {
 
   return (
     <div style={{ width: "100%", height: 623, backgroundColor: "#ebebfa" }}>
-      <h1>Chat</h1>
+      <br />
       <div className={classes.root}>
         <Grid container>
           <Grid item md={1} sm={1} xs={1}></Grid>
@@ -467,7 +467,7 @@ function Chatpanel(props) {
                         sx={{ maxwidth: 365, bgcolor: "gray" }}
                         aria-label="recipe"
                       >
-                        {st.store[0] && st.store[0].toUpperCase()}
+                        {st.store[0] && st.store[0]}
                       </Avatar>
                     }
                     action={

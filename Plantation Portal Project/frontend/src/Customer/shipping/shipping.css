@@ -1,0 +1,96 @@
+.table-payment {
+    border: 1px solid #eeeeee;
+    width: 650px;
+}
+
+.table-payment tbody tr {
+    border: 1px solid #eeeeee;
+}
+
+.table-payment tbody tr td p {
+    margin-bottom: 0px;
+}
+.payment-method {
+    margin-top: 55px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: 1px solid #eeeeee;
+    width: 650px;
+    float: left;
+}
+
+.table-payment tbody tr td h5 {
+    color: rgb(162, 158, 158);
+    margin-bottom: 0px;
+    font-size: 15px !important;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.table-payment tbody tr td h4 {
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    color: #222;
+    font-size: 15px;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.table-payment th,
+.table-payment td {
+    padding: 0.75rem 1.5rem;
+    border-color: #eeeeee;
+}
+
+.table-payment tbody tr td {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    vertical-align: middle;
+    align-self: center;
+}
+
+.table-payment tbody tr td .media .d-flex {
+    padding-right: 50px;
+}
+
+.table-payment tbody td p {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .table-payment tbody tr td .media .d-flex img {
+        max-width: 100px;
+        height: 80px;
+    }
+}
+
+.table-payment tbody tr td .media .media-body {
+    vertical-align: middle;
+    align-self: center;
+}
+
+.table-payment tbody tr td .media .media-body p {
+    margin-bottom: 0px;
+}
+
+.table-payment tbody tr td h5 {
+    font-size: 15px;
+    color: rgb(158, 158, 158);
+    margin-bottom: 0px;
+}
+
+
+.col2 {
+    width: 100%;
+    text-align: justify;
+}
+
+h4 {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.method {
+    margin-left: 10px;
+}
+
