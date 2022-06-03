@@ -1,13 +1,84 @@
 import React, { useState, useEffect } from "react";
 import "./orderDetails.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import easyinvoice from "easyinvoice";
 
 function OrderDetails(props) {
   let location = useLocation();
   const navigate = useNavigate();
 
-
   const [orderDetails, setOrderDetails] = useState(location.state.orderDetails);
+  let productsList = [];
+  function createProductsList() {
+    orderDetails.productsDetail.map((prod) => {
+      const obj = {
+        quantity: prod.quantity,
+        description: prod.productName,
+        "tax-rate": 0,
+        price: prod.productPrice,
+      };
+      productsList.push(obj);
+    });
+  }
+
+  function downloadInvoice() {
+    createProductsList();
+    console.log("I am list now");
+    console.log(productsList);
+    var data = {
+      //"documentTitle": "RECEIPT", //Defaults to INVOICE
+      currency: "PKR",
+      taxNotation: "vat", //or gst
+      marginTop: 25,
+      marginRight: 25,
+      marginLeft: 25,
+      marginBottom: 25,
+      // logo: "https://firebasestorage.googleapis.com/v0/b/plantationportal.appspot.com/o/logo.jpg?alt=media&token=f35dfb08-2a0c-4583-9e27-ae8e22a6811c", //or base64
+      //"logoExtension": "png", //only when logo is base64
+
+      images: {
+        // The logo on top of your invoice
+        logo: "https://firebasestorage.googleapis.com/v0/b/plantationportal.appspot.com/o/logo.jpg?alt=media&token=f35dfb08-2a0c-4583-9e27-ae8e22a6811c",
+        // The invoice background
+        // "background": "https://public.easyinvoice.cloud/img/watermark-draft.jpg"
+      },
+      sender: {
+        company: "KAZIM RAZA",
+        address: "Johar Town",
+        zip: "54782",
+        city: "Lahore",
+        country: "Pakistan",
+      },
+      client: {
+        company: `${
+          orderDetails.shippingDetails.firstName +
+          " " +
+          orderDetails.shippingDetails.lastName
+        }`,
+        address: `${orderDetails.shippingDetails.address}`,
+        zip: `${"Zip Code: " + orderDetails.shippingDetails.zipCode}`,
+        city: `${orderDetails.shippingDetails.city}`,
+        country: "Pakistan",
+        custom1: `${"Mobile# " + orderDetails.shippingDetails.phoneNo}`,
+        "custom2": `${"Payment Method: " + orderDetails.paymentMethod}`,
+        //"custom3": "custom value 3"
+      },
+      information: {
+        date: `${orderDetails.dateTime}`,
+        number: "5012",
+        "due-date": `NILL`,
+      },
+      products: productsList,
+      subtotal: 200,
+      "bottom-notice": "Your order will be delivered with 7-10 days.",
+    };
+    //Create your invoice! Easy!
+    easyinvoice.createInvoice(data, function (result) {
+      //The response will contain a base64 encoded PDF file
+      console.log(result.pdf);
+      easyinvoice.download("myInvoice.pdf");
+    });
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -147,9 +218,9 @@ function OrderDetails(props) {
                       </tr>
                     </thead>
                     <tbody>
-                      {orderDetails.productsDetail.map((product) => {
+                      {orderDetails.productsDetail.map((product, index) => {
                         return (
-                          <tr>
+                          <tr key={index}>
                             <td>
                               <p>{product.productName}</p>
                             </td>
@@ -213,19 +284,28 @@ function OrderDetails(props) {
           </section>
         </div>
 
-        <div
-          className="button-area"
-          style={{ marginLeft: "70%", marginBottom: "3%" }}
-        >
-          <div className="d-flex">
-            <div
+        <div className="button-area">
+          <div className="d-flex" style={{ marginLeft: "10%", marginBottom: "3%" }}>
+            <button
               className="button button-block button-payment"
               onClick={() => {
-                navigate("/shop")
+                navigate("/shop");
               }}
             >
               Return to Shop
-            </div>
+            </button>
+          </div>
+
+          <div className="d-flex" style={{ marginRight: "10%", marginBottom: "3%" }}>
+            <button
+              type="submit"
+              className="button button-block button-payment"
+              onClick={() => {
+                downloadInvoice();
+              }}
+            >
+              Download Receipt
+            </button>
           </div>
         </div>
       </section>
