@@ -6,6 +6,7 @@ const { chatRouter } = require("./routes/chat");
 const blogRoute = require("./routes/blog");
 const userRoute = require("./routes/user");
 const { orderRouter } = require("./routes/orders");
+const services  = require("./routes/service")
 const app = express();
 
 app.use(cors());
@@ -34,6 +35,8 @@ app.use("/blogs", blogRoute);
 app.use("/chat", chatRouter);
 app.use("/user", userRoute);
 app.use("/order", orderRouter);
+app.use("/services", services);
+
 
 const port = process.env.port || 5000;
 app.listen(port, () => {

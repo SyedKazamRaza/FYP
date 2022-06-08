@@ -6,10 +6,15 @@ import { useUser } from "../userContext";
 import { useNavbarUpdate } from "../userContext";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
-
 function ShowCart(props) {
-  const cartProducts = useCart();
-  const { increment, decrement, removeFromCart, EmptyCart } = useCartUpdate();
+  const { cartProducts, cartServices } = useCart();
+  const {
+    increment,
+    decrement,
+    removeFromCart,
+    EmptyCart,
+    removeServiceFromCart,
+  } = useCartUpdate();
   const user = useUser();
   const navigate = useNavigate();
 
@@ -21,13 +26,16 @@ function ShowCart(props) {
 
   const [totalBill, setTotalBill] = useState(0);
   useEffect(() => {
-    const sum = cartProducts.reduce((accumulator, item) => {
+    const productsSum = cartProducts.reduce((accumulator, item) => {
       return accumulator + item.total;
     }, 0);
 
-    setTotalBill(sum);
-  }, [cartProducts]);
+    const serviceSum = cartServices.reduce((accumulator, item) => {
+      return accumulator + item.totalPrice;
+    }, 0);
 
+    setTotalBill(productsSum + serviceSum);
+  }, [cartProducts, cartServices]);
 
   return (
     <div>
@@ -61,6 +69,143 @@ function ShowCart(props) {
                     <table className="table">
                       <thead>
                         <tr>
+                          <th scope="col">Service Title</th>
+                          <th scope="col">length</th>
+                          <th scope="col">Width</th>
+                          <th scope="col">Price</th>
+                          <th scope="col">Total</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {cartServices.length === 0 ? (
+                          <tr>
+                            <td>
+                              <h3
+                                style={{
+                                  textAlign: "right",
+                                  color: "#3c6a36",
+                                }}
+                              >
+                                No service Added to Cart.
+                              </h3>
+                            </td>
+                          </tr>
+                        ) : (
+                          cartServices.map((item, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>
+                                  <div className="media">
+                                    <div className="d-flex">
+                                      <img
+                                        src={item.serviceImg}
+                                        alt="product"
+                                        style={{
+                                          minHeight: "70px",
+                                          maxHeight: "70px",
+                                          minWidth: "70px",
+                                          maxWidth: "70px",
+                                        }}
+                                      />
+                                    </div>
+                                    <div
+                                      className="media-body"
+                                      style={{
+                                        height: "60px",
+                                        lineHeight: "60px",
+                                      }}
+                                    >
+                                      <p
+                                        style={{
+                                          color: "#3c6a36",
+                                          fontSize: "17px",
+                                          maxWidth: "200px",
+                                          maxHeight: "60px",
+                                          overflow: "hidden",
+                                        }}
+                                      >
+                                        {item.serviceTitle}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td>
+                                  <div
+                                    style={{
+                                      height: "60px",
+                                      lineHeight: "60px",
+                                    }}
+                                  >
+                                    <p>{item.length}</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div
+                                    style={{
+                                      height: "60px",
+                                      lineHeight: "60px",
+                                    }}
+                                  >
+                                    <p>{item.width}</p>
+                                  </div>
+                                </td>
+
+                                <td>
+                                  <div
+                                    style={{
+                                      height: "60px",
+                                      lineHeight: "60px",
+                                    }}
+                                  >
+                                    <p style={{ fontSize: "16px" }}>
+                                      Rs {item.price} /-
+                                    </p>
+                                  </div>
+                                </td>
+
+                                <td>
+                                  <div
+                                    style={{
+                                      height: "60px",
+                                      lineHeight: "60px",
+                                      //   width: "200px"
+                                    }}
+                                  >
+                                    <p style={{ fontSize: "20px" }}>
+                                      Rs {item.totalPrice} /-
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div
+                                    style={{
+                                      height: "60px",
+                                      lineHeight: "60px",
+                                      //   width: "200px"
+                                    }}
+                                  >
+                                    <CancelOutlinedIcon
+                                      color="error"
+                                      onClick={() => {
+                                        removeServiceFromCart(item);
+                                      }}
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="table-responsive">
+                    <table className="table">
+                      <thead>
+                        <tr>
                           <th scope="col">Product Name</th>
                           <th scope="col">Store</th>
                           <th scope="col">Price per item</th>
@@ -79,7 +224,7 @@ function ShowCart(props) {
                                   color: "#3c6a36",
                                 }}
                               >
-                                Cart is Empty
+                                No Product added to Cart.
                               </h3>
                             </td>
                           </tr>

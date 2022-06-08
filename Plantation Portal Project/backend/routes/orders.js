@@ -45,6 +45,7 @@ router.post("/newOrder", async (req, res) => {
     const shippingDetails = req.body[3];
     const paymentMethod = req.body[4];
     const billingAddress = req.body[5];
+    const services = req.body[6];
 
     const neworder = {
       userId: userId,
@@ -54,6 +55,7 @@ router.post("/newOrder", async (req, res) => {
       paymentMethod: paymentMethod,
       billingAddress: billingAddress,
       productsDetail: productsArr,
+      servicesDetails: services,
       shippingDetails: shippingDetails,
     };
 

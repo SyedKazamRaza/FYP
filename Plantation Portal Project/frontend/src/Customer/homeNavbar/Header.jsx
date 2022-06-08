@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; //Link is used instead of <a> to prevent requesting server on every render
+import "./sidebar.css";
 // import { userContext } from "../userContext";
 import { useCart } from "../CartContext";
 import { useUser } from "../userContext";
-import { ReactSession } from "react-client-session";
-import { useUserUpdate,useNavbarUpdate, useNavbar } from "../userContext";
+import { useUserUpdate, useNavbarUpdate, useNavbar } from "../userContext";
 
 const Header = (props) => {
   const [cartClick, setCartClick] = useState(false);
   const [activeNav, setActiveNav] = useState("home");
 
   const navbarBold = useNavbar();
-  const {changeNavBold} = useNavbarUpdate();
+  const { changeNavBold } = useNavbarUpdate();
 
-  const cartProducts = useCart();
+  const {cartProducts, cartServices} = useCart();
   const user = useUser();
   const { logOut } = useUserUpdate();
 
@@ -38,7 +38,7 @@ const Header = (props) => {
 
   const navigate = useNavigate();
   function checkProductsInCart() {
-    if (cartProducts.length > 0) {
+    if (cartProducts.length > 0 || cartServices.length > 0) {
       setCartClick(true);
       navigate("/cart");
     } else {
@@ -50,7 +50,7 @@ const Header = (props) => {
   function changeActive(id) {
     document.getElementById(activeNav).classList.remove("active");
     document.getElementById(id).classList.add("active");
-    changeNavBold(id)
+    changeNavBold(id);
     setActiveNav(id);
   }
   // const getSession = () =>{
@@ -110,7 +110,7 @@ const Header = (props) => {
                       }}
                       data-rd-navbar-toggle=".cart-inline"
                     >
-                      <span>{cartProducts.length}</span>
+                      <span>{cartProducts.length + cartServices.length}</span>
                     </button>
 
                     {cartClick === false ? (
@@ -142,14 +142,17 @@ const Header = (props) => {
                       </div>
                     </div> */}
                   </div>
+
+                  {/*                   
                   <div className="rd-navbar-search">
                     <button
                       className="rd-navbar-search-toggle"
                       data-rd-navbar-toggle=".rd-navbar-search"
                     >
                       <span></span>
-                    </button>
-                    <form className="rd-search" action="#">
+                    </button> */}
+
+                  {/* <form className="rd-search" action="#">
                       <div className="form-wrap">
                         <label
                           className="form-label"
@@ -168,8 +171,10 @@ const Header = (props) => {
                           type="submit"
                         ></button>
                       </div>
-                    </form>
-                  </div>
+                    </form> */}
+
+                  {/* </div> */}
+
                   <ul className="rd-navbar-nav">
                     <li
                       className="rd-nav-item active"
@@ -211,7 +216,7 @@ const Header = (props) => {
                         changeActive("services");
                       }}
                     >
-                      <Link className="rd-nav-link" to="services">
+                      <Link className="rd-nav-link" to="/services">
                         Services
                       </Link>
                     </li>
@@ -233,7 +238,7 @@ const Header = (props) => {
                         changeActive("contact");
                       }}
                     >
-                      <Link className="rd-nav-link" to="#">
+                      <Link className="rd-nav-link" to="contact">
                         Contact
                       </Link>
                     </li>
@@ -261,7 +266,7 @@ const Header = (props) => {
                         >
                           <Link
                             className="rd-nav-link"
-                            to="#"
+                            to="/"
                             onClick={() => {
                               logOut();
                             }}
@@ -272,6 +277,111 @@ const Header = (props) => {
                       )}
                     </div>
                   </ul>
+
+                  <div
+                    style={{
+                      display: `${user.initialValue === "a" ? "None" : ""}`,
+                    }}
+                  >
+                    <div className="rd-navbar-main-outer">
+                      <div className="rd-navbar-main">
+                        <div className="rd-navbar-main-element">
+                          <div
+                            className="rd-navbar-project-hamburger"
+                            data-multitoggle=".rd-navbar-main"
+                            data-multitoggle-blur=".rd-navbar-wrap"
+                            data-multitoggle-isolate
+                          >
+                            <div className="project-hamburger">
+                              <span className="project-hamburger-arrow-top"></span>
+                              <span className="project-hamburger-arrow-center"></span>
+                              <span className="project-hamburger-arrow-bottom"></span>
+                            </div>
+                            <div className="project-hamburger-2">
+                              <span className="project-hamburger-arrow"></span>
+                              <span className="project-hamburger-arrow"></span>
+                              <span className="project-hamburger-arrow"></span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="rd-navbar-project rd-navbar-modern-project">
+                          <div className="rd-navbar-project-modern-header">
+                            <h4 className="rd-navbar-project-modern-title">
+                              My Account
+                            </h4>
+                            <div
+                              className="rd-navbar-project-hamburger"
+                              data-multitoggle=".rd-navbar-main"
+                              data-multitoggle-blur=".rd-navbar-wrap"
+                              data-multitoggle-isolate
+                            >
+                              <div className="project-close">
+                                <span></span>
+                                <span></span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="rd-navbar-project-content rd-navbar-modern-project-content">
+                            <div>
+                              <ul className="rd-navbar-modern-contacts">
+                                <li>
+                                  <div className="unit unit-spacing-sm">
+                                    <div className="unit-left">
+                                      <span className="icon fa fa-user"></span>
+                                    </div>
+                                    <div className="unit-body">
+                                      <Link className="link" to="">
+                                        Manage Profile
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div className="unit unit-spacing-sm">
+                                    <div className="unit-left">
+                                      <span className="icon fa fa-comment"></span>
+                                    </div>
+                                    <div className="unit-body">
+                                      <Link className="link-press" to="">
+                                        Chat
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div className="unit unit-spacing-sm">
+                                    <div className="unit-left">
+                                      <span className="icon fa fa-shopping-basket"></span>
+                                    </div>
+                                    <div className="unit-body">
+                                      <Link className="link-press" to="">
+                                        Orders
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div className="unit unit-spacing-sm">
+                                    <div className="unit-left">
+                                      <span className="icon fa fa-sign-out"></span>
+                                    </div>
+                                    <div className="unit-body">
+                                      <Link className="link-press" to="/" onClick={()=>{
+                                         logOut();
+                                      }}>
+                                        Logout
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

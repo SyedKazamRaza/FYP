@@ -11,6 +11,9 @@ import Homepage from "../Customer/homepage";
 import Checkout from "../Customer/checkout/checkout";
 import Shipping from "../Customer/shipping/shipping";
 import OrderDetails from "../Customer/orderDetails/orderDetails";
+import ServicesOffer from "../Customer/servicesOffer";
+import ContactUs from "../Customer/contactUs";
+import ServiceDetails from "../Customer/ServiceDetails";
 
 import { CartProvider } from "../Customer/CartContext";
 import { UserProvider } from "../Customer/userContext";
@@ -35,6 +38,9 @@ function CustomerRoutes(props) {
           <Route path="/checkout" exact element={<Checkout />} />
           <Route path="/shipping" exact element={<Shipping />} />
           <Route path="/confirmation" exact element={<OrderDetails />} />
+          <Route path="/services" exact element={<ServicesOffer />} />
+          <Route path="/contact" exact element={<ContactUs />} />
+          <Route path="/services/:id" exact element={<ServiceDetails />} />
 
           <Route
             path="/chat"

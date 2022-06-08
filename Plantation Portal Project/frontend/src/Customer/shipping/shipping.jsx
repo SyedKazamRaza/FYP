@@ -20,7 +20,7 @@ function Shipping(props) {
 
   console.log(location.state.shippingDetails);
 
-  const productsInCart = useCart();
+  const { cartProducts, cartServices } = useCart();
   const { EmptyCart } = useCartUpdate();
 
   const navigate = useNavigate();
@@ -36,11 +36,16 @@ function Shipping(props) {
   }, []);
 
   useEffect(() => {
-    let sum = productsInCart.reduce((accumulator, item) => {
+    let ProductsSum = cartProducts.reduce((accumulator, item) => {
       return accumulator + item.total;
     }, 0);
-    setTotalBill(sum);
-  }, [totalBill, productsInCart]);
+
+    let servicesSum = cartServices.reduce((accumulator, item) => {
+      return accumulator + item.totalPrice;
+    }, 0);
+
+    setTotalBill(ProductsSum + servicesSum);
+  }, [cartProducts, cartServices]);
 
   const notifySuccess = () => {
     // Calling toast method by passing string
@@ -69,10 +74,11 @@ function Shipping(props) {
     const dataToSend = [
       user,
       totalBill,
-      productsInCart,
+      cartProducts,
       shippingDetails,
       paymentMethod,
       billingAd,
+      cartServices
     ];
 
     axios
@@ -315,7 +321,7 @@ function Shipping(props) {
                               </tr>
                             </thead>
                             <tbody>
-                              {productsInCart.map((singleProduct, index) => {
+                              {cartProducts.map((singleProduct, index) => {
                                 return (
                                   <tr key={index}>
                                     <td style={{ maxWidth: "30px" }}>
@@ -329,6 +335,26 @@ function Shipping(props) {
                                         }}
                                       >
                                         Rs {singleProduct.productPrice}
+                                      </p>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+
+                              {cartServices.map((service, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td style={{ maxWidth: "30px" }}>
+                                      <p>{service.serviceTitle}</p>
+                                    </td>
+                                    <td>
+                                      <p
+                                        style={{
+                                          textTransform:
+                                            "capitalize !important",
+                                        }}
+                                      >
+                                        Rs {service.totalPrice}
                                       </p>
                                     </td>
                                   </tr>

@@ -6,11 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { injectStyle } from "react-toastify/dist/inject-style";
 
 function Checkout(props) {
   const user = useUser();
-  const productsInCart = useCart();
+  const { cartProducts, cartServices } = useCart();
 
   const navigate = useNavigate();
 
@@ -27,10 +26,15 @@ function Checkout(props) {
   const [TandC, setTandC] = useState(false);
 
   useEffect(() => {
-    let sum = productsInCart.reduce((accumulator, item) => {
+    let ProductsSum = cartProducts.reduce((accumulator, item) => {
       return accumulator + item.total;
     }, 0);
-    setTotalBill(sum);
+
+    let servicesSum = cartServices.reduce((accumulator, item) => {
+      return accumulator + item.totalPrice;
+    }, 0);
+
+    setTotalBill(ProductsSum + servicesSum);
   }, []);
 
   useEffect(() => {
@@ -48,44 +52,40 @@ function Checkout(props) {
       progress: undefined,
       background: "#34A853",
     });
-  };  
+  };
 
   function validateInput() {
-    if(shippingEmail.length === 0){
+    if (shippingEmail.length === 0) {
       notifyError("Shipping Email is required");
       return false;
-    }
-    else if(fname.length === 0){
+    } else if (fname.length === 0) {
       notifyError("First Name is required");
       return false;
-    }else if(lname.length === 0){
+    } else if (lname.length === 0) {
       notifyError("Last Name is required");
       return false;
-    }
-    else if(address.length === 0){
+    } else if (address.length === 0) {
       notifyError("Complete Address is required");
       return false;
-    }else if(city.length === 0){
+    } else if (city.length === 0) {
       notifyError("City/Town is required");
       return false;
-    }else if(zipCode.length === 0){
+    } else if (zipCode.length === 0) {
       notifyError("Zip Code of city is required");
       return false;
-    }
-    else if(phoneNo.length === 0){
+    } else if (phoneNo.length === 0) {
       notifyError("Last Name is required");
       return false;
-    }
-    else if(TandC === false){
+    } else if (TandC === false) {
       notifyError("Please Accept Terms & conditions.");
       return false;
     }
-    
+
     return true;
   }
 
   function submitShippingDetails() {
-    if(!validateInput()){
+    if (!validateInput()) {
       return;
     }
     let shippingDetails = {
@@ -103,13 +103,12 @@ function Checkout(props) {
 
     navigate("/shipping", {
       state: { shippingDetails: shippingDetails },
-    }); 
-
+    });
   }
 
   // useEffect(() => {
   //   console.log(user);
-  //   console.log(productsInCart);
+  //   console.log(cartProducts);
   // }, []);
 
   return (
@@ -308,7 +307,7 @@ function Checkout(props) {
                         </div>
                       </form>
                     </div>
-                    
+
                     <div className="col-lg-4">
                       <div className="order_box">
                         <h2>Your Order</h2>
@@ -316,12 +315,12 @@ function Checkout(props) {
                           <table className="prodTabel table">
                             <thead>
                               <tr>
-                                <th scope="col">Product</th>
+                                <th scope="col">Product/Service</th>
                                 <th scope="col">Total</th>
                               </tr>
                             </thead>
                             <tbody>
-                              {productsInCart.map((singleProduct, index) => {
+                              {cartProducts.map((singleProduct, index) => {
                                 return (
                                   <tr key={index}>
                                     <td style={{ maxWidth: "30px" }}>
@@ -335,6 +334,26 @@ function Checkout(props) {
                                         }}
                                       >
                                         Rs {singleProduct.productPrice}
+                                      </p>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+
+                              {cartServices.map((service, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td style={{ maxWidth: "30px" }}>
+                                      <p>{service.serviceTitle}</p>
+                                    </td>
+                                    <td>
+                                      <p
+                                        style={{
+                                          textTransform:
+                                            "capitalize !important",
+                                        }}
+                                      >
+                                        Rs {service.totalPrice}
                                       </p>
                                     </td>
                                   </tr>
@@ -392,13 +411,24 @@ function Checkout(props) {
                   </div>
 
                   <div className="button-area">
-                    <div className="d-flex">
+                    {/* <div className="d-flex">
                       <Link
                         to={"/cart"}
                         className="button button-block button-cart fas fa-arrow-left"
                       >
                         Back to cart
                       </Link>
+                    </div> */}
+
+                    <div className="d-flex" style={{ marginRight: "2%" }}>
+                      <button
+                        className="button button-block button-payment fas fa-arrow-left"
+                        onClick={() => {
+                          navigate("/cart");
+                        }}
+                      >
+                        Back to cart
+                      </button>
                     </div>
 
                     <div className="d-flex">

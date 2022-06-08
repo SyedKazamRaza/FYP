@@ -94,4 +94,10 @@ router.get("/allproduct/:category", async (req, res) => {
   }
 });
 
+
+router.get("/topProducts",(req,res)=>{
+  res.send("All Products")
+})
+
+
 module.exports.productRouter = router;

@@ -1,13 +1,17 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useNavbarUpdate } from "./userContext";
 
 const Services = () => {
+  const navigate = useNavigate();
+  const { changeNavBold } = useNavbarUpdate();
+
   return (
     <div>
       <section className="section text-center">
         <div
           className="parallax-container"
           style={{
-            backgroundImage: `url("./images/our_services.jpg")`,
+            backgroundImage: `url("images/our_services.jpg")`,
           }}
           // data-parallax-img={
           //   process.env.PUBLIC_URL + "/images/our_services.jpg"
@@ -33,14 +37,17 @@ const Services = () => {
                   safe for the clients.
                 </span>
               </p>
-              <Link
+              <div
                 className="button button-primary button-icon button-icon-left button-ujarak wow fadeInUp"
-                to="#"
-                data-lightgallery="item"
-                data-wow-delay=".1s"
+                // data-wow-delay=".1s"
+                onClick={() => {
+                  changeNavBold("services");
+                  navigate("/services");
+                }}
               >
-                <span className="icon mdi mdi-play"></span>Our Services
-              </Link>
+                <span className="icon mdi mdi-play"></span>
+                Our Services
+              </div>
             </div>
           </div>
         </div>

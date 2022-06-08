@@ -1,14 +1,10 @@
 import React from "react";
 import Blogs from "./blogs";
-import Header from "./homeNavbar/Header";
-import Footer from "./footer";
+
 import Home from "./home/home";
 import BlogDetails from "./BlogDetails";
-import { userContext } from "./userContext";
-import { ReactSession } from "react-client-session";
 import Authentication from "./Authentication";
-import AboutUs from "../AboutUs";
-import ShowProducts from "./showProducts";
+import AboutUs from "./AboutUs";
 
 function Homepage(props) {
   return (

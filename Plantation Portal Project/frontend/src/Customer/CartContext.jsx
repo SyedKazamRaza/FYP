@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { injectStyle } from "react-toastify/dist/inject-style";
 
-
 if (typeof window !== "undefined") {
   injectStyle();
 }
@@ -21,9 +20,9 @@ export function useCartUpdate() {
   return useContext(CartUpdateContext);
 }
 
-const notifySuccess = () => {
+const notifySuccess = (info) => {
   // Calling toast method by passing string
-  toast.success("Product added to cart.", {
+  toast.success(`${info}`, {
     position: "bottom-left",
     autoClose: 3000,
     hideProgressBar: false,
@@ -46,8 +45,8 @@ const notifyInfo = () => {
     background: "#34A853",
   });
 };
-const notifyError = () => {
-  toast.error("Item removed from cart.", {
+const notifyError = (errMsg) => {
+  toast.error(`${errMsg}`, {
     position: "bottom-left",
     autoClose: 3000,
     hideProgressBar: false,
@@ -59,16 +58,16 @@ const notifyError = () => {
   });
 };
 
-
 export function CartProvider({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
+  const [cartServices, setCartServices] = useState([]);
 
   const handleAddToCart = (item, quantity) => {
     if (quantity === 0) {
       notifyInfo();
       return;
     }
-    notifySuccess();
+    notifySuccess("Product added to cart.");
     const i = cartProducts.findIndex((prod) => prod.productId === item._id);
     if (i > -1) {
       let cartProd = cartProducts;
@@ -90,14 +89,43 @@ export function CartProvider({ children }) {
     }
   };
 
-  const EmptyCart = () =>{
+  const handleAddServicesToCart = (service, leng, wid, total) => {
+    notifySuccess("Service added to cart.");
+    const i = cartServices.findIndex((ser) => ser.serviceId === service._id);
+    if (i > -1) {
+      let serv = cartServices;
+      serv[i].length += leng;
+      serv[i].width += wid;
+      serv[i].totalPrice += serv[i].totalPrice;
+      setCartServices(serv);
+    } else {
+      const serv = {
+        serviceId: service._id,
+        serviceTitle: service.s_title,
+        price: service.s_price,
+        serviceImg: service.s_image,
+        length: leng,
+        width: wid,
+        totalPrice: total,
+      };
+      setCartServices([...cartServices, serv]);
+    }
+    console.log("Services in cart: ", cartServices);
+  };
+
+  const EmptyCart = () => {
     setCartProducts([]);
-  }
+    setCartServices([]);
+  };
 
   const incrementQuantity = (item) => {
     const newCartProd = cartProducts.map((prod) => {
       if (prod.productId === item.productId) {
-        return { ...prod, quantity: prod.quantity + 1, total: (prod.total + prod.productPrice) };
+        return {
+          ...prod,
+          quantity: prod.quantity + 1,
+          total: prod.total + prod.productPrice,
+        };
       }
       return prod;
     });
@@ -107,28 +135,46 @@ export function CartProvider({ children }) {
   const decrementQuantity = (item) => {
     const newCartProd = cartProducts.map((prod) => {
       if (prod.productId === item.productId) {
-        return { ...prod, quantity: prod.quantity - 1, total: (prod.total - prod.productPrice) };
+        return {
+          ...prod,
+          quantity: prod.quantity - 1,
+          total: prod.total - prod.productPrice,
+        };
       }
       return prod;
     });
     setCartProducts(newCartProd);
   };
 
-  const removeFromCart = (item) =>{
-    let newCartProd = cartProducts.filter((prod) => prod.productId !== item.productId);
+  const removeFromCart = (item) => {
+    let newCartProd = cartProducts.filter(
+      (prod) => prod.productId !== item.productId
+    );
     setCartProducts(newCartProd);
-    notifyError();
-  }
+    notifyError("Item removed from cart.");
+  };
+
+  const removeServiceFromCart = (item) => {
+    let newCartServices = cartServices.filter(
+      (serv) => serv.serviceId !== item.serviceId
+    );
+    setCartServices(newCartServices);
+    notifyError("Service removed from cart.");
+  };
 
   return (
-    <CartContext.Provider value={cartProducts}>
+    <CartContext.Provider
+      value={{ cartProducts: cartProducts, cartServices: cartServices }}
+    >
       <CartUpdateContext.Provider
         value={{
           handleAddToCart: handleAddToCart,
+          handleAddServicesToCart: handleAddServicesToCart,
           EmptyCart: EmptyCart,
           increment: incrementQuantity,
           decrement: decrementQuantity,
           removeFromCart: removeFromCart,
+          removeServiceFromCart: removeServiceFromCart
         }}
       >
         {children}

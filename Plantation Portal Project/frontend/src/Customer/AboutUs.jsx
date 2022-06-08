@@ -1,6 +1,11 @@
 import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useNavbarUpdate } from "./userContext";
 
 const AboutUs = () => {
+  const navigate = useNavigate();
+  const { changeNavBold } = useNavbarUpdate();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -13,7 +18,7 @@ const AboutUs = () => {
             <h2 className="breadcrumbs-custom-title">About Us</h2>
             <ul className="breadcrumbs-custom-path">
               <li>
-                <a href="index.html">Home</a>
+                <Link to="/">Home</Link>
               </li>
               <li className="active">About Us</li>
             </ul>
@@ -76,12 +81,15 @@ const AboutUs = () => {
                       the best plantation e-company in Pakistan.
                     </p>
                     <div className="group-md group-middle">
-                      <a
+                      <div
                         className="button button-width-xl-310 button-default-outline button-wapasha"
-                        href="contact-us.html"
+                        onClick={() => {
+                          changeNavBold("contact");
+                          navigate("/contact");
+                        }}
                       >
                         Contact us
-                      </a>
+                      </div>
                     </div>
                   </div>
                   <div className="tab-pane fade" id="tabs-4-2">
@@ -200,7 +208,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-      
+
       <section className="section context-dark">
         <div
           className="parallax-container"
@@ -274,7 +282,6 @@ const AboutUs = () => {
                     <p className="quote-lisa-status">New Client</p>
                   </div>
                 </article>
-
               </div>
             </div>
           </div>
