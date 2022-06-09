@@ -5,8 +5,12 @@ import axios from "axios";
 // import Footer from "../footer";
 // import Header from "../homeNavbar/homeNavbar";
 import { useCartUpdate } from "../CartContext";
+// import { useUser } from "../userContext";
+
 
 function Shop(props) {
+  // const user = useUser();
+
   const [filterProducts, setfilterProducts] = useState();
   const [seasonsFilter, setSeasonsFilter] = useState(false);
   const [typeFilter, setTypeFilter] = useState(false);
@@ -18,6 +22,7 @@ function Shop(props) {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [productsToShow, setproductsToShow] = useState([]);
 
+
   let selectedAccessory = "all";
 
   const { handleAddToCart } = useCartUpdate();
@@ -28,6 +33,8 @@ function Shop(props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // alert(user._id);
+    // console.log("user is : ", user);
   }, []);
 
   // useEffect(() => {
@@ -708,11 +715,11 @@ function Shop(props) {
                               className="list-unstyled "
                               style={{ display: "flex" }}
                             >
-                              <li>
+                              {/* <li>
                                 <div className="btn btn-success text-white mt-2">
                                   <i className="far fa-heart"></i>
                                 </div>
-                              </li>
+                              </li> */}
                               <li style={{ marginLeft: "8px" }}>
                                 <div
                                   className="btn btn-success text-white mt-2"
@@ -744,18 +751,18 @@ function Shop(props) {
                               NavigateToSingleProduct(item);
                             }}
                           >
-                            <h6
+                            <h5
                               style={{
                                 textAlign: "center",
                                 height: "46px",
-                                fontSize: "20px",
+                                // fontSize: "40px !important",
                                 maxHeight: "46px",
                                 // minHeight: "52px",
                                 overflow: "hidden",
                               }}
                             >
                               {item.productName}
-                            </h6>
+                            </h5>
                           </div>
                           <ul className="list-unstyled d-flex justify-content-center mb-1">
                             <li>

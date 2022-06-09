@@ -4,9 +4,7 @@ const { Products } = require("../models/productsModel");
 const { Category } = require("../models/categoryModel");
 const { Store } = require("../models/storeModel");
 
-
 router.get("/allProducts", async (req, res) => {
-
   Products.aggregate(
     [
       {
@@ -18,17 +16,18 @@ router.get("/allProducts", async (req, res) => {
         },
       },
       {
-        "$project": {                       //field we don't want to include in result
+        $project: {
+          //field we don't want to include in result
           "storeInfo.totalEarning": 0,
           "storeInfo.ordersCompleted": 0,
           "storeInfo.status": 0,
           "storeInfo.username": 0,
           "storeInfo.password": 0,
-        }
-      }
+        },
+      },
     ],
     function (error, data) {
-      if(error){
+      if (error) {
         console.log("Error received");
         res.json([]);
       }
@@ -88,16 +87,53 @@ router.get("/allproduct/:category", async (req, res) => {
           console.log("Promise NOT fulfilled " + err);
         });
     }
-       // res.json(productsToSend)
+    // res.json(productsToSend)
   } catch (err) {
     res.status(201).send("Error in getting the products..");
   }
 });
 
+//convert post ot get after getting sellerid from session
+router.post("/allStoreProducts", async (req, res) => {
+  const sellerId = req.body.id;
+  console.log(sellerId);
+  console.log(req.body);
+  const storeProducts = await Products.find({ storeId: sellerId });
+  res.json(storeProducts);
+});
 
-router.get("/topProducts",(req,res)=>{
-  res.send("All Products")
-})
+function getDate(params) {
+  const d = new Date();
+  let date = d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+  return date;
+}
 
+router.post("/addNewProduct", async (req, res) => {
+  const currentDate = getDate();
+  const storeId = "61d9354e52dbabae9bd60541";
+
+  const product = {
+    productName: req.body.productName,
+    price: req.body.price,
+    details: req.body.details,
+    imageurl: req.body.imageurl,
+    itemsAvailable: 100,
+    storeId: storeId,
+    postedDate: currentDate,
+    category: req.body.category,
+    rating: 0,
+  };
+
+  if (req.body.category === "plants") {
+    product.type = req.body.type;
+    product.place = req.body.place; //nature of product
+    product.season = req.body.season;
+  }
+
+  const newProduct = new Products(product);
+  const prod = await newProduct.save();
+
+  res.json(prod);
+});
 
 module.exports.productRouter = router;

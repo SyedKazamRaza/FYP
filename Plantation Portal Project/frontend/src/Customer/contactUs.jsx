@@ -1,10 +1,64 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ContactUs(props) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [msg, setMsg] = useState("");
+  const [errorMessage, setError] = useState("");
+
+  const notifySuccess = (info) => {
+    toast.success(`${info}`, {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      background: "#34A853",
+    });
+  };
+
+  function SendMessage(e) {
+    e.preventDefault();
+    if (name.length === 0) {
+      setError("Please enter a valid Name");
+      return;
+    } else if (email.length === 0) {
+      setError("Invalid Email");
+      return;
+    } else if (phoneNo.length !== 11) {
+      setError("Enter 11 digit Phone number");
+      return;
+    } else if (msg.length === 0) {
+      setError("Please type a valid message");
+      return;
+    }
+    setError("");
+    const data = { name: name, email: email, phoneNo: phoneNo, msg: msg };
+    axios
+      .post("http://localhost:5000/contact/addNewMessage", data)
+      .then((response) => {
+        if (response.status === 200) {
+          notifySuccess("Message Sent to Admin");
+          setName("");
+          setEmail("");
+          setPhoneNo("");
+          setMsg("");
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div>
       <section className="breadcrumbs-custom-inset">
@@ -85,6 +139,11 @@ function ContactUs(props) {
                 will answer you shortly.
               </p>
             </div>
+            <div className="title-classic-text">
+              <h5 style={{ color: "red", textAlign: "center" }}>
+                `{errorMessage}
+              </h5>
+            </div>
           </article>
           <form
             className="rd-form rd-form-variant-2 rd-mailform"
@@ -92,6 +151,7 @@ function ContactUs(props) {
             data-form-type="contact"
             method="post"
             action="bat/rd-mailform.php"
+            onSubmit={SendMessage}
           >
             <div className="row row-14 gutters-14">
               <div className="col-md-4">
@@ -101,11 +161,12 @@ function ContactUs(props) {
                     id="contact-your-name-2"
                     type="text"
                     name="name"
-                    data-constraints="@Required"
+                    value={name}
+                    placeholder="Your Name"
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
                   />
-                  <label className="form-label" for="contact-your-name-2">
-                    Your Name
-                  </label>
                 </div>
               </div>
               <div className="col-md-4">
@@ -115,11 +176,13 @@ function ContactUs(props) {
                     id="contact-email-2"
                     type="email"
                     name="email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                    placeholder="E-mail"
                     data-constraints="@Email @Required"
                   />
-                  <label className="form-label" for="contact-email-2">
-                    E-mail
-                  </label>
                 </div>
               </div>
               <div className="col-md-4">
@@ -129,23 +192,25 @@ function ContactUs(props) {
                     id="contact-phone-2"
                     type="text"
                     name="phone"
-                    data-constraints="@Numeric"
+                    value={phoneNo}
+                    onChange={(e) => {
+                      setPhoneNo(e.target.value);
+                    }}
+                    placeholder="Phone"
                   />
-                  <label className="form-label" for="contact-phone-2">
-                    Phone
-                  </label>
                 </div>
               </div>
               <div className="col-12">
                 <div className="form-wrap">
-                  <label className="form-label" for="contact-message-2">
-                    Message
-                  </label>
                   <textarea
                     className="form-input textarea-lg"
                     id="contact-message-2"
                     name="message"
-                    data-constraints="@Required"
+                    placeholder="Type your message here"
+                    value={msg}
+                    onChange={(e) => {
+                      setMsg(e.target.value);
+                    }}
                   ></textarea>
                 </div>
               </div>

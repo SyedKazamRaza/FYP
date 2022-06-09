@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"; //make routing 
 import CustomerRoutes from "./Routes/customerRoutes";
 import AdminRoutes from "./Routes/adminRoutes";
 import SellerRoutes from "./Routes/sellerRoutes";
-import SampleLogin from "./Customer/sampleLogin";
+import ShowChat from "./Customer/showChat/ShowChat";
+// import SampleLogin from "./Customer/sampleLogin";
 import { ReactSession } from "react-client-session";
 
 function App(props) {
@@ -13,7 +14,7 @@ function App(props) {
     <BrowserRouter>
       <Routes>
         <Route exact path="/seller/*" element={<SellerRoutes />} />
-        <Route path="/sample" exact element={<SampleLogin />} />
+        {/* <Route path="/chatpanel" exact element={<ShowChat />} /> */}
         <Route exact path="/*" element={<CustomerRoutes />} />
         <Route exact path="/admin/*" element={<AdminRoutes />} />
       </Routes>

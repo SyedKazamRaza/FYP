@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const {Category} = require("./categoryModel");
-const {Store} = require("./storeModel");
+const { Category } = require("./categoryModel");
+const { Store } = require("./storeModel");
 
 const productsSchema = new mongoose.Schema({
   productName: { type: String, required: true },
@@ -12,10 +12,9 @@ const productsSchema = new mongoose.Schema({
 
   category: { type: String, required: true },
   season: { type: String },
-  place: { type: String},
+  place: { type: String },
   type: { type: String },
   rating: { type: String },
-
 
   storeId: {
     type: mongoose.Schema.Types.ObjectId,

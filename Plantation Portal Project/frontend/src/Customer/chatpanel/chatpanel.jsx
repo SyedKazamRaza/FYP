@@ -136,9 +136,9 @@ function Chatpanel(props) {
   //   // messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   // };
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [secondUserChat]);
+  // useEffect(() => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [secondUserChat]);
 
   useEffect(() => {
     axios
@@ -224,7 +224,7 @@ function Chatpanel(props) {
     event.preventDefault();
     setMsgAdded(false);
     let personNo;
-    if (userRole === "cust") {
+    if (userRole === "customer") {
       personNo = 1;
     } else if (userRole === "seller") {
       personNo = 2;
@@ -240,7 +240,7 @@ function Chatpanel(props) {
     const senderId = props.userId;
     const receiverId = secondUserID;
     let pnumber;
-    if (userRole === "cust") {
+    if (userRole === "customer") {
       pnumber = 1;
     } else {
       pnumber = 2;
@@ -276,7 +276,7 @@ function Chatpanel(props) {
   }
 
   function giveLastMsg(personNo, lastMsg) {
-    if (userRole === "cust") {
+    if (userRole === "customer") {
       if (personNo === "1") {
         return "Me: " + lastMsg;
       } else {
@@ -301,7 +301,7 @@ function Chatpanel(props) {
     setChatChanges(true);
 
     // scrollToBottom();
-    if (userRole === "cust") {
+    if (userRole === "customer") {
       const userChat = chatResult.filter(
         (chat) => chat.secondUser === secondUserId
       );
@@ -519,7 +519,7 @@ function Chatpanel(props) {
                             }}
                             aria-label="recipe"
                           >
-                            {userRole === "cust"
+                            {userRole === "customer"
                               ? "M"
                               : secondUserName[0].toUpperCase()}
                           </Avatar>
@@ -527,7 +527,7 @@ function Chatpanel(props) {
                         title={
                           <Box sx={{ display: "flex", flexDirection: "row" }}>
                             <Typography className={classes.descriptionTitle}>
-                              {userRole === "cust" ? "Me" : secondUserName}
+                              {userRole === "customer" ? "Me" : secondUserName}
                             </Typography>
                             <Typography className={classes.date}>
                               {msg.time}
@@ -549,7 +549,7 @@ function Chatpanel(props) {
                             sx={{ width: "28", height: "28", bgcolor: "green" }}
                             aria-label="recipe"
                           >
-                            {userRole === "cust"
+                            {userRole === "customer"
                               ? secondUserName[0].toUpperCase()
                               : "M"}
                           </Avatar>
@@ -557,7 +557,7 @@ function Chatpanel(props) {
                         title={
                           <Box sx={{ display: "flex", flexDirection: "row" }}>
                             <Typography className={classes.descriptionTitle}>
-                              {userRole === "cust" ? secondUserName : "Me"}
+                              {userRole === "customer" ? secondUserName : "Me"}
                             </Typography>
                             <Typography className={classes.date}>
                               {msg.time}

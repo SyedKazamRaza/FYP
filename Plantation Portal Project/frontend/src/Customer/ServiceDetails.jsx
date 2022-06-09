@@ -150,14 +150,7 @@ const ServiceDetails = () => {
                         </form>
                         {price !== 0 && (
                           <div className="row pb-3">
-                            <div className="col d-grid">
-                              <button
-                                className="button button-primary button-ujarak wow fadeInUp"
-                                onClick={() => {}}
-                              >
-                                Buy
-                              </button>
-                            </div>
+                          
                             <div className="col d-grid">
                               <button
                                 className="button button-primary button-ujarak wow fadeInUp"

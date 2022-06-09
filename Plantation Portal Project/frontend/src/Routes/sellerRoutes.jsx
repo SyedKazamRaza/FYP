@@ -5,6 +5,7 @@ import SellerHome from "../Seller/sellerHome";
 import SellerOrders from "../Seller/sellerOrders";
 import SellerProfile from "../Seller/sellerProfile";
 import SellerShop from "../Seller/sellerShop";
+import AddProduct from "../Seller/addProduct";
 // import Footer from "../Customer/footer";
 
 import "../Seller/seller.css";
@@ -22,6 +23,8 @@ function SellerRoutes(props) {
         <Route path="/sellerorders" exact element={<SellerOrders />} />
         <Route path="/sellerprofile" exact element={<SellerProfile />} />
         <Route path="/sellershop" exact element={<SellerShop />} />
+        <Route path="/addProduct" exact element={<AddProduct />} />
+
       </Routes>
     </>
   );

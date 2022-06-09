@@ -46,7 +46,7 @@ router.post("/addMessage", async (req, res) => {
 
     let firstUser = "";
     let secondUser = "";
-    if(userRole === "cust")
+    if(userRole === "customer")
     {
       firstUser = user1;
       secondUser = user2;
@@ -104,7 +104,7 @@ router.get("/allChats/singleChat/:role/:id/:secondId", async (req, res) => {
   const secondId = req.params.secondId;
   const role = req.params.role;
   let userChat;
-  if (role === "cust") {
+  if (role === "customer") {
     userChat = await Chat.find({
       $and: [{ firstUser: userId }, { secondUser: secondId }],
     }).sort({lastMsgTime: -1});
@@ -125,7 +125,7 @@ router.get("/allChats/:id/:role", async (req, res) => {
   console.log("Server USer ID: ", userId);
   console.log("Server USer role: ", userRole);
 
-  if (userRole === "cust") {
+  if (userRole === "customer") {
     const userChat = await Chat.find({ firstUser: userId }).sort({lastMsgTime: -1});
     let storesArr = [];
     if (userChat) {

@@ -343,7 +343,7 @@ const Header = (props) => {
                                       <span className="icon fa fa-comment"></span>
                                     </div>
                                     <div className="unit-body">
-                                      <Link className="link-press" to="">
+                                      <Link className="link-press" to="/chatpanel">
                                         Chat
                                       </Link>
                                     </div>

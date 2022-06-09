@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { ReactSession } from "react-client-session";
 import { useNavigate } from "react-router-dom";
 
-
 const UserContext = React.createContext();
 const UserUpdateContext = React.createContext();
 const NavbarContext = React.createContext();
@@ -26,13 +25,15 @@ export function useNavbarUpdate() {
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState({ initialValue: "a" });
-  const [navbarBold, setNavbarBold] = useState('home')
+  const [navbarBold, setNavbarBold] = useState("home");
   const navigate = useNavigate();
 
   const setLoginUser = (user) => {
     setUser(user);
     ReactSession.set("user", user);
     console.log("Setting user in contecxt");
+    console.log("setting....");
+    console.log(user);
   };
 
   const logOut = () => {
@@ -46,7 +47,7 @@ export function UserProvider({ children }) {
   const changeNavBold = (ID) => {
     console.log("called");
     setNavbarBold(ID);
-  }
+  };
 
   return (
     <UserContext.Provider value={user}>
@@ -54,9 +55,10 @@ export function UserProvider({ children }) {
         value={{ setLoginUser: setLoginUser, logOut: logOut }}
       >
         <NavbarContext.Provider value={navbarBold}>
-          <NavbarUpdateContext.Provider value={{changeNavBold:changeNavBold}}>
-          {children}
-
+          <NavbarUpdateContext.Provider
+            value={{ changeNavBold: changeNavBold }}
+          >
+            {children}
           </NavbarUpdateContext.Provider>
         </NavbarContext.Provider>
       </UserUpdateContext.Provider>

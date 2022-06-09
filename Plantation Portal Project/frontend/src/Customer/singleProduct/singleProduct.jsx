@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./singleProduct.css";
-import {useUser} from "../userContext";
+import { useUser } from "../userContext";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import axios from "axios";
 
 import { useCartUpdate } from "../CartContext";
 
@@ -40,6 +41,28 @@ function SingleProduct(props) {
     countRelatedProducts = countRelatedProducts + 1;
   };
 
+  function startChat(params) {
+    console.log(location.state.product.storeId);
+    console.log(user);
+
+    const chat = {
+      role: "customer",
+      userID: user._id,
+      storeID: location.state.product.storeId,
+      msg: "Hi!",
+      personNo: 1,
+    };
+
+    axios
+      .post("http://localhost:5000/chat/addMessage", chat)
+      .then((response) => {
+        if (response.status === 200) {
+          navigate("/chatpanel")
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div>
       {/* <Header /> */}
@@ -73,7 +96,20 @@ function SingleProduct(props) {
                   id="product-detail"
                 />
               </div>
-              <button className="contactSeller">Contact Seller</button>
+              <button
+                className="contactSeller"
+                onClick={() => {
+                  if (user._id) {
+                    startChat();
+                  } else {
+                    navigate("/login", {
+                      state: { nextScreen: "single" },
+                    });
+                  }
+                }}
+              >
+                Contact Seller
+              </button>
             </div>
             <div className="col-lg-7 mt-5">
               <div className="card">
@@ -275,12 +311,13 @@ function SingleProduct(props) {
                         // data-wow-delay=".1s"
                         onClick={() => {
                           handleAddToCart(location.state.product, quantity);
-                          setTimeout(() => { console.log("Moving to login screen"); }, 2000)
-                          if(quantity !== 0){
-                            if(user._id){
+                          setTimeout(() => {
+                            console.log("Moving to login screen");
+                          }, 2000);
+                          if (quantity !== 0) {
+                            if (user._id) {
                               navigate("/cart");
-                            }
-                            else{
+                            } else {
                               navigate("/login");
                             }
                           }

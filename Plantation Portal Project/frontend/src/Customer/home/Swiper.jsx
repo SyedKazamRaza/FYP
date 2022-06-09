@@ -18,7 +18,11 @@ const Swiper = () => {
       <div className="swiper-wrapper text-left">
         <div
           className="swiper-slide context-dark"
-          data-slide-bg={"/images/organic-food-slider.jpg"}
+          style={{
+            backgroundImage: `url("images/organic-food-slider.jpg")`,
+          }}
+          // data-slide-bg={"images/organic-food-slider.jpg"}
+          
         >
           <div className="swiper-slide-caption">
             <div className="container">
@@ -61,7 +65,10 @@ const Swiper = () => {
 
         <div
           className="swiper-slide context-dark"
-          data-slide-bg={"/images/plants_for_people.jpg"}
+          // data-slide-bg={"images/plants_for_people.jpg"}
+          style={{
+            backgroundImage: `url("images/plants_for_people.jpg")`,
+          }}
         >
           <div className="swiper-slide-caption">
             <div className="container">
@@ -106,7 +113,10 @@ const Swiper = () => {
         </div>
         <div
           className="swiper-slide context-dark"
-          data-slide-bg={"/images/plant_styling.jpg"}
+          style={{
+            backgroundImage: `url("images/plant_styling.jpg")`,
+          }}
+          // data-slide-bg={"images/plant_styling.jpg"}
         >
           <div className="swiper-slide-caption">
             <div className="container">
