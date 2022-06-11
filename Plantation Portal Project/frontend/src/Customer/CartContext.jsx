@@ -84,6 +84,7 @@ export function CartProvider({ children }) {
         productImage: item.imageurl,
         quantity: quantity,
         total: item.price * parseInt(quantity),
+        status: "active"
       };
       setCartProducts([...cartProducts, cartProd]);
     }
@@ -107,6 +108,7 @@ export function CartProvider({ children }) {
         length: leng,
         width: wid,
         totalPrice: total,
+        status: "active"
       };
       setCartServices([...cartServices, serv]);
     }

@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TopBar from "./TopBar";
 import axios from "axios";
+import useFetch from "../useFetch";
 
 function SellerShop(props) {
+  const { data: homeStats } = useFetch(
+    "http://localhost:5000/seller/sellerHome"
+  );
+
+
   const [shopProducts, setShopProducts] = useState([]);
   // const shopProducts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const data = {
@@ -34,32 +40,33 @@ function SellerShop(props) {
       <section className="home-section">
         <div className="home-content">
           <TopBar />
+
           <div className="overview-boxes">
             <div className="box">
               <div className="right-side">
                 <div className="box-topic">Total Orders</div>
-                <div className="number">45</div>
+                <div className="number">{homeStats.totalOrders}</div>
               </div>
               <i className="bx bx-cart-alt cart"></i>
             </div>
             <div className="box">
               <div className="right-side">
                 <div className="box-topic">Total Earnings</div>
-                <div className="number">Rs 38,876</div>
+                <div className="number">Rs {homeStats.totalEarning}</div>
               </div>
               <i className="bx bxs-wallet-alt cart two"></i>
             </div>
             <div className="box">
               <div className="right-side">
                 <div className="box-topic">Total Clients</div>
-                <div className="number">42</div>
+                <div className="number"> {homeStats.numberOfClients}</div>
               </div>
               <i className="bx bxs-group cart three"></i>
             </div>
             <div className="box">
               <div className="right-side">
                 <div className="box-topic">Total Products</div>
-                <div className="number">86</div>
+                <div className="number">{homeStats.numberOfProducts}</div>
               </div>
               <i className="bx bxs-store-alt cart four"></i>
             </div>

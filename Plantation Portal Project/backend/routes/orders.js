@@ -2,9 +2,40 @@ const router = require("express").Router();
 const _ = require("lodash");
 const { Order } = require("../models/orders.model");
 
-router.get("/", (req, res) => {
-  res.send("order route");
+
+router.route('/').get((req, res) => {
+  Order.aggregate(
+    [{
+      $lookup: {
+        from: "users", // collection to join - Should have same name as collection mongoDB
+        localField: "userId", //field from the input documents
+        foreignField: "_id", //field from the documents of the "from" collection
+        as: "userInfo", // output array field
+      },
+    },
+    {
+      "$project": {                       //field we don't want to include in result
+        "userInfo.password": 0,
+      }
+    }
+  ],
+    function (error, data) {
+      if(error){
+        console.log("Error received");
+        res.json([]);
+      }
+      console.log(data);
+      res.json(data);
+    }
+
+  )
+  // Order.find()
+  //   .then(Order => res.json(Order))
+  //   .catch(err => res.status(400).json('Error: ' + err));
 });
+
+
+
 
 const month = [
   "Jan",

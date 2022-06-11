@@ -244,8 +244,8 @@ function AddProduct(props) {
                     setCategory(categoryList[e.target.value]);
                   }}
                 >
-                  {prodCategory.map((cat, key) => (
-                    <option value={key}>{cat}</option>
+                  {prodCategory.map((cat, index) => (
+                    <option key={index} value={index}>{cat}</option>
                   ))}
                 </select>
               </div>
@@ -268,7 +268,7 @@ function AddProduct(props) {
                   }}
                 >
                   {prodType.map((type, key) => (
-                    <option value={key}>{type}</option>
+                    <option key={key} value={key}>{type}</option>
                   ))}
                 </select>
               </div>
@@ -292,7 +292,7 @@ function AddProduct(props) {
                   }}
                 >
                   {prodSeasons.map((seas, key) => (
-                    <option value={key}>{seas}</option>
+                    <option key={key} value={key}>{seas}</option>
                   ))}
                 </select>
               </div>
@@ -315,7 +315,7 @@ function AddProduct(props) {
                   }}
                 >
                   {prodPlace.map((plc, key) => (
-                    <option value={key}>{plc}</option>
+                    <option key={key} value={key}>{plc}</option>
                   ))}
                 </select>
               </div>

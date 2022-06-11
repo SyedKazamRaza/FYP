@@ -8,6 +8,8 @@ const userRoute = require("./routes/user");
 const { orderRouter } = require("./routes/orders");
 const services = require("./routes/service");
 const {contactRouter} = require("./routes/contactUs");
+const sellerRoute = require("./routes/seller")
+
 const app = express();
 
 app.use(cors());
@@ -38,6 +40,9 @@ app.use("/user", userRoute);
 app.use("/order", orderRouter);
 app.use("/services", services);
 app.use("/contact", contactRouter);
+app.use("/seller", sellerRoute);
+
+
 
 const port = process.env.port || 5000;
 app.listen(port, () => {

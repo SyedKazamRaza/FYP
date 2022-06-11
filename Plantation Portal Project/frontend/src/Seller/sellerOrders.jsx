@@ -1,9 +1,134 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TopBar from "./TopBar";
+import useFetch from "../useFetch";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function SellerOrders(props) {
+  const navigate = useNavigate();
+  // const { data: shopOrderProducts } = useFetch(
+  //   "http://localhost:5000/seller/sellerOrders"
+  // );
+
+  // const { data: shopOrderStats } = useFetch(
+  //   "http://localhost:5000/seller/sellerOrdersStats"
+  // );
+
+  const [shopOrderProducts, setShopOrderProducts] = useState([]);
+  const [shopOrderStats, setShopOrderStats] = useState({});
+  const [temp, setTemp] = useState(0);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/seller/sellerOrders")
+      .then((response) => {
+        if (response.data.length > 0) {
+          setShopOrderProducts(
+            response.data.map((prod) => {
+              return prod;
+            })
+          );
+        }
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get("http://localhost:5000/seller/sellerOrdersStats")
+      .then((response) => {
+        if (response.status === 200) {
+          setShopOrderStats(response.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/seller/sellerOrders")
+      .then((response) => {
+        if (response.data.length > 0) {
+          setShopOrderProducts(
+            response.data.map((prod) => {
+              return prod;
+            })
+          );
+        }
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get("http://localhost:5000/seller/sellerOrdersStats")
+      .then((response) => {
+        if (response.status === 200) {
+          setShopOrderStats(response.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [temp]);
+
+  // useEffect(()=>{
+
+  // },[temp])
+
+  let activeCounter = 0;
+  function increment(params) {
+    activeCounter = activeCounter + 1;
+    return activeCounter;
+  }
+
+  function getactiveCounter(params) {
+    return activeCounter;
+  }
+
+  let completedCounter = 0;
+  function incrementCompleted(params) {
+    completedCounter = completedCounter + 1;
+    return completedCounter;
+  }
+
+  function getCompleteCounter(params) {
+    return completedCounter;
+  }
+
+  let cancelCounter = 0;
+  function incrementCancel(params) {
+    cancelCounter = cancelCounter + 1;
+    return cancelCounter;
+  }
+
+  function getCancelCounter(params) {
+    return cancelCounter;
+  }
+
+  let keyCounter = 0;
+  function getKey(params) {
+    keyCounter = keyCounter + 1;
+    return keyCounter;
+  }
+
+  function changeOrderStatus(orderId, prodId, newStatus) {
+    const dataToSend = {
+      orderId: orderId,
+      productId: prodId,
+      newStatus: newStatus,
+    };
+    console.log(dataToSend);
+    axios
+      .post("http://localhost:5000/seller/changeOrderStatus", dataToSend)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response.data);
+        } else {
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setTemp(temp + 1);
+  }
+
   return (
-    <div>
+    <section className="section">
       <section className="home-section">
         <div className="home-content">
           <TopBar />
@@ -11,28 +136,38 @@ function SellerOrders(props) {
             <div className="box">
               <div className="right-side">
                 <div className="box-topic">Total Orders</div>
-                <div className="number">64</div>
+                <div className="number">
+                  {shopOrderStats.numberOfActiveOrders +
+                    shopOrderStats.numberOfDeliverOrders +
+                    shopOrderStats.numberOfCancelledrOrders}
+                </div>
               </div>
               <i className="bx bx-cart-alt cart"></i>
             </div>
             <div className="box">
               <div className="right-side">
-                <div className="box-topic">New Orders</div>
-                <div className="number">3</div>
+                <div className="box-topic">Active Orders</div>
+                <div className="number">
+                  {shopOrderStats.numberOfActiveOrders}
+                </div>
               </div>
               <i className="bx bxs-message-alt-add cart two"></i>
             </div>
             <div className="box">
               <div className="right-side">
-                <div className="box-topic">Active Orders</div>
-                <div className="number">12</div>
+                <div className="box-topic">Completed</div>
+                <div className="number">
+                  {shopOrderStats.numberOfDeliverOrders}
+                </div>
               </div>
               <i className="bx bxs-cart-add cart three"></i>
             </div>
             <div className="box">
               <div className="right-side">
-                <div className="box-topic">Delivered Orders</div>
-                <div className="number">40</div>
+                <div className="box-topic">Cancelled</div>
+                <div className="number">
+                  {shopOrderStats.numberOfCancelledrOrders}
+                </div>
               </div>
               <i className="bx bxs-home-circle cart four"></i>
             </div>
@@ -57,398 +192,222 @@ function SellerOrders(props) {
                       Active
                     </a>
                   </li>
-                  <li className="nav-item" role="presentation">
-                    <a className="nav-link" href="#tabs-4-2" data-toggle="tab">
-                      Late
-                    </a>
-                  </li>
+
                   <li className="nav-item" role="presentation">
                     <a className="nav-link" href="#tabs-4-3" data-toggle="tab">
                       Delivered
                     </a>
                   </li>
-                  <li className="nav-item" role="presentation">
-                    <a className="nav-link" href="#tabs-4-4" data-toggle="tab">
-                      Completed
-                    </a>
-                  </li>
+
                   <li className="nav-item" role="presentation">
                     <a className="nav-link" href="#tabs-4-5" data-toggle="tab">
                       Cancelled
                     </a>
                   </li>
                 </ul>
+
                 <div className="tab-content">
                   <div className="tab-pane fade show active" id="tabs-4-1">
                     <div className="table-responsive">
                       <table className="table">
                         <tbody>
                           <tr>
-                            <th>Seller</th>
-                            <th>Store</th>
-                            <th>Due on</th>
+                            <th>Order#</th>
                             <th>Buyer</th>
-                            <th>Total</th>
-                            <th>Status</th>
+                            <th>Email</th>
+                            <th>Date&Time</th>
+                            <th>Order Details</th>
+                            <th></th>
                           </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Active</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Active</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Active</p>
-                            </td>
-                          </tr>
+
+                          {shopOrderProducts.map((singleOrder, index1) => {
+                            return singleOrder.productsDetail.map(
+                              (single, index2) => {
+                                return single.sellerId ===
+                                  "61d9354e52dbabae9bd60541" &&
+                                  single.status === "active" ? (
+                                  <tr
+                                    key={singleOrder._id + getactiveCounter()}
+                                  >
+                                    <td>{increment()}</td>
+                                    <td>
+                                      <div>
+                                        {singleOrder.userInfo[0].fname +
+                                          " " +
+                                          singleOrder.userInfo[0].lname}
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>{singleOrder.userInfo[0].email}</div>
+                                    </td>
+
+                                    <td>{singleOrder.dateTime}</td>
+                                    <td>
+                                      <button
+                                        type="button"
+                                        className="btn btn-success"
+                                        onClick={() => {
+                                          navigate("/seller/singleOrder", {
+                                            state: { product: singleOrder,status: single.status, },
+                                          });
+                                        }}
+                                      >
+                                        View
+                                      </button>
+                                    </td>
+                                    <td>
+                                      <button
+                                        type="button"
+                                        className="btn btn-success"
+                                        onClick={() => {
+                                          changeOrderStatus(
+                                            singleOrder._id,
+                                            single.productId,
+                                            "delivered"
+                                          );
+                                        }}
+                                      >
+                                        Complete
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                        onClick={() => {
+                                          changeOrderStatus(
+                                            singleOrder._id,
+                                            single.productId,
+                                            "canceled"
+                                          );
+                                        }}
+                                      >
+                                        Cancel
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ) : (
+                                  <tr key={getKey()}></tr>
+                                );
+                              }
+                            );
+                          })}
                         </tbody>
                       </table>
                     </div>
                   </div>
-                  <div className="tab-pane fade" id="tabs-4-2">
-                    <div className="table-responsive">
-                      <table className="table">
-                        <tbody>
-                          <tr>
-                            <th>Seller</th>
-                            <th>Store</th>
-                            <th>Due on</th>
-                            <th>Buyer</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Late</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Late</p>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+
                   <div className="tab-pane fade" id="tabs-4-3">
                     <div className="table-responsive">
                       <table className="table">
                         <tbody>
                           <tr>
-                            <th>Seller</th>
-                            <th>Store</th>
-                            <th>Due on</th>
+                            <th>Order#</th>
                             <th>Buyer</th>
+                            <th>Product</th>
+                            <th>Date</th>
                             <th>Total</th>
                             <th>Status</th>
                           </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Delivered</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Delivered</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Delivered</p>
-                            </td>
-                          </tr>
+
+                          {shopOrderProducts.map((singleOrder) => {
+                            return singleOrder.productsDetail.map((single) => {
+                              return single.sellerId ===
+                                "61d9354e52dbabae9bd60541" &&
+                                single.status === "delivered" ? (
+                                <tr
+                                  key={singleOrder._id + getCompleteCounter()}
+                                >
+                                  <td>{incrementCompleted()}</td>
+                                  <td>
+                                    <div>
+                                      {singleOrder.userInfo[0].fname +
+                                        " " +
+                                        singleOrder.userInfo[0].lname}
+                                    </div>
+                                  </td>
+                                  <td>{single.productName}</td>
+                                  <td>{singleOrder.dateTime}</td>
+                                  <td>Rs {single.total}</td>
+                                  <td>
+                                    <button
+                                      type="button"
+                                      className="btn btn-success"
+                                      onClick={() => {
+                                        navigate("/seller/singleOrder", {
+                                          state: { product: singleOrder, status: single.status, },
+                                        });
+                                      }}
+                                    >
+                                      View
+                                    </button>
+                                  </td>
+                                </tr>
+                              ) : (
+                                <tr key={getKey()}></tr>
+                              );
+                            });
+                          })}
                         </tbody>
                       </table>
                     </div>
                   </div>
-                  <div className="tab-pane fade" id="tabs-4-4">
-                    <div
-                      className="table-responsive"
-                      style={{ marginLeft: "-138px" }}
-                    >
-                      <table className="table">
-                        <tbody>
-                          <tr>
-                            <th>Seller</th>
-                            <th>Store</th>
-                            <th>Due on</th>
-                            <th>Delivered At</th>
-                            <th>Buyer</th>
-                            <th>Total</th>
-                            <th>Ratng</th>
-                            <th>Status</th>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <i className="fa fa-star"></i> 5
-                            </td>
-                            <td>
-                              <p className="status">Completed</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <i className="fa fa-star"></i> 5
-                            </td>
-                            <td>
-                              <p className="status">Completed</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <i className="fa fa-star"></i> 5
-                            </td>
-                            <td>
-                              <p className="status">Completed</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              Paradise Store
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <i className="fa fa-star"></i> 5
-                            </td>
-                            <td>
-                              <p className="status">Completed</p>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+
                   <div className="tab-pane fade" id="tabs-4-5">
                     <div className="table-responsive">
                       <table className="table">
                         <tbody>
                           <tr>
-                            <th>Seller</th>
-                            <th>Store</th>
-                            <th>Due on</th>
+                            <th>Order#</th>
                             <th>Buyer</th>
+                            <th>Product</th>
+                            <th>Date & Time</th>
                             <th>Total</th>
-                            <th>Status</th>
+                            <th></th>
                           </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Cancelled</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Cancelled</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <a href="seller-dashboard.html">Peter</a>
-                            </td>
-                            <td>
-                              <a href="order-detals.html">Paradise Store</a>
-                              <br />
-                              <p className="products">
-                                (Sunflower + Seeds Pack)
-                              </p>
-                            </td>
-                            <td>May 12</td>
-                            <td>May 12</td>
-                            <td>Peter</td>
-                            <td>Rs 2000</td>
-                            <td>
-                              <p className="status">Cancelled</p>
-                            </td>
-                          </tr>
+
+                          {shopOrderProducts.map((singleOrder) => {
+                            return singleOrder.productsDetail.map((single) => {
+                              return single.sellerId ===
+                                "61d9354e52dbabae9bd60541" &&
+                                single.status === "canceled" ? (
+                                <tr key={singleOrder._id + getCancelCounter()}>
+                                  <td>{incrementCancel()}</td>
+                                  <td>
+                                    <div>
+                                      {singleOrder.userInfo[0].fname +
+                                        " " +
+                                        singleOrder.userInfo[0].lname}
+                                    </div>
+                                  </td>
+                                  <td>{single.productName}</td>
+                                  <td>{singleOrder.dateTime}</td>
+                                  <td>Rs {single.total}</td>
+                                  <td>
+                                    <button
+                                      type="button"
+                                      className="btn btn-success"
+                                      onClick={() => {
+                                        navigate("/seller/singleOrder", {
+                                          state: {
+                                            product: singleOrder,
+                                            status: single.status,
+                                          },
+                                        });
+                                      }}
+                                    >
+                                      View
+                                    </button>
+                                  </td>
+                                </tr>
+                              ) : (
+                                <tr key={getKey()}></tr>
+                              );
+                            });
+                          })}
+
+
+
+
+                          
                         </tbody>
                       </table>
                     </div>
@@ -459,7 +418,7 @@ function SellerOrders(props) {
           </div>
         </div>
       </section>
-    </div>
+    </section>
   );
 }
 
