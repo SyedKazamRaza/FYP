@@ -2,7 +2,7 @@ const router = require("express").Router();
 const _ = require("lodash");
 const { Products } = require("../models/productsModel");
 const { Category } = require("../models/categoryModel");
-const { Store } = require("../models/storeModel");
+const Store = require("../models/storeModel");
 
 router.get("/allProducts", async (req, res) => {
   Products.aggregate(
@@ -134,6 +134,68 @@ router.post("/addNewProduct", async (req, res) => {
   const prod = await newProduct.save();
 
   res.json(prod);
+});
+
+router.delete("/deleteProduct/:id", async (req, res) => {
+  try {
+    const prodId = req.params.id;
+    const result = await Products.deleteOne({ _id: prodId });
+    res.status(200).send("Product deleted");
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post("/editProduct", async (req, res) => {
+  try {
+    const prodId = req.body.id;
+    const imageurl = req.body.imageurl;
+    const name = req.body.productName;
+    const price = req.body.price;
+    const details = req.body.details;
+    const category = req.body.category;
+
+    let data = {
+      productName: name,
+      category: category,
+      price: price,
+      details: details,
+    };
+
+    if (category === "plants") {
+      data.type = req.body.type;
+      data.place = req.body.place; //nature of product
+      data.season = req.body.season;
+    } else {
+      data.type = "";
+      data.place = ""; //nature of product
+      data.season = "";
+    }
+
+    if (imageurl.length != 0) {
+      console.log("Image taken");
+      data.imageurl = imageurl;
+    } else {
+      console.log(imageurl.length);
+      console.log("Image not taken");
+    }
+
+    const result = await Products.updateOne(
+      { _id: prodId },
+      {
+        $set: data,
+      }
+    );
+
+    // console.log("Editing...........................");
+    // console.log("Image is:", imageurl);
+    // console.log(data);
+    // console.log(result);
+
+    res.status(200).json(data);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports.productRouter = router;

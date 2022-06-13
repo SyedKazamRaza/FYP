@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TopBar from "./TopBar";
 import axios from "axios";
-import useFetch from "../useFetch";
+import { useNavigate } from "react-router-dom";
 
 function SellerShop(props) {
-  const { data: homeStats } = useFetch(
-    "http://localhost:5000/seller/sellerHome"
-  );
+  let [updater, setUpdater] = useState(0);
+  const navigate = useNavigate();
+  // let { data: homeStats } = useFetch(
+  //   "http://localhost:5000/seller/sellerHome"
+  // );
 
+  const [homeStats, setHomeStats] = useState({});
 
   const [shopProducts, setShopProducts] = useState([]);
   // const shopProducts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -29,11 +32,60 @@ function SellerShop(props) {
         }
       })
       .catch((error) => console.log(error));
+
+    axios
+      .get("http://localhost:5000/seller/sellerHome")
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Stats: ", response.data);
+          setHomeStats(response.data);
+        }
+      })
+      .catch((error) => console.log(error));
   }, []);
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:5000/products/allStoreProducts", data)
+      .then((response) => {
+        if (response.status === 200) {
+          setShopProducts(
+            response.data.map((prod) => {
+              return prod;
+            })
+          );
+          console.log(response.data);
+        }
+      })
+      .catch((error) => console.log(error));
+
+    axios
+      .get("http://localhost:5000/seller/sellerHome")
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Stats: ", response.data);
+          setHomeStats(response.data);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, [updater]);
 
   const runCallback = (cb) => {
     return cb();
   };
+
+  function deleteProduct(prodId) {
+    const url = `http://localhost:5000/products/deleteProduct/${prodId}`;
+    axios
+      .delete(url)
+      .then((response) => {
+        if (response.status === 200) {
+          let t = updater + 1;
+          setUpdater(t);
+        }
+      })
+      .catch((error) => console.log(error));
+  }
 
   return (
     <div>
@@ -95,12 +147,24 @@ function SellerShop(props) {
                         <ul className="list-unstyled d-flex justify-content-center mb-1">
                           <li>
                             <div className="btn btn-success text-white mt-2">
-                              <i className="far fa-edit"></i>
+                              <i
+                                className="far fa-edit"
+                                onClick={() => {
+                                  navigate("/seller/editProduct", {
+                                    state: { product: prod },
+                                  });
+                                }}
+                              ></i>
                             </div>
                           </li>
                           <li>
                             <div className="btn btn-success text-white mt-2">
-                              <i className="fas fa-trash"></i>
+                              <i
+                                className="fas fa-trash"
+                                onClick={() => {
+                                  deleteProduct(prod._id);
+                                }}
+                              ></i>
                             </div>
                           </li>
                         </ul>
@@ -169,6 +233,7 @@ function SellerShop(props) {
             Add New Product
           </Link>
         </div>
+        <div style={{ height: "50px" }}></div>
       </section>
     </div>
   );

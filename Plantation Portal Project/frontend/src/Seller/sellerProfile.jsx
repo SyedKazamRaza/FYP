@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import TopBar from "./TopBar";
 
 function SellerProfile(props) {
+
   return (
     <div>
       <section className="home-section">
@@ -124,67 +125,19 @@ function SellerProfile(props) {
             </div>
           </div>
         </div>
-        <div className="order-container">
-          <div className="row row-30 justify-content-center">
-            <h4>Public Reviews</h4>
-            <div className="comment marg25">
-              <img
-                className="img_comm"
-                alt=""
-                src="images/blogs/team-img3.jpg"
-              />
-              <div className="comm_name">
-                Rida Batool <span>- 12 February 2022</span>
-              </div>
-              <ul className="justify-content-right">
-                <li>
-                  <i className="fas fa-trash"></i>
-                </li>
-              </ul>
-              <p className="text_cont com_top">
-                Loved reading the article. Keep up the good work.
-              </p>
-            </div>
-            <div className="bs-blog-line-com"></div>
-            <div className="comment">
-              <img
-                className="img_comm"
-                alt=""
-                src="images/blogs/team-img3.jpg"
-              />
-              <div className="comm_name">
-                Musfirah Amjad <span>- 9 February 2022</span>
-              </div>
-              <ul className="justify-content-right">
-                <li>
-                  <i className="fas fa-trash"></i>
-                </li>
-              </ul>
-              <p className="text_cont com_top">
-                Hey, can I water my plants twice a day?
-              </p>
-            </div>
-            <div className="bs-blog-line-com"></div>
-            <div className="comment">
-              <img
-                className="img_comm"
-                alt=""
-                src="images/blogs/team-img3.jpg"
-              />
-              <div className="comm_name">
-                Rimsha Amin <span>- 8 February 2022</span>
-              </div>
-              <ul className="justify-content-right">
-                <li>
-                  <i className="fas fa-trash"></i>
-                </li>
-              </ul>
-              <p className="text_cont com_top">
-                This article was so helpful for me. Thank you.
-              </p>
-            </div>
-          </div>
+
+        <div className="oh button-wrap">
+          <Link
+            className="button button-primary button-ujarak"
+            data-caption-animate="slideInUp"
+            data-caption-delay="400"
+            to="/seller/editProfile"
+            // to="/seller/addProduct"
+          >
+            Update Profile
+          </Link>
         </div>
+        <div style={{ height: "50px" }}></div>
       </section>
     </div>
   );

@@ -1,50 +1,91 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavbarUpdate } from "./userContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useUserUpdate } from "../Customer/userContext";
+import { useUserUpdate } from "./userContext";
+import validator from 'validator';
 
-function Login(props) {
+function Login() {
   const { setLoginUser } = useUserUpdate();
-  const {changeNavBold} = useNavbarUpdate();
 
-  let location = useLocation();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passError, setPassErrors] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   const handleSubmit = (e) => {
+    var flag = false;
+
+    if(validator.isEmpty(email)){
+      setEmailError("This field is required") 
+    }
+    else {
+      setEmailError("") 
+    }
+    if(validator.isEmpty(password)){
+      setPassErrors("This field is required") 
+    }
+    else {
+      setPassErrors("") 
+    }
+
     e.preventDefault();
-    const user = { email, password };
-    axios
-      .post("http://localhost:5000/user/login", user)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log(res.data.message);
-          setLoginUser(res.data.user);
-          // ReactSession.set("user", res.data.user);
-          // console.log(ReactSession.get("user"));
-          // alert(location.state)
-          if (location.state && (location.state.nextScreen === "checkout")) {
-            navigate("/checkout");
-          } else {
-            changeNavBold('shop');
-            navigate("/shop");
-          }
-        } else {
-          alert("Invalid credientials");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    if(!validator.isEmpty(email) && !validator.isEmpty(password)){
+     
+      const user = { email, password };
+      axios
+        .post("http://localhost:5000/login", user)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res.data.user)
+            setLoginUser(res.data.user);
+            flag = true
+            if(res.data.user.type==="admin")
+            {
+              navigate("/admin");
+            }
+            else{
+              navigate("/");
+            }
+          } 
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        axios
+        .post("http://localhost:5000/loginStore", user)
+        .then((res) => {
+          
+          if (res.status === 200) {
+            flag = true
+            console.log("Hi"+res.data.user)
+            
+            setLoginUser(res.data.user);
+              navigate("/seller/home");
+          } 
+        })
+        .catch((error) => {
+          
+          console.log(error);
+        });
+    }
+    if(!flag){
+      setEmailError("Invalid email")
+    }
+    else{
+      setEmailError("")
+    } 
+  
+
   };
   return (
     <div>
+      <h2 className="text-primary">Login Your Account</h2>
       <div className="tab-pane fade show active" id="tabs-4-1">
-        <p>Login Your Account</p>
         <form
           className="rd-form rd-form-variant-2 rd-mailform"
           data-form-output="form-output-global"
@@ -66,6 +107,7 @@ function Login(props) {
                 />
                 {/* <label className="form-label" htmlFor="contact-email-2">E-mail</label> */}
               </div>
+              <span className='form-validation'>{emailError}</span>
             </div>
             <div className="col-md-8">
               <div className="form-wrap">
@@ -81,6 +123,7 @@ function Login(props) {
                 />
                 {/* <label className="form-label" htmlFor="contact-password">Password</label> */}
               </div>
+              <span className='form-validation'>{passError}</span>
             </div>
           </div>
           <p>

@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Order } = require("../models/orders.model");
 const { Products } = require("../models/productsModel");
 const { Category } = require("../models/categoryModel");
-const { Store } = require("../models/storeModel");
+const Store = require("../models/storeModel");
 
 // function getTotalOrdersOfSeller(sellerId) {
 //     Order.find({
@@ -82,6 +82,13 @@ async function getTotalEarning(sellerID) {
 
 router.get("/sellerHome", async (req, res) => {
   try {
+    console.log("Heeellllllllo i am session");
+    console.log(req.session);
+    console.log(req.session.storeid);
+    // session = req.session;
+    console.log(req.session.storeName);
+    console.log(req.session["storeName"]);
+
     const totalOrders = await getTotalOrders("61d9354e52dbabae9bd60541");
     const numberOfProducts = await getTotalProducts("61d9354e52dbabae9bd60541");
 
@@ -145,7 +152,6 @@ function calculateActiveOrders(orderProducts, sellerID) {
     singleOrder.productsDetail.map((singleProd) => {
       if (singleProd.sellerId === sellerID && singleProd.status === "active") {
         activeOrder += 1;
-        console.log(singleProd.sellerId);
       }
     });
   });
@@ -276,10 +282,179 @@ router.route("/recentSales").get((req, res) => {
         console.log("Error received");
         res.json([]);
       }
-      console.log(data);
       res.json(data);
     }
   );
+});
+
+function calculatePendingEarning(orderProducts, sellerID) {
+  let pendingEarning = 0;
+  orderProducts.map((singleOrder) => {
+    singleOrder.productsDetail.map((singleProd) => {
+      if (singleProd.sellerId === sellerID && singleProd.status === "active") {
+        pendingEarning = pendingEarning + singleProd.total;
+      }
+    });
+  });
+  return pendingEarning;
+}
+
+function calculateWithdrawnEarning(orderProducts, sellerID) {
+  let withdrawnEarning = 0;
+  orderProducts.map((singleOrder) => {
+    singleOrder.productsDetail.map((singleProd) => {
+      if (
+        singleProd.sellerId === sellerID &&
+        singleProd.status === "delivered"
+      ) {
+        withdrawnEarning = withdrawnEarning + singleProd.total;
+      }
+    });
+  });
+  return withdrawnEarning;
+}
+
+function calculateCanceledEarning(orderProducts, sellerID) {
+  let cancelEarning = 0;
+  orderProducts.map((singleOrder) => {
+    singleOrder.productsDetail.map((singleProd) => {
+      if (
+        singleProd.sellerId === sellerID &&
+        singleProd.status === "canceled"
+      ) {
+        cancelEarning = cancelEarning + singleProd.total;
+      }
+    });
+  });
+  return cancelEarning;
+}
+
+router.get("/storeEarningStats", async (req, res) => {
+  try {
+    const orders = await Order.find({
+      productsDetail: { $elemMatch: { sellerId: "61d9354e52dbabae9bd60541" } },
+    }).then((result) => {
+      const pending = calculatePendingEarning(
+        result,
+        "61d9354e52dbabae9bd60541"
+      );
+      const withdrawn = calculateWithdrawnEarning(
+        result,
+        "61d9354e52dbabae9bd60541"
+      );
+      const cancel = calculateCanceledEarning(
+        result,
+        "61d9354e52dbabae9bd60541"
+      );
+
+      const dataToSend = {
+        pending,
+        withdrawn,
+        cancel,
+      };
+      res.status(200).json(dataToSend);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/getStoreTransactions", async (req, res) => {
+  try {
+    const orders = Order.aggregate([
+      {
+        $lookup: {
+          from: "users", // collection to join - Should have same name as collection mongoDB
+          localField: "userId", //field from the input documents
+          foreignField: "_id", //field from the documents of the "from" collection
+          as: "userInfo", // output array field
+        },
+      },
+      {
+        $project: {
+          "userInfo.password": 0,
+        },
+      },
+      {
+        $match: {
+          productsDetail: {
+            $elemMatch: {
+              sellerId: "61d9354e52dbabae9bd60541",
+            },
+          },
+        },
+      },
+    ]).then((result) => {
+      //18
+      res.status(200).json(result);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/getStore/:id", async (req, res) => {
+  try {
+    const storeId = req.params.id;
+    const store = await Store.find({ _id: storeId });
+    if (store.length === 0) {
+      res.status(201).send("Store not Exist");
+    }
+    res.status(200).json(store[0]);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post("/updateStore", async (req, res) => {
+  const storeId = req.body.id;
+  const us_name = req.body.email;
+  const stName = req.body.storeName;
+  const pwd = req.body.password;
+
+  const exist = await Store.find({ username: us_name });
+  // console.log(exist);
+  // console.log(exist.length);
+  // console.log(exist[0]._id.toString());
+  // console.log(storeId);
+  if (exist.length > 0) {
+    if (exist[0]._id.toString() == storeId) {
+      console.log("Email exist & same store");
+      const storeData = {
+        storeName: stName,
+        password: pwd,
+      };
+
+      console.log("Store data is: ", storeData);
+      const update = await Store.updateOne(
+        { _id: storeId },
+        {
+          $set: storeData,
+        }
+      );
+      res.status(200).send("updated");
+    } else {
+      console.log("Email exist & different store");
+
+      res.status(200).send("Email already exists");
+    }
+  } else {
+    console.log("Email not exist");
+
+    const storeData = {
+      storeName: stName,
+      username: us_name,
+      password: pwd,
+    };
+
+    const update = await Store.updateOne(
+      { _id: storeId },
+      {
+        $set: storeData,
+      }
+    );
+    res.status(200).send("updated");
+  }
 });
 
 module.exports = router;

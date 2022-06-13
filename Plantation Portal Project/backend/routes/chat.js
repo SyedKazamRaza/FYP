@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const _ = require("lodash");
 const { Chat } = require("../models/chatModel");
-const { Store } = require("../models/storeModel");
-const {User} = require("../models/user.model")
+const Store = require("../models/storeModel");
+const User = require("../models/user.model")
 
 router.get("/", (req, res) => {
   res.send("I am chat panel");

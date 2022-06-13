@@ -284,6 +284,7 @@ function SellerOrders(props) {
                                       </button>
                                     </td>
                                   </tr>
+                                  
                                 ) : (
                                   <tr key={getKey()}></tr>
                                 );
@@ -407,7 +408,7 @@ function SellerOrders(props) {
 
 
 
-                          
+
                         </tbody>
                       </table>
                     </div>

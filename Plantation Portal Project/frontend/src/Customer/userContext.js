@@ -30,10 +30,11 @@ export function UserProvider({ children }) {
 
   const setLoginUser = (user) => {
     setUser(user);
+    console.log("I am seeting store: ", user);
     ReactSession.set("user", user);
-    console.log("Setting user in contecxt");
-    console.log("setting....");
-    console.log(user);
+    // console.log("Setting user in contecxt");
+    // console.log("setting....");
+    // console.log(user);
   };
 
   const logOut = () => {

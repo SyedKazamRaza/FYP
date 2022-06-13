@@ -331,7 +331,7 @@ const Header = (props) => {
                                       <span className="icon fa fa-user"></span>
                                     </div>
                                     <div className="unit-body">
-                                      <Link className="link" to="">
+                                      <Link className="link" to="/updateprofile">
                                         Manage Profile
                                       </Link>
                                     </div>
@@ -355,7 +355,7 @@ const Header = (props) => {
                                       <span className="icon fa fa-shopping-basket"></span>
                                     </div>
                                     <div className="unit-body">
-                                      <Link className="link-press" to="">
+                                      <Link className="link-press" to="/showOrders">
                                         Orders
                                       </Link>
                                     </div>

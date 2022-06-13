@@ -1,35 +1,58 @@
 import React, { useState } from "react";
 import { storage } from "../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
-function AddProduct(props) {
+function EditProduct(props) {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [price, setprice] = useState("");
-  const [details, setDetails] = useState("");
+  let location = useLocation();
+  const product = location.state.product;
+  const [name, setName] = useState(product.productName);
+  const [price, setprice] = useState(product.price);
+  const [details, setDetails] = useState(product.details);
   const [error, setError] = useState("");
+  const prodId = product._id;
 
   const [image, setImage] = useState("");
   const [file, setFile] = useState("");
   const [progresspercent, setProgresspercent] = useState(0);
 
-  const [category, setCategory] = useState("");
-  const [categoryList, setCategoryList] = useState([
-    "Category of Product",
-    "plants",
-    "seeds",
-    "fertilizers",
-    "tools",
-  ]);
+  let arr;
+  let firstSeason;
+  let firstPlace;
+  let firstType;
+  if (product.category === "plants") {
+    arr = ["plants", "seeds", "fertilizers", "tools"];
+    firstPlace = product.place;
+    firstSeason = product.season;
+    firstType = product.type;
+  } else if (product.category === "seeds") {
+    arr = ["seeds", "plants", "fertilizers", "tools"];
+    firstPlace = "Place of Plant";
+    firstSeason = "Season of the plant";
+    firstType = "Type of Plant";
+  } else if (product.category === "tools") {
+    arr = ["tools", "seeds", "fertilizers", "plants"];
+    firstPlace = "Place of Plant";
+    firstSeason = "Season of the plant";
+    firstType = "Type of Plant";
+  } else if (product.category === "fertilizers") {
+    arr = ["fertilizers", "seeds", "plants", "tools"];
+    firstPlace = "Place of Plant";
+    firstSeason = "Season of the plant";
+    firstType = "Type of Plant";
+  }
+  const [category, setCategory] = useState(product.category);
+  const [categoryList, setCategoryList] = useState(arr);
   const prodCategory = categoryList.map((cat) => cat);
 
-  const [season, setSeason] = useState("");
+  const [season, setSeason] = useState(product.season);
   const [seasonList, setSeasonList] = useState([
-    "Season of the Plant",
+    firstSeason,
     "Spring",
     "Summer",
     "Winter",
@@ -38,9 +61,9 @@ function AddProduct(props) {
   ]);
   const prodSeasons = seasonList.map((seas) => seas);
 
-  const [type, setType] = useState("");
+  const [type, setType] = useState(product.type);
   const [typeList, setTypeList] = useState([
-    "Type of Plant",
+    firstType,
     "Flowering plant",
     "Shrubs",
     "Perennial",
@@ -51,9 +74,9 @@ function AddProduct(props) {
   ]);
   const prodType = typeList.map((seas) => seas);
 
-  const [place, setPlace] = useState("");
+  const [place, setPlace] = useState(product.place);
   const [placeList, setPlaceList] = useState([
-    "Place of Plant",
+    firstPlace,
     "indoor",
     "outdoor",
     "both",
@@ -86,7 +109,7 @@ function AddProduct(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setImage("");
     setError("");
     if (name.length === 0) {
       setError("Product Name is required");
@@ -117,66 +140,97 @@ function AddProduct(props) {
     //   return;
     // }
 
-    const storageRef = ref(
-      storage,
-      `products/${file.name + Date().toLocaleString()}`
-    );
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    if (file !== "") {
+      alert("uploading");
+      const storageRef = ref(
+        storage,
+        `products/${file.name + Date().toLocaleString()}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgresspercent(progress);
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-          setImage(downloadURL);
-          if (image === "") {
-            setError("Product image is required.");
-            return;
-          }
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgresspercent(progress);
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            setImage(downloadURL);
+            console.log(downloadURL);
+            alert("here");
+            let product = {
+              productName: name,
+              price: price,
+              details: details,
+              category: category,
+              imageurl: image,
+              id: prodId,
+            };
 
-          // alert(image);
-          let product = {
-            productName: name,
-            price: price,
-            details: details,
-            category: category,
-            imageurl: image,
-          };
-          console.log("Product is: ");
-          console.log(product);
+            if (category === "plants") {
+              product.type = type;
+              product.season = season;
+              product.place = place;
+            }
 
-          if (category === "plants") {
-            product.type = type;
-            product.season = season;
-            product.place = place;
-          }
-          console.log(product);
+            axios
+              .post("http://localhost:5000/products/editProduct", product)
+              .then((response) => {
+                if (response.status === 200) {
+                  console.log(response.data);
+                  EmptyFields();
+                  notifySuccess("Product Successfully Updated.");
+                  navigate("/seller/sellershop");
+                } else {
+                  alert("Product not edited..");
+                }
+              })
+              .catch((error) => {
+                // console.log(error);
+              });
+            // alert(image);
+          });
+        }
+      );
+    } else {
+      console.log("In else");
+      let product = {
+        productName: name,
+        price: price,
+        details: details,
+        category: category,
+        imageurl: image,
+        id: prodId,
+      };
 
-          axios
-            .post("http://localhost:5000/products/addNewProduct", product)
-            .then((response) => {
-              if (response.status === 200) {
-                EmptyFields();
-                notifySuccess("New Product Added to Shop");
-                navigate("/seller/sellershop");
-              } else {
-                alert("Product not added..");
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        });
+      if (category === "plants") {
+        product.type = type;
+        product.season = season;
+        product.place = place;
       }
-    );
+
+      axios
+        .post("http://localhost:5000/products/editProduct", product)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log(response.data);
+            EmptyFields();
+            notifySuccess("Product Successfully Updated.");
+            navigate("/seller/sellershop");
+          } else {
+            alert("Product not edited..");
+          }
+        })
+        .catch((error) => {
+          // console.log(error);
+        });
+    }
   };
 
   let counter = 0;
@@ -193,12 +247,9 @@ function AddProduct(props) {
     <section className="home-section">
       <div className="order-container">
         <article className="title-classic">
-          <h2 className="text-primary">Add a New Product</h2>
+          <h2 className="text-primary">Edit Product</h2>
           <div className="title-classic-text">
-            <p>
-              Fill out all the fields below to successfully add a new product in
-              your shop
-            </p>
+            <p>Edit the field you want to update of the product</p>
           </div>
           <div className="title-classic-text">
             <p style={{ color: "red" }}>{error}`</p>
@@ -372,7 +423,7 @@ function AddProduct(props) {
             className="button button-primary button-pipaluk"
             type="submit"
           >
-            Submit
+            Edit Product
           </button>
         </form>
       </div>
@@ -380,4 +431,4 @@ function AddProduct(props) {
   );
 }
 
-export default AddProduct;
+export default EditProduct;

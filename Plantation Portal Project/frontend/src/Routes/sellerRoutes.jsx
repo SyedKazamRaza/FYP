@@ -7,6 +7,10 @@ import SellerProfile from "../Seller/sellerProfile";
 import SellerShop from "../Seller/sellerShop";
 import AddProduct from "../Seller/addProduct";
 import SingleOrder from "../Seller/singleOrder";
+import SellerEarning from "../Seller/sellerEarning";
+import EditProduct from "../Seller/editProduct";
+import ShowSellerChat from "../Seller/showSellerChat";
+import EditSellerProfile from "../Seller/editSellerProfile";
 // import Footer from "../Customer/footer";
 
 import "../Seller/seller.css";
@@ -26,7 +30,10 @@ function SellerRoutes(props) {
         <Route path="/sellershop" exact element={<SellerShop />} />
         <Route path="/addProduct" exact element={<AddProduct />} />
         <Route path="/singleOrder" exact element={<SingleOrder />} />
-
+        <Route path="/sellerEarning" exact element={<SellerEarning />} />
+        <Route path="/editProduct" exact element={<EditProduct />} />
+        <Route path="/chatPanel" exact element={<ShowSellerChat />} />
+        <Route path="/editProfile" exact element={<EditSellerProfile />} />
       </Routes>
     </>
   );
