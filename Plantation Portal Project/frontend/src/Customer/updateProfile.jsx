@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import useFetch from "../useFetch";
 import axios from "axios";
-import { useUser } from "./userContext";
+import { useUser } from "../userContext";
 import { useNavigate } from "react-router-dom";
 
 import "react-phone-input-2/lib/style.css";
-import { useUserUpdate } from "./userContext";
+import { useUserUpdate } from "../userContext";
 import validator from "validator";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 const UpdateProfile = () => {
   console.log("Updating user...........:");
   const user = useUser();
+  console.log(user);
   const userid = user._id;
   const useremail = user.email;
   console.log(user);
@@ -133,7 +134,7 @@ const UpdateProfile = () => {
 
     if (phErrorResult && passErrorResult && !validator.isEmpty(email)) {
       var result2;
-      var data = { userid: user._id,email, password, fname, lname, phno };
+      var data = { userid: user._id, email, password, fname, lname, phno };
 
       result2 = handleExistingUsers(data);
       //result = handleExistingEmails(user)
@@ -180,8 +181,9 @@ const UpdateProfile = () => {
           onSubmit={handleSubmit}
         >
           <div className="row row-14 gutters-14">
-            <div className="col-md-4">
+            <div className="col-md-6">
               <div className="form-wrap">
+                <p>Frist Name</p>
                 <input
                   className="form-input"
                   id="contact-your-className-2"
@@ -198,8 +200,11 @@ const UpdateProfile = () => {
               </div>
               <span className="form-validation"></span>
             </div>
-            <div className="col-md-4">
+
+            <div className="col-md-6">
               <div className="form-wrap">
+                <p>Last Name</p>
+
                 <input
                   className="form-input"
                   id="contact-your-className-2"
@@ -216,8 +221,11 @@ const UpdateProfile = () => {
               </div>
               <span className="form-validation"></span>
             </div>
-            <div className="col-md-4">
+
+            <div className="col-md-6">
               <div className="form-wrap">
+                <p>Email</p>
+
                 <input
                   className="form-input"
                   id="contact-email-2"
@@ -235,8 +243,10 @@ const UpdateProfile = () => {
               </div>
               <span className="form-validation">{emailError}</span>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-6">
               <div className="form-wrap">
+                <p>Password</p>
+
                 <input
                   className="form-input"
                   id="contact-password"
@@ -252,8 +262,10 @@ const UpdateProfile = () => {
               </div>
               <span className="form-validation">{passError}</span>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-6">
               <div className="form-wrap">
+                <p>Phone Number</p>
+
                 <input
                   className="form-input"
                   id="contact-phone-2"

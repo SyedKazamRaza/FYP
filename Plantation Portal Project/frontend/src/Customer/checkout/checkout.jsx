@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./checkout.css";
-import { useUser } from "../userContext";
+import { useUser } from "../../userContext";
 import { useCart } from "../CartContext";
 import { Link, useNavigate } from "react-router-dom";
 

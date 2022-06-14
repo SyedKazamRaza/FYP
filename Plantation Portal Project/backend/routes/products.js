@@ -95,11 +95,16 @@ router.get("/allproduct/:category", async (req, res) => {
 
 //convert post ot get after getting sellerid from session
 router.post("/allStoreProducts", async (req, res) => {
-  const sellerId = req.body.id;
-  console.log(sellerId);
-  console.log(req.body);
-  const storeProducts = await Products.find({ storeId: sellerId });
-  res.json(storeProducts);
+  try {
+    const sellerId = req.body.id;
+    // console.log(sellerId);
+    // console.log(req.body);
+    const storeProducts = await Products.find({ storeId: sellerId });
+    res.status(200).json(storeProducts);
+  } catch (err) {
+    console.log(err);
+    res.json([]);
+  }
 });
 
 function getDate(params) {
@@ -108,9 +113,9 @@ function getDate(params) {
   return date;
 }
 
-router.post("/addNewProduct", async (req, res) => {
+router.post("/addNewProduct/:id", async (req, res) => {
   const currentDate = getDate();
-  const storeId = "61d9354e52dbabae9bd60541";
+  const storeId = req.params.id;
 
   const product = {
     productName: req.body.productName,

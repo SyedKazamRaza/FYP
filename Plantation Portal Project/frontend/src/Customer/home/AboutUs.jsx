@@ -13,28 +13,28 @@ const AboutUs= ()=>{
                     <div className="counter-creative-number"><span className="counter">40</span>
                     <span className="icon counter-creative-icon fas fa-shopping-basket"></span>
                     </div>
-                    <h6 className="counter-creative-title">Stores</h6>
+                    <p className="counter-creative-title">Stores</p>
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-5 col-lg-3 wow fadeInLeft" data-wow-delay=".1s">
                   <div className="counter-creative">
                     <div className="counter-creative-number"><span className="counter">2</span><span className="symbol">k</span><span className="icon counter-creative-icon fl-bigmug-line-up104"></span>
                     </div>
-                    <h6 className="counter-creative-title">Products</h6>
+                    <p className="counter-creative-title">Products</p>
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-5 col-lg-3 wow fadeInLeft" data-wow-delay=".2s">
                   <div className="counter-creative">
                     <div className="counter-creative-number"><span className="counter">679</span><span className="icon counter-creative-icon fl-bigmug-line-sun81"></span>
                     </div>
-                    <h6 className="counter-creative-title">Happy Clients</h6>
+                    <p className="counter-creative-title">Happy Clients</p>
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-5 col-lg-3 wow fadeInLeft" data-wow-delay=".3s">
                   <div className="counter-creative">
                     <div className="counter-creative-number"><span className="counter">40</span><span className="icon counter-creative-icon fl-bigmug-line-user143"></span>
                     </div>
-                    <h6 className="counter-creative-title">Farmers</h6>
+                    <p className="counter-creative-title">Farmers</p>
                   </div>
                 </div>
               </div>

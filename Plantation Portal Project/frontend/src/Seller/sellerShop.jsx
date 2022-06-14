@@ -3,20 +3,25 @@ import { Link } from "react-router-dom";
 import TopBar from "./TopBar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../userContext";
 
 function SellerShop(props) {
+  const user = useUser();
   let [updater, setUpdater] = useState(0);
   const navigate = useNavigate();
-  // let { data: homeStats } = useFetch(
-  //   "http://localhost:5000/seller/sellerHome"
-  // );
+
+  if (!user._id) {
+    navigate("/login");
+  }
+
+  const storeid = user._id;
 
   const [homeStats, setHomeStats] = useState({});
 
   const [shopProducts, setShopProducts] = useState([]);
   // const shopProducts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const data = {
-    id: "61d9354e52dbabae9bd60541",
+    id: storeid,
   };
   useEffect(() => {
     axios
@@ -34,10 +39,10 @@ function SellerShop(props) {
       .catch((error) => console.log(error));
 
     axios
-      .get("http://localhost:5000/seller/sellerHome")
+      .get(`http://localhost:5000/seller/sellerHome/${storeid}`)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Stats: ", response.data);
+          // console.log("Stats: ", response.data);
           setHomeStats(response.data);
         }
       })
@@ -60,10 +65,10 @@ function SellerShop(props) {
       .catch((error) => console.log(error));
 
     axios
-      .get("http://localhost:5000/seller/sellerHome")
+      .get(`http://localhost:5000/seller/sellerHome/${storeid}`)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Stats: ", response.data);
+          // console.log("Stats: ", response.data);
           setHomeStats(response.data);
         }
       })
@@ -222,6 +227,11 @@ function SellerShop(props) {
               );
             })}
           </div>
+
+            {
+              shopProducts.length === 0 ?
+              <h3>No product in Store</h3>: ""
+            }
         </div>
         <div className="oh button-wrap">
           <Link

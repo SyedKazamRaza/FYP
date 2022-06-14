@@ -1,24 +1,40 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import TopBar from "./TopBar";
 import useFetch from "../useFetch";
+import { useUser } from "../userContext";
+import { useNavigate } from "react-router-dom";
 
 // import "./seller.css"
 
 function SellerHome(props) {
-
   const [numberOfSales, setNumberOfSales] = useState(3);
+  const user = useUser();
+  const navigate = useNavigate();
+
+  if (!user._id) {
+    // alert("User is not login");
+    navigate("/register");
+  }
+
+  const storeid = user._id;
 
   const { data: homeStats } = useFetch(
-    "http://localhost:5000/seller/sellerHome"
+    `http://localhost:5000/seller/sellerHome/${storeid}`
   );
+
+  console.log("Seller home stats: ", homeStats);
 
   const {
     error,
     isPending,
     data: products,
-  } = useFetch("http://localhost:5000/seller/topProducts");
+  } = useFetch(`http://localhost:5000/seller/topProducts/${storeid}`);
 
-  const { data: orders } = useFetch("http://localhost:5000/seller/recentSales");
+  console.log("Seller home prods: ", products);
+
+  const { data: orders } = useFetch(
+    `http://localhost:5000/seller/recentSales/${storeid}`
+  );
 
   return (
     <section className="section">
@@ -74,43 +90,52 @@ function SellerHome(props) {
                 </ul>
               </div>
 
-              {orders.reverse().slice(0,numberOfSales).map((singleOrder) => {
-                return singleOrder.productsDetail.map((single) => {
-                  return single.sellerId === "61d9354e52dbabae9bd60541" ? (
-                    <div className="sales-details" key={singleOrder._id}>
-                      <ul className="details">
-                        <li>
-                          <div>{singleOrder.dateTime}</div>
-                        </li>
-                      </ul>
-                      <ul className="details">
-                        <li>
-                          <div>{singleOrder.userInfo[0].fname + " " + singleOrder.userInfo[0].lname}</div>
-                        </li>
-                      </ul>
-                      <ul className="details">
-                        <li>
-                          <div>{single.status}</div>
-                        </li>
-                      </ul>
-                      <ul className="details">
-                        <li>
-                          <div>Rs. {single.total}</div>
-                        </li>
-                      </ul>
-                    </div>
-                  ) : (
-                    ""
-                  );
-                });
-              })}
-
+              {orders
+                .reverse()
+                .slice(0, numberOfSales)
+                .map((singleOrder) => {
+                  return singleOrder.productsDetail.map((single) => {
+                    return single.sellerId === "61d9354e52dbabae9bd60541" ? (
+                      <div className="sales-details" key={singleOrder._id}>
+                        <ul className="details">
+                          <li>
+                            <div>{singleOrder.dateTime}</div>
+                          </li>
+                        </ul>
+                        <ul className="details">
+                          <li>
+                            <div>
+                              {singleOrder.userInfo[0].fname +
+                                " " +
+                                singleOrder.userInfo[0].lname}
+                            </div>
+                          </li>
+                        </ul>
+                        <ul className="details">
+                          <li>
+                            <div>{single.status}</div>
+                          </li>
+                        </ul>
+                        <ul className="details">
+                          <li>
+                            <div>Rs. {single.total}</div>
+                          </li>
+                        </ul>
+                      </div>
+                    ) : (
+                      ""
+                    );
+                  });
+                })}
 
               <div className="button-area ">
                 <div className="d-flex">
-                  <div className="button button-block button-all" onClick={()=>{
-                    setNumberOfSales(numberOfSales+3);
-                  }}>
+                  <div
+                    className="button button-block button-all"
+                    onClick={() => {
+                      setNumberOfSales(numberOfSales + 3);
+                    }}
+                  >
                     See More
                   </div>
                 </div>

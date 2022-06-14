@@ -60,9 +60,9 @@ const Products = () => {
                       </div>
                     </div>
                     <div className="unit-body">
-                      <h6 className="product-title">
+                      <p className="product-title">
                         <div>{allProducts[0].productName}</div>
-                      </h6>
+                      </p>
                       <div className="product-price-wrap">
                         <div className="product-price product-price-old">
                           Rs {allProducts[0].price + 200}
@@ -118,9 +118,9 @@ const Products = () => {
                           </div>
                         </div>
                         <div className="unit-body">
-                          <h6 className="product-title">
+                          <p className="product-title">
                             <div>{allProducts[1].productName}</div>
-                          </h6>
+                          </p>
                           <div className="product-price-wrap">
                             <div className="product-price product-price-old">
                               Rs {allProducts[1].price + 200}
@@ -177,9 +177,9 @@ const Products = () => {
                           </div>
                         </div>
                         <div className="unit-body">
-                          <h6 className="product-title">
+                          <p style={{fontWeight: "bold"}} className="product-title">
                             <div>{allProducts[2].productName}</div>
-                          </h6>
+                          </p>
                           <div className="product-price-wrap">
                             <div className="product-price">
                               Rs {allProducts[2].price} /-
@@ -231,9 +231,9 @@ const Products = () => {
                           </div>
                         </div>
                         <div className="unit-body">
-                          <h6 className="product-title">
+                          <p className="product-title">
                             <div>{allProducts[3].productName}</div>
-                          </h6>
+                          </p>
                           <div className="product-price-wrap">
                             <div className="product-price">
                               Rs {allProducts[3].price} /-
@@ -280,9 +280,9 @@ const Products = () => {
                           </div>
                         </div>
                         <div className="unit-body">
-                          <h6 className="product-title">
+                          <p className="product-title">
                             <div>{allProducts[6].productName}</div>
-                          </h6>
+                          </p>
                           <div className="product-price-wrap">
                             <div className="product-price">
                               Rs {allProducts[6].price} /-

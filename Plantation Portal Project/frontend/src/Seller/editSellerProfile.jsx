@@ -2,31 +2,56 @@ import React, { useState, useEffect } from "react";
 import TopBar from "./TopBar";
 import validator from "validator";
 import axios from "axios";
-import { useUser } from "../Customer/userContext";
+import { useUser } from "../userContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EditSellerProfile(props) {
   const user = useUser();
+  const navigate = useNavigate();
+
+  if (!user._id) {
+    navigate("/login");
+  }
+
+  const storeid = user._id;
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
 
-  const sellerId = "61d9354e52dbabae9bd60541";
+  const [error, setError] = useState("");
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/seller/getStore/" + sellerId)
+      .get(`http://localhost:5000/seller/getStore/${storeid}`)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Seller profile........");
-          console.log(response.data);
+          // console.log("Seller profile........");
+          // console.log(response.data);
           setName(response.data.storeName);
           setPassword(response.data.password);
           setEmail(response.data.username);
+          setPhoneNo(response.data.phno);
         }
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const notifySuccess = (info) => {
+    toast.success(`${info}`, {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      background: "#34A853",
+    });
+  };
 
   const handleSubmit = (e) => {
     console.log("called");
@@ -36,6 +61,9 @@ function EditSellerProfile(props) {
       return;
     } else if (validator.isEmpty(password)) {
       setError("Password is required.");
+      return;
+    } else if (validator.isEmpty(phoneNo)) {
+      setError("Phone Number is required.");
       return;
     } else if (validator.isEmpty(name)) {
       setError("Store Name is required.");
@@ -47,11 +75,25 @@ function EditSellerProfile(props) {
     }
     setError("");
     const storeData = {
-      name,
-      email,
-      password,
+      id: storeid,
+      name: name,
+      email: email,
+      password: password,
+      phoneNo: phoneNo,
     };
-    console.log("I am user at editing: ");
+    axios
+      .post("http://localhost:5000/seller/updateStore", storeData)
+      .then((response) => {
+        if (response.status === 200) {
+          if (response.data === "updated") {
+            notifySuccess("Profile updated.");
+            navigate("/seller/sellerprofile");
+          } else if (response.data === "Email already exists") {
+            setError("Email already Exists.");
+          }
+        }
+      });
+
     console.log(user);
     return;
   };
@@ -131,10 +173,31 @@ function EditSellerProfile(props) {
                   type="text"
                   name="lclassName"
                   style={{ width: "35%" }}
-                  placeholder="E-mail"
+                  placeholder="Password"
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
+                  }}
+                />
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <input
+                  className="form-input"
+                  id="contact-your-className-2"
+                  type="text"
+                  name="lclassName"
+                  style={{ width: "35%" }}
+                  placeholder="Phone Number"
+                  value={phoneNo}
+                  onChange={(e) => {
+                    setPhoneNo(e.target.value);
                   }}
                 />
               </div>

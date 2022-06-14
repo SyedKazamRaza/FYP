@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./shipping.css";
 import { useCart } from "../CartContext";
 import { useCartUpdate } from "../CartContext";
-import { useUser } from "../userContext";
+import { useUser } from "../../userContext";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

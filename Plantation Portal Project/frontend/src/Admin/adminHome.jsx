@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 function AdminHome(props) {
-  return (
-    <div>
-      <h1>I am Admin Home</h1>
-    </div>
-  );
+    return (
+        <div>
+            
+        </div>
+    );
 }
 
 export default AdminHome;

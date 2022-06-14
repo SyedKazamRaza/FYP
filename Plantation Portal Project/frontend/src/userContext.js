@@ -29,6 +29,8 @@ export function UserProvider({ children }) {
   const navigate = useNavigate();
 
   const setLoginUser = (user) => {
+    console.log("I am maain useCOntext");
+
     setUser(user);
     console.log("I am seeting store: ", user);
     ReactSession.set("user", user);
@@ -42,7 +44,7 @@ export function UserProvider({ children }) {
     localStorage.clear();
     console.log("Log Out from context");
     console.log(user);
-    navigate("/");
+    navigate("/shop");
   };
 
   const changeNavBold = (ID) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import {  useNavigate } from "react-router-dom";
-import { useNavbarUpdate } from "../userContext";
+import { useNavbarUpdate } from "../../userContext";
 
 
 const Swiper = () => {

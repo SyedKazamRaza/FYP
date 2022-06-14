@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useNavbarUpdate } from "./userContext";
+import { useNavbarUpdate } from "../userContext";
 
 const AboutUs = () => {
   const navigate = useNavigate();

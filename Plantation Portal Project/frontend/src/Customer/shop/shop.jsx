@@ -5,7 +5,6 @@ import axios from "axios";
 // import Footer from "../footer";
 // import Header from "../homeNavbar/homeNavbar";
 import { useCartUpdate } from "../CartContext";
-// import { useUser } from "../userContext";
 
 
 function Shop(props) {

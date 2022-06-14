@@ -3,7 +3,6 @@ import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import useFetch from "../useFetch";
 import { useState, useEffect } from "react";
 // import { useCartUpdate } from "./CartContext";
-// import {useUser} from "./userContext";
 
 import { useCartUpdate } from "./CartContext";
 

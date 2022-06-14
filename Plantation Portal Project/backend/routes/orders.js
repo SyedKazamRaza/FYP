@@ -2,40 +2,37 @@ const router = require("express").Router();
 const _ = require("lodash");
 const { Order } = require("../models/orders.model");
 
-
-router.route('/').get((req, res) => {
+router.route("/").get((req, res) => {
   Order.aggregate(
-    [{
-      $lookup: {
-        from: "users", // collection to join - Should have same name as collection mongoDB
-        localField: "userId", //field from the input documents
-        foreignField: "_id", //field from the documents of the "from" collection
-        as: "userInfo", // output array field
+    [
+      {
+        $lookup: {
+          from: "users", // collection to join - Should have same name as collection mongoDB
+          localField: "userId", //field from the input documents
+          foreignField: "_id", //field from the documents of the "from" collection
+          as: "userInfo", // output array field
+        },
       },
-    },
-    {
-      "$project": {                       //field we don't want to include in result
-        "userInfo.password": 0,
-      }
-    }
-  ],
+      {
+        $project: {
+          //field we don't want to include in result
+          "userInfo.password": 0,
+        },
+      },
+    ],
     function (error, data) {
-      if(error){
+      if (error) {
         console.log("Error received");
         res.json([]);
       }
       console.log(data);
       res.json(data);
     }
-
-  )
+  );
   // Order.find()
   //   .then(Order => res.json(Order))
   //   .catch(err => res.status(400).json('Error: ' + err));
 });
-
-
-
 
 const month = [
   "Jan",
@@ -99,6 +96,18 @@ router.post("/newOrder", async (req, res) => {
   }
 });
 
+router.get("/getCustomerOrders/:id", async (req, res) => {
+  try {
+    const custId = req.params.id;
 
+    const customerOrders = await Order.find({
+      userId: custId,
+    });
+
+    res.status(200).json(customerOrders);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 module.exports.orderRouter = router;

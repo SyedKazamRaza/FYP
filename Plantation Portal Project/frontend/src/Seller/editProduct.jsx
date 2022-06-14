@@ -6,9 +6,17 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
+import { useUser } from "../userContext";
 
 function EditProduct(props) {
+  const user = useUser();
   const navigate = useNavigate();
+  if (!user._id) {
+    navigate("/login");
+  }
+
+  const storeid = user._id;
+
   let location = useLocation();
   const product = location.state.product;
   const [name, setName] = useState(product.productName);
@@ -221,7 +229,7 @@ function EditProduct(props) {
           if (response.status === 200) {
             console.log(response.data);
             EmptyFields();
-            notifySuccess("Product Successfully Updated.");
+            // notifySuccess("Product Successfully Updated.");
             navigate("/seller/sellershop");
           } else {
             alert("Product not edited..");

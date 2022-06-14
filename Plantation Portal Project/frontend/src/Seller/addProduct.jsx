@@ -5,9 +5,17 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUser } from "../userContext";
 
 function AddProduct(props) {
+  const user = useUser();
   const navigate = useNavigate();
+  if (!user._id) {
+    navigate("/login");
+  }
+
+  const storeid = user._id;
+
   const [name, setName] = useState("");
   const [price, setprice] = useState("");
   const [details, setDetails] = useState("");
@@ -161,7 +169,7 @@ function AddProduct(props) {
           console.log(product);
 
           axios
-            .post("http://localhost:5000/products/addNewProduct", product)
+            .post(`http://localhost:5000/products/addNewProduct/${storeid}`, product)
             .then((response) => {
               if (response.status === 200) {
                 EmptyFields();

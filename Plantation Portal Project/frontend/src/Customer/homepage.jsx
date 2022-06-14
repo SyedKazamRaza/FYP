@@ -9,9 +9,7 @@ import AboutUs from "./AboutUs";
 function Homepage(props) {
   return (
     <div>
-      {/* <userContext.Provider value={ReactSession.get('user')}> */}
-      {/* <Header/>    */}
-      {/* </userContext.Provider> */}
+  
       {props.category === "login" ? (
         <Authentication setLoginUser={props.setLoginUser} form="login" />
       ) : props.category === "register" ? (

@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { useUserUpdate } from "./userContext";
+import { useUserUpdate } from "../userContext";
 import validator from "validator";
 import useFetch from "./useFetch";
 

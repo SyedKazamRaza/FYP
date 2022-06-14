@@ -1,9 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TopBar from "./TopBar";
+import { useUser } from "../userContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SellerProfile(props) {
+  const user = useUser();
+  const navigate = useNavigate();
+  if (!user._id) {
+    navigate("/login");
+  }
+  const storeid = user._id;
+  const [storeName, setStoreName] = useState("");
+  const [storeEmail, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/seller/getStore/${storeid}`)
+      .then((response) => {
+        if (response.status === 200) {
+          // console.log("I am store profile");
+          // console.log(response.data);
+          setStoreName(response.data.storeName);
+          setEmail(response.data.username);
+          setPhone(response.data.phno);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
   return (
     <div>
       <section className="home-section">
@@ -43,30 +69,40 @@ function SellerProfile(props) {
         </div>
 
         <div className="order-container">
-          <h2>Gardening Miracle</h2>
           <div className="row row-30 justify-content-center">
             <div className="col xl-4">
               <article className="box-contacts">
                 <div className="box-contacts-body">
                   <img src="images/icon.jpeg" alt="" width="70" height="100" />
-                  <h6>Your Details</h6>
+                  <h6>Store Name</h6>
                   <span>
-                    <Link to="">
+                    <Link to="/seller/editProfile">
                       <i className="bx bx-edit"></i>
                     </Link>
                   </span>
                   <div className="box-contacts-decor"></div>
                   <p className="box-contacts-link">
                     <i className="bx bx-user"></i>
-                    <span className="links_name">Seller Name</span>
+                    <span className="links_name">{storeName}</span>
                   </p>
-                  <p className="box-contacts-link">
-                    <i className="bx bx-phone"></i>
-                    <span className="links_name">0303-8920413</span>
-                  </p>
+                </div>
+              </article>
+            </div>
+            <div className="col xl-4">
+              <article className="box-contacts">
+                <div className="box-contacts-body">
+                  <img src="images/icon.jpeg" alt="" width="70" height="100" />
+                  <h6>Email Address</h6>
+                  <span>
+                    <Link to="/seller/editProfile">
+                      <i className="bx bx-edit"></i>
+                    </Link>
+                  </span>
+                  <div className="box-contacts-decor"></div>
+
                   <p className="box-contacts-link">
                     <i className="bx bx-envelope"></i>
-                    <span className="links_name">Marry@gmail.com</span>
+                    <span className="links_name">{storeEmail}</span>
                   </p>
                 </div>
               </article>
@@ -75,50 +111,17 @@ function SellerProfile(props) {
               <article className="box-contacts">
                 <div className="box-contacts-body">
                   <img src="images/icon.jpeg" alt="" width="70" height="100" />
-                  <h6>Your Account Details</h6>
+                  <h6>Mobile Number</h6>
                   <span>
-                    <Link to="">
+                    <Link to="/seller/editProfile">
                       <i className="bx bx-edit"></i>
                     </Link>
                   </span>
                   <div className="box-contacts-decor"></div>
+
                   <p className="box-contacts-link">
-                    <i className="bx bx-user"></i>
-                    <span className="links_name">Seller Name</span>
-                  </p>
-                  <p className="box-contacts-link">
-                    <i className="bx bxs-bank"></i>
-                    <span className="links_name">Allied Bank</span>
-                  </p>
-                  <p className="box-contacts-link">
-                    <i className="bx bx-right-arrow-alt"></i>
-                    <span className="links_name">1234-5678-9101-1121</span>
-                  </p>
-                </div>
-              </article>
-            </div>
-            <div className="col xl-4">
-              <article className="box-contacts">
-                <div className="box-contacts-body">
-                  <img src="images/icon.jpeg" alt="" width="70" height="100" />
-                  <h6>Shop Details</h6>
-                  <span>
-                    <Link to="">
-                      <i className="bx bx-edit"></i>
-                    </Link>
-                  </span>
-                  <div className="box-contacts-decor"></div>
-                  <p className="box-contacts-link">
-                    <i className="bx bxs-store-alt"></i>
-                    <span className="links_name">Gardening Miracle</span>
-                  </p>
-                  <p className="box-contacts-link">
-                    <i className="bx bx-category"></i>
-                    <span className="links_name">Plants and Tools</span>
-                  </p>
-                  <p className="box-contacts-link">
-                    <i className="bx bx-store"></i>
-                    <span className="links_name">86</span>
+                    <i className="bx bx-phone"></i>
+                    <span className="links_name">+{phone}</span>
                   </p>
                 </div>
               </article>
@@ -132,7 +135,6 @@ function SellerProfile(props) {
             data-caption-animate="slideInUp"
             data-caption-delay="400"
             to="/seller/editProfile"
-            // to="/seller/addProduct"
           >
             Update Profile
           </Link>

@@ -3,9 +3,16 @@ import TopBar from "./TopBar";
 import useFetch from "../useFetch";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../userContext";
 
 function SellerOrders(props) {
+  const user = useUser();
   const navigate = useNavigate();
+  if (!user._id) {
+    navigate("/login");
+  }
+
+  const storeid = user._id;
   // const { data: shopOrderProducts } = useFetch(
   //   "http://localhost:5000/seller/sellerOrders"
   // );
@@ -20,7 +27,7 @@ function SellerOrders(props) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/seller/sellerOrders")
+      .get(`http://localhost:5000/seller/sellerOrders/${storeid}`)
       .then((response) => {
         if (response.data.length > 0) {
           setShopOrderProducts(
@@ -33,7 +40,7 @@ function SellerOrders(props) {
       .catch((err) => console.log(err));
 
     axios
-      .get("http://localhost:5000/seller/sellerOrdersStats")
+      .get(`http://localhost:5000/seller/sellerOrdersStats/${storeid}`)
       .then((response) => {
         if (response.status === 200) {
           setShopOrderStats(response.data);
@@ -44,7 +51,7 @@ function SellerOrders(props) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/seller/sellerOrders")
+      .get(`http://localhost:5000/seller/sellerOrders/${storeid}`)
       .then((response) => {
         if (response.data.length > 0) {
           setShopOrderProducts(
@@ -57,7 +64,7 @@ function SellerOrders(props) {
       .catch((err) => console.log(err));
 
     axios
-      .get("http://localhost:5000/seller/sellerOrdersStats")
+      .get(`http://localhost:5000/seller/sellerOrdersStats/${storeid}`)
       .then((response) => {
         if (response.status === 200) {
           setShopOrderStats(response.data);
@@ -223,8 +230,7 @@ function SellerOrders(props) {
                           {shopOrderProducts.map((singleOrder, index1) => {
                             return singleOrder.productsDetail.map(
                               (single, index2) => {
-                                return single.sellerId ===
-                                  "61d9354e52dbabae9bd60541" &&
+                                return single.sellerId === storeid &&
                                   single.status === "active" ? (
                                   <tr
                                     key={singleOrder._id + getactiveCounter()}
@@ -248,7 +254,10 @@ function SellerOrders(props) {
                                         className="btn btn-success"
                                         onClick={() => {
                                           navigate("/seller/singleOrder", {
-                                            state: { product: singleOrder,status: single.status, },
+                                            state: {
+                                              product: singleOrder,
+                                              status: single.status,
+                                            },
                                           });
                                         }}
                                       >
@@ -284,7 +293,6 @@ function SellerOrders(props) {
                                       </button>
                                     </td>
                                   </tr>
-                                  
                                 ) : (
                                   <tr key={getKey()}></tr>
                                 );
@@ -311,8 +319,7 @@ function SellerOrders(props) {
 
                           {shopOrderProducts.map((singleOrder) => {
                             return singleOrder.productsDetail.map((single) => {
-                              return single.sellerId ===
-                                "61d9354e52dbabae9bd60541" &&
+                              return single.sellerId === storeid &&
                                 single.status === "delivered" ? (
                                 <tr
                                   key={singleOrder._id + getCompleteCounter()}
@@ -334,7 +341,10 @@ function SellerOrders(props) {
                                       className="btn btn-success"
                                       onClick={() => {
                                         navigate("/seller/singleOrder", {
-                                          state: { product: singleOrder, status: single.status, },
+                                          state: {
+                                            product: singleOrder,
+                                            status: single.status,
+                                          },
                                         });
                                       }}
                                     >
@@ -367,8 +377,7 @@ function SellerOrders(props) {
 
                           {shopOrderProducts.map((singleOrder) => {
                             return singleOrder.productsDetail.map((single) => {
-                              return single.sellerId ===
-                                "61d9354e52dbabae9bd60541" &&
+                              return single.sellerId === storeid &&
                                 single.status === "canceled" ? (
                                 <tr key={singleOrder._id + getCancelCounter()}>
                                   <td>{incrementCancel()}</td>
@@ -404,11 +413,6 @@ function SellerOrders(props) {
                               );
                             });
                           })}
-
-
-
-
-
                         </tbody>
                       </table>
                     </div>

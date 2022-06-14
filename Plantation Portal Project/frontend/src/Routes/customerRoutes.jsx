@@ -19,12 +19,12 @@ import UpdateProfile from "../Customer/updateProfile";
 import ShowCustomerOrders from "../Customer/showCustomerOrders";
 
 import { CartProvider } from "../Customer/CartContext";
-import { UserProvider } from "../Customer/userContext";
+// import { UserProvider } from "../userContext";
 
 function CustomerRoutes(props) {
   return (
     <CartProvider>
-      <UserProvider>
+      {/* <UserProvider> */}
         <Header />
         <Routes>
           {/* <Route path="/login" exact element={<SampleLogin />} /> */}
@@ -78,7 +78,7 @@ function CustomerRoutes(props) {
           />
         </Routes>
         <Footer />
-      </UserProvider>
+      {/* </UserProvider> */}
     </CartProvider>
   );
 }

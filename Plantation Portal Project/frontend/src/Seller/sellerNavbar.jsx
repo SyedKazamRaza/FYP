@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // import "./seller.css";
+import { useUserUpdate } from "../userContext";
 
 function SellerNavbar(props) {
   const [activeNav, setActiveNav] = useState("home");
+  const { logOut } = useUserUpdate();
 
   useEffect(() => {
     document.getElementById("home").classList.add("active");
@@ -110,7 +112,12 @@ function SellerNavbar(props) {
             </li> */}
 
         <li className="log_out">
-          <Link to="/sellerLogout">
+          <Link
+            to="/shop"
+            onClick={() => {
+              logOut();
+            }}
+          >
             <i className="bx bx-log-out"></i>
             <span className="links_name">Log out</span>
           </Link>

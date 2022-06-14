@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom"; //Link is used instead of 
 import "./sidebar.css";
 // import { userContext } from "../userContext";
 import { useCart } from "../CartContext";
-import { useUser } from "../userContext";
-import { useUserUpdate, useNavbarUpdate, useNavbar } from "../userContext";
+import { useUser } from "../../userContext";
+import { useUserUpdate, useNavbarUpdate, useNavbar } from "../../userContext";
 
 const Header = (props) => {
   const [cartClick, setCartClick] = useState(false);
@@ -13,7 +13,7 @@ const Header = (props) => {
   const navbarBold = useNavbar();
   const { changeNavBold } = useNavbarUpdate();
 
-  const {cartProducts, cartServices} = useCart();
+  const { cartProducts, cartServices } = useCart();
   const user = useUser();
   const { logOut } = useUserUpdate();
 
@@ -266,7 +266,7 @@ const Header = (props) => {
                         >
                           <Link
                             className="rd-nav-link"
-                            to="/"
+                            to="/shop"
                             onClick={() => {
                               logOut();
                             }}
@@ -331,7 +331,10 @@ const Header = (props) => {
                                       <span className="icon fa fa-user"></span>
                                     </div>
                                     <div className="unit-body">
-                                      <Link className="link" to="/updateprofile">
+                                      <Link
+                                        className="link"
+                                        to="/updateprofile"
+                                      >
                                         Manage Profile
                                       </Link>
                                     </div>
@@ -343,7 +346,10 @@ const Header = (props) => {
                                       <span className="icon fa fa-comment"></span>
                                     </div>
                                     <div className="unit-body">
-                                      <Link className="link-press" to="/chatpanel">
+                                      <Link
+                                        className="link-press"
+                                        to="/chatpanel"
+                                      >
                                         Chat
                                       </Link>
                                     </div>
@@ -355,7 +361,10 @@ const Header = (props) => {
                                       <span className="icon fa fa-shopping-basket"></span>
                                     </div>
                                     <div className="unit-body">
-                                      <Link className="link-press" to="/showOrders">
+                                      <Link
+                                        className="link-press"
+                                        to="/showOrders"
+                                      >
                                         Orders
                                       </Link>
                                     </div>
@@ -367,9 +376,13 @@ const Header = (props) => {
                                       <span className="icon fa fa-sign-out"></span>
                                     </div>
                                     <div className="unit-body">
-                                      <Link className="link-press" to="/" onClick={()=>{
-                                         logOut();
-                                      }}>
+                                      <Link
+                                        className="link-press"
+                                        to="/"
+                                        onClick={() => {
+                                          logOut();
+                                        }}
+                                      >
                                         Logout
                                       </Link>
                                     </div>

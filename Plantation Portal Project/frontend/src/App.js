@@ -6,19 +6,22 @@ import SellerRoutes from "./Routes/sellerRoutes";
 import ShowChat from "./Customer/showChat/ShowChat";
 // import SampleLogin from "./Customer/sampleLogin";
 import { ReactSession } from "react-client-session";
+import { UserProvider } from "./userContext";
 
 function App(props) {
   ReactSession.setStoreType("localStorage");
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route exact path="/seller/*" element={<SellerRoutes />} />
-        {/* <Route path="/chatpanel" exact element={<ShowChat />} /> */}
-        <Route exact path="/*" element={<CustomerRoutes />} />
-        <Route exact path="/admin/*" element={<AdminRoutes />} />
-      </Routes>
-    </BrowserRouter>
+    <UserProvider>
+        <Routes>
+          <Route exact path="/seller/*" element={<SellerRoutes />} />
+          {/* <Route path="/chatpanel" exact element={<ShowChat />} /> */}
+          <Route exact path="/*" element={<CustomerRoutes />} />
+          <Route exact path="/admin/*" element={<AdminRoutes />} />
+        </Routes>
+    </UserProvider>
+      </BrowserRouter>
   );
 }
 

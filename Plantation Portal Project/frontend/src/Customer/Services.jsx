@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useNavbarUpdate } from "./userContext";
+import { useNavbarUpdate } from "../userContext";
 
 const Services = () => {
   const navigate = useNavigate();

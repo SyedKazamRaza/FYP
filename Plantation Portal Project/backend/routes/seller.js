@@ -4,11 +4,6 @@ const { Products } = require("../models/productsModel");
 const { Category } = require("../models/categoryModel");
 const Store = require("../models/storeModel");
 
-// function getTotalOrdersOfSeller(sellerId) {
-//     Order.find({
-//         productsDetail.sellerId :value})
-// }
-
 async function getTotalOrders(sellerID) {
   try {
     let totalOrder = 0;
@@ -80,26 +75,21 @@ async function getTotalEarning(sellerID) {
   }
 }
 
-router.get("/sellerHome", async (req, res) => {
+router.get("/sellerHome/:id", async (req, res) => {
   try {
-    console.log("Heeellllllllo i am session");
-    console.log(req.session);
-    console.log(req.session.storeid);
-    // session = req.session;
-    console.log(req.session.storeName);
-    console.log(req.session["storeName"]);
+    const storeid = req.params.id;
+    console.log("called");
+    console.log(storeid);
 
-    const totalOrders = await getTotalOrders("61d9354e52dbabae9bd60541");
-    const numberOfProducts = await getTotalProducts("61d9354e52dbabae9bd60541");
+    const totalOrders = await getTotalOrders(storeid);
+    const numberOfProducts = await getTotalProducts(storeid);
 
-    const numberOfClients = await getTotalClients(
-      "61d9354e52dbabae9bd60541"
-    ).then((result) => {
+    const numberOfClients = await getTotalClients(storeid).then((result) => {
       const unique = [...new Set(result.map((item) => item.userId.toString()))];
       return unique.length;
     });
 
-    const totalEarning = await getTotalEarning("61d9354e52dbabae9bd60541");
+    const totalEarning = await getTotalEarning(storeid);
     const dataToSend = {
       totalOrders,
       numberOfProducts,
@@ -112,8 +102,10 @@ router.get("/sellerHome", async (req, res) => {
   }
 });
 
-router.get("/sellerOrders", async (req, res) => {
+router.get("/sellerOrders/:id", async (req, res) => {
   try {
+    const storeid = req.params.id;
+
     const orders = Order.aggregate([
       {
         $lookup: {
@@ -131,7 +123,7 @@ router.get("/sellerOrders", async (req, res) => {
       {
         $match: {
           productsDetail: {
-            $elemMatch: { sellerId: "61d9354e52dbabae9bd60541" },
+            $elemMatch: { sellerId: storeid },
           },
         },
       },
@@ -188,22 +180,18 @@ function calculateCancelledOrders(orderProducts, sellerID) {
   return cancelOrder;
 }
 
-router.get("/sellerOrdersStats", async (req, res) => {
+router.get("/sellerOrdersStats/:id", async (req, res) => {
   try {
+    const storeid = req.params.id;
+
     const orders = await Order.find({
-      productsDetail: { $elemMatch: { sellerId: "61d9354e52dbabae9bd60541" } },
+      productsDetail: { $elemMatch: { sellerId: storeid } },
     }).then((result) => {
-      const numberOfActiveOrders = calculateActiveOrders(
-        result,
-        "61d9354e52dbabae9bd60541"
-      );
-      const numberOfDeliverOrders = calculateDeliveredOrders(
-        result,
-        "61d9354e52dbabae9bd60541"
-      );
+      const numberOfActiveOrders = calculateActiveOrders(result, storeid);
+      const numberOfDeliverOrders = calculateDeliveredOrders(result, storeid);
       const numberOfCancelledrOrders = calculateCancelledOrders(
         result,
-        "61d9354e52dbabae9bd60541"
+        storeid
       );
 
       const dataToSend = {
@@ -238,10 +226,12 @@ router.post("/changeOrderStatus", async (req, res) => {
   }
 });
 
-router.get("/topProducts", async (req, res) => {
+router.get("/topProducts/:id", async (req, res) => {
   try {
+    const storeid = req.params.id;
+
     const prod = await Products.find({
-      storeId: "61d9354e52dbabae9bd60541",
+      storeId: storeid,
     }).sort({
       price: -1,
     });
@@ -252,39 +242,45 @@ router.get("/topProducts", async (req, res) => {
   }
 });
 
-router.route("/recentSales").get((req, res) => {
-  Order.aggregate(
-    [
-      {
-        $lookup: {
-          from: "users", // collection to join - Should have same name as collection mongoDB
-          localField: "userId", //field from the input documents
-          foreignField: "_id", //field from the documents of the "from" collection
-          as: "userInfo", // output array field
-        },
-      },
-      {
-        $project: {
-          //field we don't want to include in result
-          "userInfo.password": 0,
-        },
-      },
-      {
-        $match: {
-          productsDetail: {
-            $elemMatch: { sellerId: "61d9354e52dbabae9bd60541" },
+router.route("/recentSales/:id").get((req, res) => {
+  try {
+    const storeid = req.params.id;
+
+    Order.aggregate(
+      [
+        {
+          $lookup: {
+            from: "users", // collection to join - Should have same name as collection mongoDB
+            localField: "userId", //field from the input documents
+            foreignField: "_id", //field from the documents of the "from" collection
+            as: "userInfo", // output array field
           },
         },
-      },
-    ],
-    function (error, data) {
-      if (error) {
-        console.log("Error received");
-        res.json([]);
+        {
+          $project: {
+            //field we don't want to include in result
+            "userInfo.password": 0,
+          },
+        },
+        {
+          $match: {
+            productsDetail: {
+              $elemMatch: { sellerId: storeid },
+            },
+          },
+        },
+      ],
+      function (error, data) {
+        if (error) {
+          console.log("Error received");
+          res.json([]);
+        }
+        res.json(data);
       }
-      res.json(data);
-    }
-  );
+    );
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 function calculatePendingEarning(orderProducts, sellerID) {
@@ -329,23 +325,16 @@ function calculateCanceledEarning(orderProducts, sellerID) {
   return cancelEarning;
 }
 
-router.get("/storeEarningStats", async (req, res) => {
+router.get("/storeEarningStats/:id", async (req, res) => {
   try {
+    const storeid = req.params.id;
+
     const orders = await Order.find({
-      productsDetail: { $elemMatch: { sellerId: "61d9354e52dbabae9bd60541" } },
+      productsDetail: { $elemMatch: { sellerId: storeid } },
     }).then((result) => {
-      const pending = calculatePendingEarning(
-        result,
-        "61d9354e52dbabae9bd60541"
-      );
-      const withdrawn = calculateWithdrawnEarning(
-        result,
-        "61d9354e52dbabae9bd60541"
-      );
-      const cancel = calculateCanceledEarning(
-        result,
-        "61d9354e52dbabae9bd60541"
-      );
+      const pending = calculatePendingEarning(result, storeid);
+      const withdrawn = calculateWithdrawnEarning(result, storeid);
+      const cancel = calculateCanceledEarning(result, storeid);
 
       const dataToSend = {
         pending,
@@ -359,8 +348,9 @@ router.get("/storeEarningStats", async (req, res) => {
   }
 });
 
-router.get("/getStoreTransactions", async (req, res) => {
+router.get("/getStoreTransactions/:id", async (req, res) => {
   try {
+    const storeid = req.params.id;
     const orders = Order.aggregate([
       {
         $lookup: {
@@ -379,7 +369,7 @@ router.get("/getStoreTransactions", async (req, res) => {
         $match: {
           productsDetail: {
             $elemMatch: {
-              sellerId: "61d9354e52dbabae9bd60541",
+              sellerId: storeid,
             },
           },
         },
@@ -409,23 +399,22 @@ router.get("/getStore/:id", async (req, res) => {
 router.post("/updateStore", async (req, res) => {
   const storeId = req.body.id;
   const us_name = req.body.email;
-  const stName = req.body.storeName;
+  const stName = req.body.name;
   const pwd = req.body.password;
+  const phone = req.body.phoneNo;
 
   const exist = await Store.find({ username: us_name });
-  // console.log(exist);
-  // console.log(exist.length);
-  // console.log(exist[0]._id.toString());
-  // console.log(storeId);
+  
   if (exist.length > 0) {
     if (exist[0]._id.toString() == storeId) {
       console.log("Email exist & same store");
       const storeData = {
         storeName: stName,
         password: pwd,
+        phno: phone
       };
 
-      console.log("Store data is: ", storeData);
+      // console.log("Store data is: ", storeData);
       const update = await Store.updateOne(
         { _id: storeId },
         {
@@ -434,8 +423,7 @@ router.post("/updateStore", async (req, res) => {
       );
       res.status(200).send("updated");
     } else {
-      console.log("Email exist & different store");
-
+      // console.log("Email exist & different store");
       res.status(200).send("Email already exists");
     }
   } else {
@@ -445,6 +433,7 @@ router.post("/updateStore", async (req, res) => {
       storeName: stName,
       username: us_name,
       password: pwd,
+      phno: phone
     };
 
     const update = await Store.updateOne(
@@ -456,5 +445,6 @@ router.post("/updateStore", async (req, res) => {
     res.status(200).send("updated");
   }
 });
+
 
 module.exports = router;

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useCartUpdate } from "../CartContext";
-import { useUser } from "../userContext";
-import { useNavbarUpdate } from "../userContext";
+import { useUser } from "../../userContext";
+import { useNavbarUpdate } from "../../userContext";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 function ShowCart(props) {

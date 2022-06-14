@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Chatpanel from "../chatpanel/chatpanel";
-import { useUser } from "../userContext";
+import { useUser } from "../../userContext";
 
 function ShowChat(props) {
   const user = useUser();

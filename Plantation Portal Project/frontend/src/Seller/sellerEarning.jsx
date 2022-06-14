@@ -1,16 +1,26 @@
 import React from "react";
 import TopBar from "./TopBar";
 import useFetch from "../useFetch";
+import { useUser } from "../userContext";
+import { useNavigate } from "react-router-dom";
 
 function SellerEarning(props) {
+  const user = useUser();
+  const navigate = useNavigate();
+  if (!user._id) {
+    navigate("/login");
+  }
+
+  const storeid = user._id;
+
   const {
     data: storeEarningStats,
     error,
     isPending,
-  } = useFetch("http://localhost:5000/seller/storeEarningStats");
+  } = useFetch(`http://localhost:5000/seller/storeEarningStats/${storeid}`);
 
   const { data: storeTransactions } = useFetch(
-    "http://localhost:5000/seller/getStoreTransactions"
+    `http://localhost:5000/seller/getStoreTransactions/${storeid}`
   );
 
   let counter = 0;
@@ -82,17 +92,16 @@ function SellerEarning(props) {
 
                 {storeTransactions.map((singleOrder) => {
                   return singleOrder.productsDetail.map((single) => {
-                    return single.sellerId === "61d9354e52dbabae9bd60541" &&
+                    return single.sellerId === storeid &&
                       single.status === "delivered" ? (
                       <tr key={getCounter()}>
                         <td>{increment()}</td>
                         <td>
-                          {singleOrder.userInfo[0].fname + " "+
+                          {singleOrder.userInfo[0].fname +
+                            " " +
                             singleOrder.userInfo[0].lname}
                         </td>
-                        <td>
-                            {singleOrder.dateTime}
-                        </td>
+                        <td>{singleOrder.dateTime}</td>
                         <td>{single.total}</td>
                         <td>Cash on delivery</td>
                       </tr>
