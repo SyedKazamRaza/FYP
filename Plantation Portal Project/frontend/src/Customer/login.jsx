@@ -34,8 +34,8 @@ function Login() {
     e.preventDefault();
 
     if(!validator.isEmpty(email) && !validator.isEmpty(password)){
-     
       const user = { email, password };
+      console.log("login user: ", user);
       axios
         .post("http://localhost:5000/login", user)
         .then((res) => {

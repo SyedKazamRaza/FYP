@@ -7,6 +7,25 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/:id').delete((req, res) => {
+  Store.findByIdAndDelete(req.params.id)
+  .then(() => {
+    console.log('Service deleted.')
+    res.status(200).json('Service deleted.');
+  })
+  .catch(err => res.status(400).json('Error: ' + err));
+  }
+ 
+);
+
+router.route('/update/:id').post(async (req, res) => {
+
+  Store.findByIdAndUpdate(req.params.id, {$set: {status : "approved"}})
+  .then(() => {res.json('Store Created')
+    console.log("res")})
+  .catch(err => res.status(400).json('Error: ' + err));
+});
+
 
 // router.route("/login").post((req, res) => {
 //   const username = req.body.email;

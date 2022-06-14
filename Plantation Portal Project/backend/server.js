@@ -56,20 +56,30 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.post("/login", (req, res) => {
+  console.log("login called");
   const email = req.body.email;
   const password = req.body.password;
 
   User.findOne({ email: email }, (err, user) => {
     if (user) {
-      if (password === user.password) {
+      console.log("I am inside");
+      console.log(user);
+      console.log(password);
+      if (user.password == password) {
         session = req.session;
         session.userid = req.body.email;
         console.log(req.session);
+        console.log("Success");
+
         res.status(200).json({ message: "login sucess", user: user });
       } else {
+        console.log("failure");
+
         res.status(201).json({ message: "wrong credentials", user: user });
       }
     } else {
+      console.log("here");
+
       res.status(201).json("not register");
     }
   });

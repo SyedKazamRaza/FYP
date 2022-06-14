@@ -7,6 +7,8 @@ import { useUser } from "../../userContext";
 import { useUserUpdate, useNavbarUpdate, useNavbar } from "../../userContext";
 
 const Header = (props) => {
+  const [search, setSearch] = useState('');
+
   const [cartClick, setCartClick] = useState(false);
   const [activeNav, setActiveNav] = useState("home");
 
@@ -53,6 +55,12 @@ const Header = (props) => {
     changeNavBold(id);
     setActiveNav(id);
   }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/search", {state: { searchkey: search }})
+}
+
   // const getSession = () =>{
   //   // ReactSession.get('user');
   //   alert(ReactSession.get('user'))
@@ -174,6 +182,32 @@ const Header = (props) => {
                     </form> */}
 
                   {/* </div> */}
+
+                  <div className="rd-navbar-search">
+                    <button
+                      className="rd-navbar-search-toggle"
+                      data-rd-navbar-toggle=".rd-navbar-search"
+                    >
+                      <span></span>
+                    </button>
+                    <form className="rd-search" onSubmit={handleSubmit}>
+                      <div className="form-wrap">
+                        
+                        <input
+                          className="rd-navbar-search-form-input form-input"
+                          type="text"
+                          onChange={(e) => setSearch(e.target.value)}
+                          placeholder="Search..."
+                        />
+                        <button
+                          className="rd-search-form-submit fl-bigmug-line-search74"
+                          type="submit"
+                        
+                        ></button>
+                      </div>
+                    </form>
+                  </div>
+				  
 
                   <ul className="rd-navbar-nav">
                     <li
