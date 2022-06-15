@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-// import SampleLogin from "../Customer/sampleLogin";
 import Shop from "../Customer/shop/shop"; //1
 import Footer from "../Customer/footer";
 import SingleProduct from "../Customer/singleProduct/singleProduct"; //3
@@ -18,9 +17,14 @@ import ShowChat from "../Customer/showChat/ShowChat";
 import UpdateProfile from "../Customer/updateProfile";
 import ShowCustomerOrders from "../Customer/showCustomerOrders";
 import SearchCustomer from "../Customer/SearchCustomer";
+import ViewOrderDetails from "../Customer/viewOrderDetails";
+import Rating from "../Customer/rating";
+import ReturnRefund from "../Customer/returnRefund";
+import PrivacyPolicy from "../Customer/privacyPolicy";
+import TermsConditions from "../Customer/termsConditions";
+import Faqs from "../Customer/faqs";
 
 import { CartProvider } from "../Customer/CartContext";
-// import { UserProvider } from "../userContext";
 
 function CustomerRoutes(props) {
   return (
@@ -50,6 +54,13 @@ function CustomerRoutes(props) {
         <Route path="/updateprofile" exact element={<UpdateProfile />} />
         <Route path="/showOrders" exact element={<ShowCustomerOrders />} />
         <Route path="/search" exact element={<SearchCustomer />} />
+        <Route path="/showSingleOrder" exact element={<ViewOrderDetails />} />
+        <Route path="/rating" exact element={<Rating />} />
+
+        <Route path="/faqs" exact element={<Faqs />} />
+        <Route path="/termsConditions" exact element={<TermsConditions />} />
+        <Route path="/privacy" exact element={<PrivacyPolicy />} />
+        <Route path="/returnRefunds" exact element={<ReturnRefund />} />
 
         <Route
           path="/chat"

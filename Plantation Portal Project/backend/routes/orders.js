@@ -110,4 +110,18 @@ router.get("/getCustomerOrders/:id", async (req, res) => {
   }
 });
 
+router.get("/getSingleOrder/:orderid", async (req, res) => {
+  try {
+    const orderId = req.params.orderid;
+
+    const singleOrder = await Order.findOne({
+      _id: orderId,
+    });
+
+    res.status(200).json(singleOrder);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports.orderRouter = router;

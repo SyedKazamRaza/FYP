@@ -155,18 +155,13 @@ function SingleProduct(props) {
                         return row;
                       })
                     )}
-                    <span
-                      className="list-inline-item text-dark"
-                      style={{ marginLeft: "16px" }}
-                    >
-                      Rating {location.state.product.rating} | 36 Comments
-                    </span>
+                   
                   </p>
                   <br />
 
                   <ul className="list-inline">
                     <li className="list-inline-item">
-                      <h6>Category:</h6>
+                      <h5>Category:</h5>
                     </li>
                     <li className="list-inline-item">
                       <p className="text-muted">
@@ -213,13 +208,13 @@ function SingleProduct(props) {
                     )}
                   </ul>
                   <br />
-                  <h6>About {location.state.product.productName}:</h6>
+                  <h5>About {location.state.product.productName}:</h5>
                   <p style={{ fontSize: "15px", fontFamily: "sans-serif" }}>
                     {location.state.product.details}
                   </p>
 
                   <br />
-                  <h6>What makes it special:</h6>
+                  <h5>What makes it special:</h5>
 
                   <ul style={{ listStyleType: "disc !important" }}>
                     <li className="listStyling">Accelerates wound healing</li>
@@ -232,7 +227,7 @@ function SingleProduct(props) {
 
                   {location.state.product.category === "plants" ? (
                     <div>
-                      <h6>Plant Care:</h6>
+                      <h5>Plant Care:</h5>
                       <p style={{ color: "#eda407" }}>
                         Get your plants ready to slay!
                       </p>
@@ -386,12 +381,12 @@ function SingleProduct(props) {
                           />
                         </div>
                         <div className="desc">
-                          <h6
+                          <h5
                             style={{ fontSize: "17px", marginTop: "5px" }}
                             className="title "
                           >
                             {item.productName}
-                          </h6>
+                          </h5>
                           <div
                             style={{ textAlign: "center", color: "black" }}
                             className="price"

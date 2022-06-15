@@ -93,6 +93,7 @@ function OrderDetails(props) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  
   return (
     <div>
       <section className="breadcrumbs-custom-inset">

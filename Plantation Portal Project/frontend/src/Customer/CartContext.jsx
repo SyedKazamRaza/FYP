@@ -84,7 +84,8 @@ export function CartProvider({ children }) {
         productImage: item.imageurl,
         quantity: quantity,
         total: item.price * parseInt(quantity),
-        status: "active"
+        status: "active",
+        rating: "0"
       };
       setCartProducts([...cartProducts, cartProd]);
     }

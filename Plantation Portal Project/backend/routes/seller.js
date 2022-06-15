@@ -220,6 +220,8 @@ router.post("/changeOrderStatus", async (req, res) => {
       { $set: { "productsDetail.$.status": newStatus } }
     );
 
+    console.log("Orders: ", orders);
+
     res.status(200).send("ok");
   } catch (err) {
     console.log(err);
@@ -404,14 +406,14 @@ router.post("/updateStore", async (req, res) => {
   const phone = req.body.phoneNo;
 
   const exist = await Store.find({ username: us_name });
-  
+
   if (exist.length > 0) {
     if (exist[0]._id.toString() == storeId) {
       console.log("Email exist & same store");
       const storeData = {
         storeName: stName,
         password: pwd,
-        phno: phone
+        phno: phone,
       };
 
       // console.log("Store data is: ", storeData);
@@ -433,7 +435,7 @@ router.post("/updateStore", async (req, res) => {
       storeName: stName,
       username: us_name,
       password: pwd,
-      phno: phone
+      phno: phone,
     };
 
     const update = await Store.updateOne(
@@ -446,5 +448,47 @@ router.post("/updateStore", async (req, res) => {
   }
 });
 
+router.post("/changeProductRating", async (req, res) => {
+  try {
+    const orderId = req.body.orderId;
+    const productId = req.body.productId;
+    const rating = req.body.rating;
+
+    const prevRating = await Products.findOne({
+      _id: productId,
+    }).select({ rating: 1 });
+
+    let newRating = (parseInt(prevRating.rating) + parseInt(rating)) / 2;
+    console.log(newRating);
+    console.log(typeof newRating);
+
+    newRating = Math.round(newRating);
+
+    newRating = newRating.toString();
+
+    const result = await Products.updateOne(
+      {
+        _id: productId,
+      },
+      { $set: { rating: newRating } }
+    );
+
+    const orders = await Order.updateOne(
+      {
+        _id: orderId,
+        productsDetail: { $elemMatch: { productId: productId } },
+      },
+      { $set: { "productsDetail.$.rating": newRating } }
+    );
+
+    // res.status(200).send(orders);
+
+    console.log("Orders: ", orders);
+
+    res.status(200).send("ok");
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 module.exports = router;

@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "./singleOrder.css";
 import { useLocation } from "react-router-dom";
+import { useUser } from "../userContext";
+import { useNavigate } from "react-router-dom";
 
 function SingleOrder(props) {
+  const user = useUser();
+  const navigate = useNavigate();
+
+  if (!user._id) {
+    navigate("/login");
+  }
+
+  const storeid = user._id;
+
   let location = useLocation();
   let orderDetails = location.state.product;
   let status = location.state.status;
@@ -16,7 +27,7 @@ function SingleOrder(props) {
     let total = 0;
     orderDetails.productsDetail.map((prod) => {
       if (
-        prod.sellerId === "61d9354e52dbabae9bd60541" &&
+        prod.sellerId === storeid &&
         prod.status === status
       ) {
         total = total + prod.total;

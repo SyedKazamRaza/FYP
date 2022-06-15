@@ -7,7 +7,7 @@ import { useUser } from "../../userContext";
 import { useUserUpdate, useNavbarUpdate, useNavbar } from "../../userContext";
 
 const Header = (props) => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   const [cartClick, setCartClick] = useState(false);
   const [activeNav, setActiveNav] = useState("home");
@@ -58,8 +58,8 @@ const Header = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/search", {state: { searchkey: search }})
-}
+    navigate("/search", { state: { searchkey: search } });
+  };
 
   // const getSession = () =>{
   //   // ReactSession.get('user');
@@ -136,53 +136,6 @@ const Header = (props) => {
                     )}
                   </div>
 
-                  <div className="rd-navbar-basket-wrap">
-                    <button
-                      className="rd-navbar-basket far fa-heart-o"
-                      data-rd-navbar-toggle=".cart-inline"
-                    >
-                      <span>0</span>
-                    </button>
-
-                    {/* <div className="cart-inline">
-                      <div className="cart-inline-header">
-                        <h5 className="cart-inline-title">There are no products in the wishlist.</h5>
-                      </div>
-                    </div> */}
-                  </div>
-
-                  {/*                   
-                  <div className="rd-navbar-search">
-                    <button
-                      className="rd-navbar-search-toggle"
-                      data-rd-navbar-toggle=".rd-navbar-search"
-                    >
-                      <span></span>
-                    </button> */}
-
-                  {/* <form className="rd-search" action="#">
-                      <div className="form-wrap">
-                        <label
-                          className="form-label"
-                          htmlFor="rd-navbar-search-form-input"
-                        >
-                          Search...
-                        </label>
-                        <input
-                          className="rd-navbar-search-form-input form-input"
-                          id="rd-navbar-search-form-input"
-                          type="text"
-                          name="search"
-                        />
-                        <button
-                          className="rd-search-form-submit fl-bigmug-line-search74"
-                          type="submit"
-                        ></button>
-                      </div>
-                    </form> */}
-
-                  {/* </div> */}
-
                   <div className="rd-navbar-search">
                     <button
                       className="rd-navbar-search-toggle"
@@ -207,7 +160,7 @@ const Header = (props) => {
                       </div>
                     </form>
                   </div>
-				  
+				   
 
                   <ul className="rd-navbar-nav">
                     <li
