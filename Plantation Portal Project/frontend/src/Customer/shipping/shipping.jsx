@@ -78,7 +78,7 @@ function Shipping(props) {
       shippingDetails,
       paymentMethod,
       billingAd,
-      cartServices
+      cartServices,
     ];
 
     axios
@@ -192,28 +192,6 @@ function Shipping(props) {
                                 <td></td>
                                 <td></td>
                               </tr>
-                              <tr>
-                                <td>
-                                  <div style={{ float: "left", width: "50%" }}>
-                                    <input
-                                      type="radio"
-                                      value="stripe"
-                                      name="selector"
-                                      defaultChecked={
-                                        paymentMethod === "stripe"
-                                      }
-                                      onClick={() => {
-                                        setPaymentMethod("stripe");
-                                      }}
-                                    />
-                                    <label style={{ marginLeft: "3%" }}>
-                                      Payment with Stripe
-                                    </label>
-                                  </div>
-                                </td>
-                                <td></td>
-                                <td></td>
-                              </tr>
                             </tbody>
                           </table>
                         </div>
@@ -259,7 +237,7 @@ function Shipping(props) {
                                         setbillingAddress("different");
                                       }}
                                     />
-                                    <label style={{ marginLeft: "3%" }}>
+                                    <label style={{ marginLeft: "1%" }}>
                                       Use different Billing Address
                                     </label>
                                   </div>

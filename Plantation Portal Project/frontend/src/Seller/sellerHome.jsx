@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TopBar from "./TopBar";
 import useFetch from "../useFetch";
 import { useUser } from "../userContext";
 import { useNavigate } from "react-router-dom";
-
-// import "./seller.css"
 
 function SellerHome(props) {
   const [numberOfSales, setNumberOfSales] = useState(3);
@@ -16,13 +14,22 @@ function SellerHome(props) {
     navigate("/register");
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const storeid = user._id;
 
   const { data: homeStats } = useFetch(
     `http://localhost:5000/seller/sellerHome/${storeid}`
   );
 
-  console.log("Seller home stats: ", homeStats);
+  let counter = 0;
+  function getCounter(params) {
+    counter = counter + 1;
+    return counter;
+  }
+  // console.log("Seller home stats: ", homeStats);
 
   const {
     error,
@@ -74,7 +81,12 @@ function SellerHome(props) {
 
           <div className="sales-boxes">
             <div className="recent-sales box">
-              <div className="title">Recent Sales</div>
+              <div
+                className="title"
+                style={{ textDecoration: "none !important" }}
+              >
+                Recent Sales
+              </div>
               <div className="sales-details">
                 <ul className="details">
                   <li className="topic">Date & Time</li>
@@ -95,16 +107,16 @@ function SellerHome(props) {
                 .slice(0, numberOfSales)
                 .map((singleOrder) => {
                   return singleOrder.productsDetail.map((single) => {
-                    return single.sellerId === "61d9354e52dbabae9bd60541" ? (
-                      <div className="sales-details" key={singleOrder._id}>
+                    return single.sellerId === storeid ? (
+                      <div className="sales-details" key={getCounter()}>
                         <ul className="details">
-                          <li>
+                          <li style={{ textDecoration: "None !important" }}>
                             <div>{singleOrder.dateTime}</div>
                           </li>
                         </ul>
                         <ul className="details">
                           <li>
-                            <div>
+                            <div style={{ textDecoration: "None !important" }}>
                               {singleOrder.userInfo[0].fname +
                                 " " +
                                 singleOrder.userInfo[0].lname}

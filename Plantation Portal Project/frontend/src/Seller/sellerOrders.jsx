@@ -11,15 +11,11 @@ function SellerOrders(props) {
   if (!user._id) {
     navigate("/login");
   }
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const storeid = user._id;
-  // const { data: shopOrderProducts } = useFetch(
-  //   "http://localhost:5000/seller/sellerOrders"
-  // );
-
-  // const { data: shopOrderStats } = useFetch(
-  //   "http://localhost:5000/seller/sellerOrdersStats"
-  // );
 
   const [shopOrderProducts, setShopOrderProducts] = useState([]);
   const [shopOrderStats, setShopOrderStats] = useState({});
@@ -227,7 +223,7 @@ function SellerOrders(props) {
                             <th></th>
                           </tr>
 
-                          {shopOrderProducts.map((singleOrder, index1) => {
+                          {shopOrderProducts.reverse().map((singleOrder, index1) => {
                             return singleOrder.productsDetail.map(
                               (single, index2) => {
                                 return single.sellerId === storeid &&

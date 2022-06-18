@@ -2,19 +2,25 @@ import React, { useEffect, useState } from "react";
 import TopBar from "./TopBar";
 import axios from "axios";
 import useFetch from "../useFetch";
+import { useUser } from "../userContext";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AdminStoreDetails = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const user = useUser();
+  if (!user._id) {
+    navigate("/login");
+  }
         const { data: homeStats } = useFetch(
-            "http://localhost:5000/seller/sellerHome"
+            "http://localhost:5000/seller/sellerHome/"+ id
           );
              
           const [shopProducts, setShopProducts] = useState([]);
-          const data = {
-            id: "61d9354e52dbabae9bd60541",
-          };
+         
           useEffect(() => {
             axios
-              .post("http://localhost:5000/products/allStoreProducts", data)
+              .post("http://localhost:5000/products/allStoreProducts/"+ id)
               .then((response) => {
                 if (response.status === 200) {
                   setShopProducts(

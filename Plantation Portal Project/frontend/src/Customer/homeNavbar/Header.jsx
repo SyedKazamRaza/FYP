@@ -225,7 +225,7 @@ const Header = (props) => {
                         changeActive("contact");
                       }}
                     >
-                      <Link className="rd-nav-link" to="contact">
+                      <Link className="rd-nav-link" to="/contact">
                         Contact
                       </Link>
                     </li>
@@ -253,7 +253,7 @@ const Header = (props) => {
                         >
                           <Link
                             className="rd-nav-link"
-                            to="/shop"
+                            to="/"
                             onClick={() => {
                               logOut();
                             }}

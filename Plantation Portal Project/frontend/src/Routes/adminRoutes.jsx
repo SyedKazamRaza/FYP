@@ -17,6 +17,10 @@ import AdminStores from "../Admin/AdminStores";
 import AdminStoreDetails from "../Admin/AdminStoreDetails";
 import Customers from "../Admin/Customers";
 import Search from "../Admin/Search";
+import OrderDetails from "../Admin/OrderDetails";
+import AdminMessages from "../Admin/AdminMessages";
+import AdminEarning from "../Admin/AdminEarnings";
+import AdminSingleProd from "../Admin/AdminSingleProd";
 //import '../Admin/css/style.css'
 //import '../Admin/css/bootstrap.css'
 //import '../Admin/css/bootstrap.min.css'
@@ -30,8 +34,9 @@ function AdminRoutes(props) {
       <section className="section">
         <AdminNavbar />
         <Routes>
-          <Route path="/" exact element={<AdminHome />} />
+          <Route path="/home" exact element={<AdminHome />} />
           <Route path="/orders" exact element={<Orders />} />
+          <Route path="/orderdetails" exact element={<OrderDetails />} />
           <Route path="/customers" exact element={<Customers />} />
           <Route path="/blogs" exact element={<AdminBlogs />} />
           <Route path="/blogs/:id" exact element={<AdminBlogDetails />} />
@@ -43,10 +48,18 @@ function AdminRoutes(props) {
           <Route path="/addservice/:id" exact element={<AddService />} />
           <Route path="/pendingrequests" exact element={<PendingRequests />} />
           <Route path="/stores" exact element={<AdminStores />} />
-          <Route path="/storesproducts" exact element={<AdminStoreDetails />} />
+          <Route
+            path="/storesproducts/:id"
+            exact
+            element={<AdminStoreDetails />}
+          />
           <Route path="/search" exact element={<Search />} />
+          <Route path="/messages" exact element={<AdminMessages />} />
+          <Route path="/earnings" exact element={<AdminEarning />} />
 
           <Route path="/seller" exact element={<SellerHome />} />
+
+          <Route path="/single" exact element={<AdminSingleProd />} />
         </Routes>
       </section>
     </div>

@@ -3,11 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useUserUpdate } from "../userContext";
-import validator from 'validator';
+import validator from "validator";
+import { useNavbarUpdate } from "../userContext";
 
 function Login() {
   const { setLoginUser } = useUserUpdate();
-
+  const { changeNavBold } = useNavbarUpdate();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -18,69 +19,61 @@ function Login() {
   const handleSubmit = (e) => {
     var flag = false;
 
-    if(validator.isEmpty(email)){
-      setEmailError("This field is required") 
+    if (validator.isEmpty(email)) {
+      setEmailError("This field is required");
+    } else {
+      setEmailError("");
     }
-    else {
-      setEmailError("") 
-    }
-    if(validator.isEmpty(password)){
-      setPassErrors("This field is required") 
-    }
-    else {
-      setPassErrors("") 
+    if (validator.isEmpty(password)) {
+      setPassErrors("This field is required");
+    } else {
+      setPassErrors("");
     }
 
     e.preventDefault();
 
-    if(!validator.isEmpty(email) && !validator.isEmpty(password)){
+    if (!validator.isEmpty(email) && !validator.isEmpty(password)) {
       const user = { email, password };
       console.log("login user: ", user);
       axios
         .post("http://localhost:5000/login", user)
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data.user)
+            console.log(res.data.user);
             setLoginUser(res.data.user);
-            flag = true
-            if(res.data.user.type==="admin")
-            {
-              navigate("/admin");
-            }
-            else{
+            flag = true;
+            if (res.data.user.type === "admin") {
+              navigate("/admin/home");
+            } else {
+              changeNavBold("home");
               navigate("/");
             }
-          } 
+          }
         })
         .catch((error) => {
           console.log(error);
         });
 
-        axios
+      axios
         .post("http://localhost:5000/loginStore", user)
         .then((res) => {
-          
           if (res.status === 200) {
-            flag = true
-            console.log("Hi"+res.data.user)
-            
+            flag = true;
+            console.log("Hi" + res.data.user);
+
             setLoginUser(res.data.user);
-              navigate("/seller/home");
-          } 
+            navigate("/seller/home");
+          }
         })
         .catch((error) => {
-          
           console.log(error);
         });
     }
-    if(!flag){
-      setEmailError("Invalid email")
+    if (!flag) {
+      setEmailError("Invalid email");
+    } else {
+      setEmailError("");
     }
-    else{
-      setEmailError("")
-    } 
-  
-
   };
   return (
     <div>
@@ -107,7 +100,7 @@ function Login() {
                 />
                 {/* <label className="form-label" htmlFor="contact-email-2">E-mail</label> */}
               </div>
-              <span className='form-validation'>{emailError}</span>
+              <span className="form-validation">{emailError}</span>
             </div>
             <div className="col-md-8">
               <div className="form-wrap">
@@ -123,7 +116,7 @@ function Login() {
                 />
                 {/* <label className="form-label" htmlFor="contact-password">Password</label> */}
               </div>
-              <span className='form-validation'>{passError}</span>
+              <span className="form-validation">{passError}</span>
             </div>
           </div>
           <p>

@@ -144,7 +144,7 @@ const Footer = () => {
                       <div className="col-sm-6">
                         <ul className="list">
                           <li>
-                            <Link to="/faqs">Privacy Policy</Link>
+                            <Link to="/privacy">Privacy Policy</Link>
                           </li>
                           <li>
                             <Link to="/termsConditions">
@@ -152,10 +152,12 @@ const Footer = () => {
                             </Link>
                           </li>
                           <li>
-                            <Link to="/privacy">Return and Refund Policy</Link>
+                            <Link to="/returnRefunds">
+                              Return and Refund Policy
+                            </Link>
                           </li>
                           <li>
-                            <Link to="/returnRefunds">FAQs</Link>
+                            <Link to="/faqs">FAQs</Link>
                           </li>
                         </ul>
                       </div>

@@ -3,10 +3,50 @@ import TopBar from "./TopBar";
 import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../userContext";
+import { useState, useEffect } from 'react';
 
 const Customers = () => {
-    const { error, isPending, data: users } = useFetch('http://localhost:5000/user/')
+  const [users, setUsers] = useState([])    //for any data
+  var [refresh, setRefresh] = useState(0)
+    
+    //blogs is the dependency, when the blogs change, it triggers useEffect to run 
+    useEffect(() => { 
+      axios.get('http://localhost:5000/user/')
+        .then((response) => {
+          if (response.status!==200) { // if response failed to fetch data from server
+              throw Error('could not fetch the data for that resource');  //this error is catched by catch block
+          }   
+          setUsers(response.data)
+        })
+        .catch((error) => {
+
+        })
+
+    }, [])
+
+    useEffect(() => { 
+      axios.get('http://localhost:5000/user/')
+        .then((response) => {
+          if (response.status!==200) { // if response failed to fetch data from server
+              throw Error('could not fetch the data for that resource');  //this error is catched by catch block
+          }   
+          setUsers(response.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    }, [refresh])
+
+  const navigate = useNavigate();
+  const user = useUser();
+  if (!user._id) {
+    navigate("/login");
+  }
+    //const { error, isPending, data: users } = useFetch('http://localhost:5000/user/')
+
     const handleDelete = (id)=>{   
         confirmAlert({
         customUI: ({ onClose }) => {
@@ -22,9 +62,9 @@ const Customers = () => {
     
                   axios.delete('http://localhost:5000/user/'+id)
                   .then((response) => {
+                    setRefresh(refresh+=1)
                    
-                   console.log("user deleted")
-                   window.location.reload()
+                    console.log("user deleted")
                     }) 
                   .catch((error) => {
                       console.log(error)       
@@ -43,7 +83,6 @@ const Customers = () => {
       }
 
     return ( 
-        <div className="page">
             <section className="home-section">
                 <div className="home-content">
                     <TopBar/>
@@ -88,7 +127,6 @@ const Customers = () => {
                     </div>
                 </div>
             </section>
-        </div>
      );
 }
  

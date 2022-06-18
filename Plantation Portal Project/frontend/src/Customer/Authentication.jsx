@@ -36,7 +36,6 @@ const Authentication = (props) => {
                             <p>FineLiving belives in easing plants purchaising and care for people. </p>
                         </div>
                         <div className="col-md-10 col-lg-7 col-xl-6">
-                            <h2 className="text-primary">Create Your Free Account Today</h2>
                             <div className="tabs-custom tabs-horizontal tabs-line" id="tabs-4">
                                 <ul className="nav nav-tabs">
                                     <li className="nav-item" role="presentation">

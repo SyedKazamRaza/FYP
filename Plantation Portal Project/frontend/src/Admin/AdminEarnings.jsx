@@ -1,31 +1,28 @@
-import React, {useEffect} from "react";
+import React from "react";
 import TopBar from "./TopBar";
 import useFetch from "../useFetch";
-import { useUser } from "../userContext";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../userContext";
 
-function SellerEarning(props) {
+function AdminEarning(props) {
   const user = useUser();
   const navigate = useNavigate();
   if (!user._id) {
     navigate("/login");
   }
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
-  const storeid = user._id;
 
   const {
-    data: storeEarningStats,
+    data: earning,
     error,
     isPending,
-  } = useFetch(`http://localhost:5000/seller/storeEarningStats/${storeid}`);
+  } = useFetch(`http://localhost:5000/admin/earnings`);
 
-  const { data: storeTransactions } = useFetch(
-    `http://localhost:5000/seller/getStoreTransactions/${storeid}`
+  const { data: transactions } = useFetch(
+    `http://localhost:5000/admin/getTransactions`
   );
 
+  
   let counter = 0;
   function increment(params) {
     counter = counter + 1;
@@ -42,35 +39,35 @@ function SellerEarning(props) {
     <section className="home-section">
       <div className="home-content">
         <TopBar />
-
         <div className="overview-boxes">
           <div className="box">
             <div className="right-side">
               <div className="box-topic">Net Income</div>
               <div className="number">
-                Rs {storeEarningStats.withdrawn + storeEarningStats.pending}
+                Rs{" "}
+                {earning.totalEarning}
               </div>
             </div>
             <i className="bx bx-money cart"></i>
           </div>
           <div className="box">
             <div className="right-side">
-              <div className="box-topic">Cleared Cash</div>
-              <div className="number">Rs {storeEarningStats.withdrawn}</div>
+              <div className="box-topic">Total Orders</div>
+              <div className="number">{earning.totalOrders}</div>
             </div>
             <i className="bx bxs-credit-card cart two"></i>
           </div>
           <div className="box">
             <div className="right-side">
               <div className="box-topic">Pending</div>
-              <div className="number">Rs {storeEarningStats.pending}</div>
+              <div className="number">Rs {earning.pending}</div>
             </div>
             <i className="bx bxs-wallet cart three"></i>
           </div>
           <div className="box">
             <div className="right-side">
               <div className="box-topic">Canceled</div>
-              <div className="number">Rs {storeEarningStats.cancel}</div>
+              <div className="number">Rs {earning.cancel}</div>
             </div>
             <i className="bx bxs-wallet-alt cart four"></i>
           </div>
@@ -90,9 +87,9 @@ function SellerEarning(props) {
                   <th>Payment Method</th>
                 </tr>
 
-                {storeTransactions.map((singleOrder) => {
+                {transactions.map((singleOrder) => {
                   return singleOrder.productsDetail.map((single) => {
-                    return single.sellerId === storeid &&
+                    return single.sellerId &&
                       single.status === "delivered" ? (
                       <tr key={getCounter()}>
                         <td>{increment()}</td>
@@ -114,9 +111,9 @@ function SellerEarning(props) {
             </div>
           </div>
         </div>
-      </div>
+      </div> 
     </section>
   );
 }
 
-export default SellerEarning;
+export default AdminEarning;

@@ -6,6 +6,8 @@ import { useUser } from "../userContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { storage } from "../firebase";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 function EditSellerProfile(props) {
   const user = useUser();
@@ -16,13 +18,19 @@ function EditSellerProfile(props) {
   }
 
   const storeid = user._id;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
-
   const [error, setError] = useState("");
+
+  const [image, setImage] = useState("");
+  const [file, setFile] = useState("");
+  const [progresspercent, setProgresspercent] = useState(0);
 
   useEffect(() => {
     axios
@@ -56,6 +64,8 @@ function EditSellerProfile(props) {
   const handleSubmit = (e) => {
     console.log("called");
     e.preventDefault();
+    setImage("");
+    setError("");
     if (validator.isEmpty(email)) {
       setError("Email is required.");
       return;
@@ -74,27 +84,89 @@ function EditSellerProfile(props) {
       return;
     }
     setError("");
-    const storeData = {
-      id: storeid,
-      name: name,
-      email: email,
-      password: password,
-      phoneNo: phoneNo,
-    };
-    axios
-      .post("http://localhost:5000/seller/updateStore", storeData)
-      .then((response) => {
-        if (response.status === 200) {
-          if (response.data === "updated") {
-            notifySuccess("Profile updated.");
-            navigate("/seller/sellerprofile");
-          } else if (response.data === "Email already exists") {
-            setError("Email already Exists.");
-          }
-        }
-      });
 
-    console.log(user);
+    if (file !== "") {
+      const storageRef = ref(
+        storage,
+        `stores/${file.name + Date().toLocaleString()}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgresspercent(progress);
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            setImage(downloadURL);
+            console.log(downloadURL);
+
+            const storeData = {
+              id: storeid,
+              name: name,
+              email: email,
+              password: password,
+              phoneNo: phoneNo,
+              imageurl: downloadURL,
+            };
+            console.log("Storeing data:  ");
+            console.log(storeData);
+
+            axios
+              .post("http://localhost:5000/seller/updateStore", storeData)
+              .then((response) => {
+                if (response.status === 200) {
+                  if (response.data === "updated") {
+                    notifySuccess("Profile updated.");
+                    navigate("/seller/sellerprofile");
+                  } else if (response.data === "Email already exists") {
+                    setError("Email already Exists.");
+                  }
+                }
+              })
+              .catch((error) => {
+                // console.log(error);
+              });
+
+            // alert(image);
+          });
+        }
+      );
+    } else {
+      console.log("In else");
+
+      const storeData = {
+        id: storeid,
+        name: name,
+        email: email,
+        password: password,
+        phoneNo: phoneNo,
+        imageurl: image,
+      };
+
+      axios
+        .post("http://localhost:5000/seller/updateStore", storeData)
+        .then((response) => {
+          if (response.status === 200) {
+            if (response.data === "updated") {
+              notifySuccess("Profile updated.");
+              navigate("/seller/sellerprofile");
+            } else if (response.data === "Email already exists") {
+              setError("Email already Exists.");
+            }
+          }
+        })
+        .catch((error) => {
+          // console.log(error);
+        });
+    }
     return;
   };
 
@@ -125,18 +197,21 @@ function EditSellerProfile(props) {
                   justifyContent: "center",
                 }}
               >
-                <input
-                  className="form-input"
-                  id="contact-your-className-2"
-                  type="text"
-                  name="fclassName"
-                  style={{ width: "35%" }}
-                  placeholder="Store Name"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                />
+                <label>
+                  Store Name
+                  <input
+                    className="form-input"
+                    id="contact-your-className-2"
+                    type="text"
+                    name="fclassName"
+                    style={{ width: "400px" }}
+                    placeholder="Store Name"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                  />
+                </label>
               </div>
 
               <div
@@ -146,18 +221,21 @@ function EditSellerProfile(props) {
                   justifyContent: "center",
                 }}
               >
-                <input
-                  className="form-input"
-                  id="contact-email-2"
-                  type="email"
-                  name="email"
-                  style={{ width: "35%" }}
-                  placeholder="Password"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
+                <label>
+                  Email Address
+                  <input
+                    className="form-input"
+                    id="contact-email-2"
+                    type="email"
+                    name="email"
+                    style={{ width: "400px" }}
+                    placeholder="Password"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
+                </label>
               </div>
 
               <div
@@ -167,18 +245,21 @@ function EditSellerProfile(props) {
                   justifyContent: "center",
                 }}
               >
-                <input
-                  className="form-input"
-                  id="contact-your-className-2"
-                  type="text"
-                  name="lclassName"
-                  style={{ width: "35%" }}
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                />
+                <label>
+                  Password
+                  <input
+                    className="form-input"
+                    id="contact-your-className-2"
+                    type="text"
+                    name="lclassName"
+                    style={{ width: "400px" }}
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                  />
+                </label>
               </div>
 
               <div
@@ -188,18 +269,44 @@ function EditSellerProfile(props) {
                   justifyContent: "center",
                 }}
               >
-                <input
-                  className="form-input"
-                  id="contact-your-className-2"
-                  type="text"
-                  name="lclassName"
-                  style={{ width: "35%" }}
-                  placeholder="Phone Number"
-                  value={phoneNo}
-                  onChange={(e) => {
-                    setPhoneNo(e.target.value);
-                  }}
-                />
+                <label>
+                  Phone Number
+                  <input
+                    className="form-input"
+                    id="contact-your-className-2"
+                    type="text"
+                    name="lclassName"
+                    style={{ width: "400px" }}
+                    placeholder="Phone Number"
+                    value={phoneNo}
+                    onChange={(e) => {
+                      setPhoneNo(e.target.value);
+                    }}
+                  />
+                </label>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div className="upload-image">
+                  <div style={{ fontSize: "16px" }}>
+                    Upload New Image of Store
+                  </div>
+                  <input
+                    type="file"
+                    id="image-input"
+                    accept="image/jpeg, image/png, image/jpg"
+                    onChange={(e) => {
+                      setFile(e.target.files[0]);
+                    }}
+                  />
+                  <div className="upload-image" id="display-image"></div>
+                </div>
               </div>
 
               <div

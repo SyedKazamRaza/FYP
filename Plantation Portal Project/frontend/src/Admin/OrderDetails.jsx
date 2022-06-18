@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from "react";
-import "./singleOrder.css";
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../userContext";
-import { useNavigate } from "react-router-dom";
 
-function SingleOrder(props) {
-  const user = useUser();
+const OrderDetails = () => {
   const navigate = useNavigate();
-
+  const user = useUser();
   if (!user._id) {
     navigate("/login");
   }
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const storeid = user._id;
-
   let location = useLocation();
-  let orderDetails = location.state.product;
-  let status = location.state.status;
+  let order = location.state.order;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const [totalBill, setTotalBill] = useState(0);
+  const [count, setCount] = useState(0);
   useEffect(() => {
     let total = 0;
-    orderDetails.productsDetail.map((prod) => {
-      if (prod.sellerId === storeid && prod.status === status) {
-        total = total + prod.total;
-      }
+    order.productsDetail.map((prod) => {
+      total = total + prod.total;
+    });
+    order.servicesDetails.map((serv) => {
+      total = total + serv.totalPrice;
     });
     setTotalBill(total);
   }, []);
@@ -61,23 +53,23 @@ function SingleOrder(props) {
                         <td>Name</td>
                         <td>
                           :{" "}
-                          {orderDetails.userInfo[0].fname +
+                          {order.shippingDetails.firstName +
                             " " +
-                            orderDetails.userInfo[0].lname}
+                            order.shippingDetails.lastName}
                         </td>
                       </tr>
                       <tr>
                         <td>Phone#</td>
-                        <td>: {orderDetails.userInfo[0].phno}</td>
+                        <td>: {order.shippingDetails.phoneNo}</td>
                       </tr>
                       <tr>
                         <td>Date & Time</td>
-                        <td>: {orderDetails.dateTime}</td>
+                        <td>:{order.dateTime}</td>
                       </tr>
 
                       <tr>
                         <td>Payment method</td>
-                        <td>: {orderDetails.paymentMethod}</td>
+                        <td>: {order.paymentMethod}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -87,15 +79,15 @@ function SingleOrder(props) {
                 <div className="confirmation-card">
                   <h3 className="billing-title">Billing Address</h3>
                   <table className="order-rable">
-                    {orderDetails.billingAddress === "same" ? (
+                    {order.billingAddress === "same" ? (
                       <tbody>
                         <tr>
                           <td>Address</td>
-                          <td>: {orderDetails.shippingDetails.address}</td>
+                          <td>: {order.shippingDetails.address}</td>
                         </tr>
                         <tr>
                           <td>City</td>
-                          <td>: {orderDetails.shippingDetails.city}</td>
+                          <td>: {order.shippingDetails.city}</td>
                         </tr>
                         <tr>
                           <td>Country</td>
@@ -103,14 +95,14 @@ function SingleOrder(props) {
                         </tr>
                         <tr>
                           <td>Postcode</td>
-                          <td>: {orderDetails.shippingDetails.zipCode}</td>
+                          <td>: {order.shippingDetails.zipCode}</td>
                         </tr>
                       </tbody>
                     ) : (
                       <tbody>
                         <tr>
                           <td>Address</td>
-                          <td>: {orderDetails.billingAddress}</td>
+                          <td>: {order.billingAddress}</td>
                         </tr>
                       </tbody>
                     )}
@@ -124,11 +116,11 @@ function SingleOrder(props) {
                     <tbody>
                       <tr>
                         <td>Address</td>
-                        <td>: {orderDetails.shippingDetails.address}</td>
+                        <td>: {order.shippingDetails.address}</td>
                       </tr>
                       <tr>
                         <td>City</td>
-                        <td>: {orderDetails.shippingDetails.city}</td>
+                        <td>: {order.shippingDetails.city}</td>
                       </tr>
                       <tr>
                         <td>Country</td>
@@ -136,7 +128,7 @@ function SingleOrder(props) {
                       </tr>
                       <tr>
                         <td>Postcode</td>
-                        <td>: {orderDetails.shippingDetails.zipCode}</td>
+                        <td>: {order.shippingDetails.zipCode}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -151,17 +143,52 @@ function SingleOrder(props) {
                 <table className="table">
                   <thead>
                     <tr>
+                      <th scope="col">Service Title</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Length</th>
+                      <th scope="col">Width</th>
+                      <th scope="col">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {order.servicesDetails.map((service, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>
+                            <p>{service.serviceTitle}</p>
+                          </td>
+                          <td>
+                            <p>{service.price}</p>
+                          </td>
+                          <td>
+                            <p>{service.length}</p>
+                          </td>
+                          <td>
+                            <p>{service.width}</p>
+                          </td>
+                          <td>
+                            <p>Rs {service.totalPrice}.00</p>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <table className="table">
+                  <thead>
+                    <tr>
                       <th scope="col">Product</th>
                       <th scope="col">Store</th>
                       <th scope="col">Price</th>
                       <th scope="col">Quantity</th>
                       <th scope="col">Total</th>
+                      <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {orderDetails.productsDetail.map((product, index) => {
-                      return product.sellerId === storeid &&
-                        product.status === status ? (
+                    {console.log(order.productsDetail)}
+                    {order.productsDetail.map((product, index) => {
+                      return product.sellerId ? (
                         <tr key={index}>
                           <td>
                             <p>{product.productName}</p>
@@ -177,6 +204,9 @@ function SingleOrder(props) {
                           </td>
                           <td>
                             <p>Rs {product.total}.00</p>
+                          </td>
+                          <td>
+                            <p>{product.status}</p>
                           </td>
                         </tr>
                       ) : (
@@ -229,6 +259,6 @@ function SingleOrder(props) {
       </section>
     </section>
   );
-}
+};
 
-export default SingleOrder;
+export default OrderDetails;

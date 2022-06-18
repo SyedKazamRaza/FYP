@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./shop.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import Footer from "../footer";
 // import Header from "../homeNavbar/homeNavbar";
 import { useCartUpdate } from "../CartContext";
-
+import { useNavbarUpdate } from "../../userContext";
 
 function Shop(props) {
   // const user = useUser();
+  const { changeNavBold } = useNavbarUpdate();
 
   const [filterProducts, setfilterProducts] = useState();
   const [seasonsFilter, setSeasonsFilter] = useState(false);
@@ -21,7 +22,6 @@ function Shop(props) {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [productsToShow, setproductsToShow] = useState([]);
 
-
   let selectedAccessory = "all";
 
   const { handleAddToCart } = useCartUpdate();
@@ -32,8 +32,6 @@ function Shop(props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // alert(user._id);
-    // console.log("user is : ", user);
   }, []);
 
   // useEffect(() => {
@@ -246,7 +244,16 @@ function Shop(props) {
           <div className="container">
             <h2 className="breadcrumbs-custom-title">Shop</h2>
             <ul className="breadcrumbs-custom-path">
-              <li>Home</li>
+              <li>
+                <Link
+                  to="/"
+                  onClick={() => {
+                    changeNavBold("home");
+                  }}
+                >
+                  Home
+                </Link>
+              </li>
               <li className="active">Shop</li>
             </ul>
           </div>
@@ -485,89 +492,6 @@ function Shop(props) {
                             }}
                           >
                             All Seasons
-                          </button>
-                        </li>
-                      </ul>
-                    </li>
-
-                    <li className="pb-3">
-                      <div className="filtersList collapsed d-flex justify-content-between h3 text-decoration-none">
-                        Type
-                        <i
-                          className="pull-right fa fa-fw fa-chevron-circle-down mt-1"
-                          onClick={() => {
-                            if (typeFilter === true) {
-                              setTypeFilter(false);
-                            } else {
-                              setTypeFilter(true);
-                              setSeasonsFilter(false);
-                              setpriceFilter(false);
-                            }
-                          }}
-                        ></i>
-                      </div>
-                      <ul
-                        id="collapseThree"
-                        className={`applyHover collapse list-unstyled pl-3 ${
-                          typeFilter ? "show" : ""
-                        }`}
-                        style={{ textAlign: "left" }}
-                      >
-                        <li>
-                          <button
-                            className="text-decoration-none"
-                            style={{ background: "None", border: "None" }}
-                          >
-                            Vines & Climbers
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="text-decoration-none"
-                            style={{ background: "None", border: "None" }}
-                          >
-                            Flowering Plants
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="text-decoration-none"
-                            style={{ background: "None", border: "None" }}
-                          >
-                            Vegetable Plants
-                          </button>
-                        </li>
-
-                        <li>
-                          <button
-                            className="text-decoration-none"
-                            style={{ background: "None", border: "None" }}
-                          >
-                            Succulents
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="text-decoration-none"
-                            style={{ background: "None", border: "None" }}
-                          >
-                            Fruit Plants
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="text-decoration-none"
-                            style={{ background: "None", border: "None" }}
-                          >
-                            Shrubs
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="text-decoration-none"
-                            style={{ background: "None", border: "None" }}
-                          >
-                            Perennial
                           </button>
                         </li>
                       </ul>

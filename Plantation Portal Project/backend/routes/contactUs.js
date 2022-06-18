@@ -8,6 +8,7 @@ router.post("/addNewMessage", async (req, res) => {
       email: req.body.email,
       phoneNo: req.body.phoneNo,
       message: req.body.msg,
+      status: req.body.status
     };
     let newMessage = new Messages(data);
     const msg = await newMessage.save();

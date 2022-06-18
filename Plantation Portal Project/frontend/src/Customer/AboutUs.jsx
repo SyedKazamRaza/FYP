@@ -18,7 +18,14 @@ const AboutUs = () => {
             <h2 className="breadcrumbs-custom-title">About Us</h2>
             <ul className="breadcrumbs-custom-path">
               <li>
-                <Link to="/">Home</Link>
+                <Link
+                  to="/"
+                  onClick={() => {
+                    changeNavBold("home");
+                  }}
+                >
+                  Home
+                </Link>
               </li>
               <li className="active">About Us</li>
             </ul>
@@ -224,8 +231,10 @@ const AboutUs = () => {
                   What People Say
                 </h2>
               </div>
+
               <div
-                className="owl-carousel owl-modern"
+                // className="owl-carousel owl-modern"
+                className="owl-modern"
                 data-items="1"
                 data-stage-padding="15"
                 data-margin="30"
@@ -244,12 +253,11 @@ const AboutUs = () => {
                         great help to take care of them
                       </p>
                     </div>
-                    <h5 className="quote-lisa-cite">
-                      <a href=" ">Muhammad Rizwan</a>
-                    </h5>
+                    <h4 className="quote-lisa-cite">Muhammad Rizwan </h4>
                     <p className="quote-lisa-status">Regular Client</p>
                   </div>
                 </article>
+
                 <article className="quote-lisa">
                   <div className="quote-lisa-body">
                     <div className="quote-lisa-figure"></div>
@@ -260,9 +268,7 @@ const AboutUs = () => {
                         growing my plants.
                       </p>
                     </div>
-                    <h5 className="quote-lisa-cite">
-                      <div>Babar Azam</div>
-                    </h5>
+                    <h4 className="quote-lisa-cite">Babar Azam</h4>
                     <p className="quote-lisa-status">Regular Client</p>
                   </div>
                 </article>
@@ -276,9 +282,7 @@ const AboutUs = () => {
                         plate is locally grown and delicious. Thank you
                       </p>
                     </div>
-                    <h5 className="quote-lisa-cite">
-                      <div>Sana Mir</div>
-                    </h5>
+                    <h4 className="quote-lisa-cite">Sana Mir</h4>
                     <p className="quote-lisa-status">New Client</p>
                   </div>
                 </article>

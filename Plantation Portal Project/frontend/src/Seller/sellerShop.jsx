@@ -13,7 +13,9 @@ function SellerShop(props) {
   if (!user._id) {
     navigate("/login");
   }
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const storeid = user._id;
 
   const [homeStats, setHomeStats] = useState({});
@@ -162,6 +164,7 @@ function SellerShop(props) {
                               ></i>
                             </div>
                           </li>
+
                           <li>
                             <div className="btn btn-success text-white mt-2">
                               <i
@@ -170,6 +173,20 @@ function SellerShop(props) {
                                   deleteProduct(prod._id);
                                 }}
                               ></i>
+                            </div>
+                          </li>
+
+                          <li>
+                            <div className="btn btn-success text-white mt-2">
+                              <i
+                                class="fa-solid fa-eye"
+                                onClick={() => {
+                                  navigate("/seller/single", {
+                                    state: { product: prod },
+                                  });
+                                }}
+                              ></i>
+                             
                             </div>
                           </li>
                         </ul>
@@ -228,10 +245,7 @@ function SellerShop(props) {
             })}
           </div>
 
-            {
-              shopProducts.length === 0 ?
-              <h3>No product in Store</h3>: ""
-            }
+          {shopProducts.length === 0 ? <h3>No product in Store</h3> : ""}
         </div>
         <div className="oh button-wrap">
           <Link

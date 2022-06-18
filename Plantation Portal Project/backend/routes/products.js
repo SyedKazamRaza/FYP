@@ -204,53 +204,18 @@ router.post("/editProduct", async (req, res) => {
   }
 });
 
-router.post("/giveProductRating", async (req, res) => {
+
+
+router.post("/allStoreProducts/:id", async (req, res) => {
   try {
-    const prodId = req.body.productId;
-    const rating = req.body.rating;
-    const orderId = req.body.orderId;
-    console.log(prodId);
-    console.log(rating);
-    console.log(orderId);
-
-    const prevRating = await Products.findOne({
-      _id: prodId,
-    }).select({ rating: 1 });
-
-    let newRating = (parseInt(prevRating.rating) + parseInt(rating)) / 2;
-    console.log(newRating);
-    console.log(typeof newRating);
-
-    newRating = Math.round(newRating);
-
-    newRating = newRating.toString();
-    console.log(newRating);
-    console.log(typeof newRating);
-
-    // const result = await Products.updateOne(
-    //   {
-    //     _id: prodId,
-    //   },
-    //   { $set: { rating: newRating } }
-    // );
-
-    // const orders = await Order.updateOne(
-    //   {
-    //     // _id: orderId,
-    //     "productsDetail": { $elemMatch: { productId: `${prodId}` } },
-    //   },
-    //   { $set: { "productsDetail.$.rating": newRating } }
-    // );
-
-   
-
-   
-
-    // console.log(orders);
-
-    res.status(200).json(orders);
+    const sellerId = req.params.id;
+    //console.log(sellerId);
+    //console.log(req.body);
+    const storeProducts = await Products.find({ storeId: sellerId });
+    res.status(200).json(storeProducts);
   } catch (err) {
     console.log(err);
+    res.json([]);
   }
 });
 

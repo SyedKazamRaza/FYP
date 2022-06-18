@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useFetch from "../useFetch";
+import { useNavbarUpdate } from "../userContext";
 
 function ServicesOffer(props) {
-    const {
-      error,
-      isPending,
-      data: services,
-    } = useFetch("http://localhost:5000/services/");
+  const {
+    error,
+    isPending,
+    data: services,
+  } = useFetch("http://localhost:5000/services/");
+
+  const { changeNavBold } = useNavbarUpdate();
 
   //Sample
   // const services = [];
@@ -24,7 +27,14 @@ function ServicesOffer(props) {
             <h2 className="breadcrumbs-custom-title">Services</h2>
             <ul className="breadcrumbs-custom-path">
               <li>
-                <Link to="/">Home</Link>
+                <Link
+                  to="/"
+                  onClick={() => {
+                    changeNavBold("home");
+                  }}
+                >
+                  Home
+                </Link>
               </li>
               <li className="active">Services</li>
             </ul>

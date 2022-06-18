@@ -11,6 +11,8 @@ import SellerEarning from "../Seller/sellerEarning";
 import EditProduct from "../Seller/editProduct";
 import ShowSellerChat from "../Seller/showSellerChat";
 import EditSellerProfile from "../Seller/editSellerProfile";
+import SellerSearch from "../Seller/sellerSearch";
+import SellerSingleProduct from "../Seller/sellerSingleProduct";
 // import Footer from "../Customer/footer";
 
 import "../Seller/seller.css";
@@ -34,6 +36,9 @@ function SellerRoutes(props) {
         <Route path="/editProduct" exact element={<EditProduct />} />
         <Route path="/chatPanel" exact element={<ShowSellerChat />} />
         <Route path="/editProfile" exact element={<EditSellerProfile />} />
+        <Route path="/search" exact element={<SellerSearch />} />
+        <Route path="/single" exact element={<SellerSingleProduct />} />
+
       </Routes>
     </>
   );

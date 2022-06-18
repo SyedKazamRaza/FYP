@@ -42,6 +42,8 @@ const ShowCustomerOrders = () => {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100vh',
+          marginTop: "2%",
+          marginBottom: "2%"
         }}
       >
         <div className="col-md-10 col-lg-1 col-xl-9">
@@ -57,7 +59,7 @@ const ShowCustomerOrders = () => {
                   <th>Order Details</th>
                   {/* <th>Feedback</th> */}
                 </tr>
-                {customerOrders.map((order) => {
+                {customerOrders.reverse().map((order) => {
                   return (
                     <tr key={getCounter()}>
                       <td>{incrementCounter()}</td>

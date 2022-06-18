@@ -1,18 +1,24 @@
 // import "./css/admin-blogs.css"
 import TopBar from "./TopBar";
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useFetch from "../useFetch";
 import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import { ref, deleteObject } from "firebase/storage";
 import {storage} from '../firebase';
+import { useUser } from "../userContext";
 
 const AdminBlogDetails = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const navigate = useNavigate();
+  const user = useUser();
+  if (!user._id) {
+    navigate("/login");
+  }
 
   const { id } = useParams();   //id is the route parameter name we want to fetch
   const { data: blog, error, isPending } = useFetch('http://localhost:5000/blogs/' + id);
@@ -41,7 +47,7 @@ const AdminBlogDetails = () => {
                   console.log("Error deleteing file from firebase "+error)
                 });
 
-                  window.location.reload()
+                  navigate("/admin/blogs")
                 }) 
               .catch((error) => {
                   console.log(error)       

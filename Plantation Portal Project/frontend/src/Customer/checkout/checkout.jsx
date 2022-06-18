@@ -22,7 +22,6 @@ function Checkout(props) {
   const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [orderNotes, setOrderNotes] = useState("");
-  const [emailMeCheck, setEmailMeCheck] = useState(false);
   const [TandC, setTandC] = useState(false);
 
   useEffect(() => {
@@ -163,20 +162,7 @@ function Checkout(props) {
                               className="placeholder"
                               data-placeholder="Email"
                             ></span>
-                            <div className="creat_account">
-                              <input
-                                type="checkbox"
-                                value={emailMeCheck}
-                                onChange={(value) => {
-                                  setEmailMeCheck(!value);
-                                }}
-                                id="f-option4"
-                                name="selector"
-                              />
-                              <label htmlFor="f-option4">
-                                Email me with news and offers
-                              </label>
-                            </div>
+                           
                           </div>
                         </div>
                       </div>

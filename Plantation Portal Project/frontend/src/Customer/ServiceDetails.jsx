@@ -97,13 +97,13 @@ const ServiceDetails = () => {
                         >
                           <div className="row row-14 gutters-14">
                             <h6>
-                              Dimensions of the area on which Fairy Garden is to
-                              be built
+                              Dimensions of the area on which {service.s_title}
+                              is to be built
                             </h6>
                             <div className="col-md-12">
                               <div className="form-wrap">
                                 <label htmlFor="length">
-                                  Length (in inches)
+                                  Length (in feets)
                                 </label>
                                 <input
                                   className="form-input"
@@ -120,7 +120,7 @@ const ServiceDetails = () => {
                             </div>
                             <div className="col-md-12">
                               <div className="form-wrap">
-                                <label htmlFor="width">Width (in inches)</label>
+                                <label htmlFor="width">Width (in feets)</label>
                                 <input
                                   className="form-input"
                                   id="width"
@@ -149,7 +149,6 @@ const ServiceDetails = () => {
                         </form>
                         {price !== 0 && (
                           <div className="row pb-3">
-                          
                             <div className="col d-grid">
                               <button
                                 className="button button-primary button-ujarak wow fadeInUp"

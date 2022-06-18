@@ -348,7 +348,7 @@ function ViewOrderDetails(props) {
                         navigate("/showOrders");
                       }}
                     >
-                      Return to Orders Screen
+                      Return to Orders
                     </button>
                   </div>
 

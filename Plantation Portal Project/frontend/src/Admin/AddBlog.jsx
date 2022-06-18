@@ -8,9 +8,15 @@ import { ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebas
 import {storage} from '../firebase';
 import { useParams } from "react-router-dom";
 import useFetch from "../useFetch";
+import { useUser } from "../userContext";
 
 
 const AddBlog = () => {
+  const navigate = useNavigate();
+  const user = useUser();
+  if (!user._id) {
+    navigate("/login");
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,7 +31,6 @@ const AddBlog = () => {
     const [image, setImage] = useState('');
     const [file, setFile] = useState('');
     const [progresspercent, setProgresspercent] = useState(0);
-    const navigate = useNavigate();
 
     var heading = "Add New"
     var imageText = "Upload"

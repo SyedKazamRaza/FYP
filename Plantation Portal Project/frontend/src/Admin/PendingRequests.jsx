@@ -5,14 +5,62 @@ import TopBar from "./TopBar";
 import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
+import { useUser } from "../userContext";
+import { useState } from "react";
 
 const PendingRequests = () => {
+  const navigate = useNavigate();
+  const user = useUser();
+  var [counter, setCounter] = useState(0)
+  if (!user._id) {
+    navigate("/login");
+  }
     useEffect(() => {
         window.scrollTo(0, 0);
       }, []);
 
-    const { error, isPending, data: stores } = useFetch('http://localhost:5000/store/')
-    const navigate = useNavigate();
+    //const [stores, setStores] = useState([])    //for any data
+    var [refresh, setRefresh] = useState(0)
+      
+      // blogs is the dependency, when the blogs change, it triggers useEffect to run 
+      // useEffect(() => { 
+      //   axios.get('http://localhost:5000/store/')
+      //     .then((response) => {
+      //       if (response.status!==200) { // if response failed to fetch data from server
+      //           throw Error('could not fetch the data for that resource');  //this error is catched by catch block
+      //       }   
+      //       setStores(response.data)
+      //     })
+      //     .catch((error) => {
+  
+      //     })
+  
+      // // }, [])
+  
+    //   useEffect(() => { 
+    //     axios.get('http://localhost:5000/store/')
+    //       .then((response) => {
+    //         if (response.status!==200) { // if response failed to fetch data from server
+    //             throw Error('could not fetch the data for that resource');  //this error is catched by catch block
+    //         }   
+    //         setStores(response.data)
+    //       })
+    //       .catch((error) => {
+    //         console.log(error)
+    //       })
+  
+    //   }, [refresh])
+  
+
+    useEffect(()=>{
+    stores.slice().map((store) =>{
+        if(store.status==="pending"){
+          setCounter(counter+=1)
+        }
+      
+    })},[])
+
+    const { error, isPending, data: stores } = useFetch('http://localhost:5000/order/')
 
     const handleDelete = (id)=>{   
         confirmAlert({
@@ -29,8 +77,8 @@ const PendingRequests = () => {
     
                   axios.delete('http://localhost:5000/store/'+id)
                   .then((response) => {
-
-                      window.location.reload()
+                    setRefresh(refresh+=1)
+                      
                     }) 
                   .catch((error) => {
                       console.log(error)       
@@ -64,7 +112,7 @@ const PendingRequests = () => {
                     if (response.status!==200) { // if response failed to fetch data from server
                         throw Error('could not post the data for that resource');  //this error is catched by catch block
                     }  
-                    navigate('/admin/pendingrequests');
+                    navigate('/admin/stores');
                     })
                   .catch((error) => {
                       console.log(error)       
@@ -82,7 +130,6 @@ const PendingRequests = () => {
     
       }
     return ( 
-      <div className="page">
         <section className="home-section">
             <div className="home-content">
                 < TopBar/>
@@ -94,14 +141,18 @@ const PendingRequests = () => {
                                 <div className="tab-pane fade show active">
                                     <div className="table-responsive" style={{marginTop:"40px"}}>
                                         <table className="table">
+                                          {counter !==0 &&
                                             <tr>
                                                 <th>Store Name</th>
                                                 <th>Email</th>
                                                 <th>Ph #</th>
                                                 <th>Add/Remove</th>
                                             </tr>
+                                          }
                                             {stores.slice().map((store) =>(
-                                                store.status==="pending" &&
+                                                store.status==="pending" && 
+                                                <>
+                                                {setCounter(counter+=1)}
                                                 <tr key={store._id}>
                                                     <td>{store.storeName}</td>
                                                     <td>{store.username}</td>
@@ -119,19 +170,22 @@ const PendingRequests = () => {
                                                     </Link>
                                                     </td>
                                                 </tr>
+                                                </>
                                                 
                                             
                                             ))}
                                         </table>
                                     </div>  
-                                </div>  
+                                </div> 
+                                {counter ===0 &&
+                                <h3>No More Pending Requests...</h3>
+                                } 
                             </div>
                         </div>
                     </div>            
                 </div>
             </div>
         </section>
-        </div>
     );
 }
  

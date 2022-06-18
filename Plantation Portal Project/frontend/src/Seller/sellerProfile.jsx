@@ -4,6 +4,7 @@ import TopBar from "./TopBar";
 import { useUser } from "../userContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useFetch from "../useFetch";
 
 function SellerProfile(props) {
   const user = useUser();
@@ -15,6 +16,14 @@ function SellerProfile(props) {
   const [storeName, setStoreName] = useState("");
   const [storeEmail, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const { data: homeStats } = useFetch(
+    `http://localhost:5000/seller/sellerHome/${storeid}`
+  );
 
   useEffect(() => {
     axios
@@ -39,31 +48,31 @@ function SellerProfile(props) {
           <div className="overview-boxes">
             <div className="box">
               <div className="right-side">
-                <div className="box-topic">Rating</div>
-                <div className="text">4.8</div>
+                <div className="box-topic">Total Orders</div>
+                <div className="number">{homeStats.totalOrders}</div>
               </div>
-              <i className="bx bxs-star cart"></i>
+              <i className="bx bx-cart-alt cart"></i>
             </div>
             <div className="box">
               <div className="right-side">
-                <div className="box-topic">Category</div>
-                <div className="text">Multi-Category</div>
+                <div className="box-topic">Total Earnings</div>
+                <div className="number">Rs {homeStats.totalEarning}</div>
               </div>
-              <i className="bx bxs-category cart two"></i>
+              <i className="bx bxs-wallet-alt cart two"></i>
             </div>
             <div className="box">
               <div className="right-side">
-                <div className="box-topic">Joined</div>
-                <div className="text">1 Year Ago</div>
+                <div className="box-topic">Total Clients</div>
+                <div className="number"> {homeStats.numberOfClients}</div>
               </div>
-              <i className="bx bxs-user-plus cart three"></i>
+              <i className="bx bxs-group cart three"></i>
             </div>
             <div className="box">
               <div className="right-side">
-                <div className="box-topic">Shipping Time</div>
-                <div className="text">2-4 Working Days</div>
+                <div className="box-topic">Total Products</div>
+                <div className="number">{homeStats.numberOfProducts}</div>
               </div>
-              <i className="bx bxs-time cart four"></i>
+              <i className="bx bxs-store-alt cart four"></i>
             </div>
           </div>
         </div>

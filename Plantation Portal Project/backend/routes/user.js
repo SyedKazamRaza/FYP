@@ -41,6 +41,15 @@ router.post("/updateUser", async (req, res) => {
   }
 });
 
+router.route("/:id").delete((req, res) => {
+  User.findByIdAndDelete(req.params.id)
+    .then(() => {
+      console.log("User deleted.");
+      res.status(200).json("User deleted");
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 // router.route('/add').post(async (req, res) => {
 //     const email = req.body.email;
 //     const password = req.body.password;

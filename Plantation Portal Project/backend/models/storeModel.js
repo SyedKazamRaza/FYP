@@ -8,8 +8,8 @@ const storeSchema = new mongoose.Schema({
   totalEarning: { type: Number, required: true },
   ordersCompleted: { type: Number, required: true },
   status: { type: String, required: true },
+  image: { type: String, required: true },
 });
 
 const Store = mongoose.model("Store", storeSchema);
 module.exports = Store;
-

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { storage } from "../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,9 @@ function AddProduct(props) {
   if (!user._id) {
     navigate("/login");
   }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const storeid = user._id;
 

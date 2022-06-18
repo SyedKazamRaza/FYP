@@ -1,10 +1,9 @@
 import React from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useNavbarUpdate } from "../../userContext";
 
-
 const Swiper = () => {
-  const {changeNavBold} = useNavbarUpdate();
+  const { changeNavBold } = useNavbarUpdate();
   const navigate = useNavigate();
   return (
     <section
@@ -16,13 +15,11 @@ const Swiper = () => {
       data-slide-effect="fade"
     >
       <div className="swiper-wrapper text-left">
-        <div
-          className="swiper-slide context-dark"
+        <div className="swiper-slide context-dark"
           style={{
-            backgroundImage: `url("images/organic-food-slider.jpg")`,
+            backgroundImage: `url("images/organic-slider.jpg")`,
           }}
           // data-slide-bg={"images/organic-food-slider.jpg"}
-          
         >
           <div className="swiper-slide-caption">
             <div className="container">
@@ -46,9 +43,9 @@ const Swiper = () => {
                     <div className="oh button-wrap">
                       <div
                         className="button button-primary button-ujarak"
-                        onClick={()=>{
-                          changeNavBold('about');
-                          navigate('/aboutus')
+                        onClick={() => {
+                          changeNavBold("about");
+                          navigate("/aboutus");
                         }}
                         data-caption-animate="slideInLeft"
                         data-caption-delay="400"
@@ -95,9 +92,9 @@ const Swiper = () => {
                       <div
                         className="button button-primary button-ujarak"
                         // to="/shop"
-                        onClick={()=>{
-                          changeNavBold('shop');
-                          navigate('/shop')
+                        onClick={() => {
+                          changeNavBold("shop");
+                          navigate("/shop");
                         }}
                         data-caption-animate="slideInLeft"
                         data-caption-delay="400"
@@ -111,8 +108,7 @@ const Swiper = () => {
             </div>
           </div>
         </div>
-        <div
-          className="swiper-slide context-dark"
+        <div className="swiper-slide context-dark"
           style={{
             backgroundImage: `url("images/plant_styling.jpg")`,
           }}
@@ -144,9 +140,9 @@ const Swiper = () => {
                         className="button button-primary button-ujarak"
                         data-caption-animate="slideInUp"
                         data-caption-delay="400"
-                        onClick={()=>{
-                          changeNavBold('about');
-                          navigate('/aboutus')
+                        onClick={() => {
+                          changeNavBold("about");
+                          navigate("/aboutus");
                         }}
                       >
                         Learn More

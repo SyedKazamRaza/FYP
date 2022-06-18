@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavbarUpdate } from "../userContext";
 
 function ContactUs(props) {
+  const { changeNavBold } = useNavbarUpdate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -44,7 +46,13 @@ function ContactUs(props) {
       return;
     }
     setError("");
-    const data = { name: name, email: email, phoneNo: phoneNo, msg: msg };
+    const data = {
+      name: name,
+      email: email,
+      phoneNo: phoneNo,
+      msg: msg,
+      status: "open",
+    };
     axios
       .post("http://localhost:5000/contact/addNewMessage", data)
       .then((response) => {
@@ -67,7 +75,14 @@ function ContactUs(props) {
             <h2 className="breadcrumbs-custom-title">Contact Us</h2>
             <ul className="breadcrumbs-custom-path">
               <li>
-                <Link to="/">Home</Link>
+                <Link
+                  to="/"
+                  onClick={() => {
+                    changeNavBold("home");
+                  }}
+                >
+                  Home
+                </Link>
               </li>
               <li className="active">Contact Us</li>
             </ul>

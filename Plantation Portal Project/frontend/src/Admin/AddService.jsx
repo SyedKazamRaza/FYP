@@ -9,11 +9,18 @@ import { ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebas
 import {storage} from '../firebase';
 import { useParams } from "react-router-dom";
 import useFetch from "../useFetch";
+import { useUser } from "../userContext";
 
 const AddService = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const navigate = useNavigate();
+  const user = useUser();
+  if (!user._id) {
+    navigate("/login");
+  }
 
     const { id } = useParams();   //id is the route parameter name we want to fetch  
     const { data: service, error, isPending } = useFetch('http://localhost:5000/services/' + id);
@@ -36,7 +43,6 @@ const AddService = () => {
       imageText = "Upload"
     }
 
-    const navigate = useNavigate();
     useEffect(()=>{
       if(service.length!==0){
         setDetails(service.s_details)

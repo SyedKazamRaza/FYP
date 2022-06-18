@@ -113,7 +113,7 @@ function SellerNavbar(props) {
 
         <li className="log_out">
           <Link
-            to="/shop"
+            to="/login"
             onClick={() => {
               logOut();
             }}

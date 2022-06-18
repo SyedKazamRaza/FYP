@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./orderDetails.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import easyinvoice from "easyinvoice";
+import { useNavbarUpdate } from "../../userContext";
 
 function OrderDetails(props) {
   let location = useLocation();
   const navigate = useNavigate();
+  const { changeNavBold } = useNavbarUpdate();
 
   const [orderDetails, setOrderDetails] = useState(location.state.orderDetails);
   let productsList = [];
@@ -331,6 +333,7 @@ function OrderDetails(props) {
                     <button
                       className="button button-block button-payment fas fa-arrow-left"
                       onClick={() => {
+                        changeNavBold("shop");
                         navigate("/shop");
                       }}
                     >

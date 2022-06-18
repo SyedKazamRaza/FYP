@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { storage } from "../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
 import { useUser } from "../userContext";
 
 function EditProduct(props) {
@@ -16,6 +15,9 @@ function EditProduct(props) {
   }
 
   const storeid = user._id;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   let location = useLocation();
   const product = location.state.product;
@@ -116,6 +118,7 @@ function EditProduct(props) {
   }
 
   const handleSubmit = (e) => {
+    console.log("edit called")
     e.preventDefault();
     setImage("");
     setError("");
@@ -147,6 +150,8 @@ function EditProduct(props) {
     // if (error.length !== 0) {
     //   return;
     // }
+
+
 
     if (file !== "") {
       alert("uploading");
@@ -239,6 +244,10 @@ function EditProduct(props) {
           // console.log(error);
         });
     }
+
+
+
+
   };
 
   let counter = 0;

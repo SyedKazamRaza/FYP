@@ -3,6 +3,8 @@ const { Order } = require("../models/orders.model");
 const { Products } = require("../models/productsModel");
 const { Category } = require("../models/categoryModel");
 const Store = require("../models/storeModel");
+const Users = require("../models/user.model");
+const Service = require("../models/service.model");
 
 async function getTotalOrders(sellerID) {
   try {
@@ -62,7 +64,10 @@ async function getTotalEarning(sellerID) {
         result.map((singleOrder) => {
           singleOrder.productsDetail.map((singleProd) => {
             // console.log(singleProd);
-            if (singleProd.sellerId === sellerID) {
+            if (
+              singleProd.sellerId === sellerID &&
+              singleProd.status === "delivered"
+            ) {
               totalEarning += singleProd.total;
             }
           });
@@ -128,7 +133,6 @@ router.get("/sellerOrders/:id", async (req, res) => {
         },
       },
     ])
-      .sort({ dateTime: -1 })
       .then((result) => {
         res.status(200).json(result);
       });
@@ -404,6 +408,10 @@ router.post("/updateStore", async (req, res) => {
   const stName = req.body.name;
   const pwd = req.body.password;
   const phone = req.body.phoneNo;
+  const imageurl = req.body.imageurl;
+  
+
+  console.log("Store new img is: ", imageurl);
 
   const exist = await Store.find({ username: us_name });
 
@@ -415,6 +423,16 @@ router.post("/updateStore", async (req, res) => {
         password: pwd,
         phno: phone,
       };
+
+      if (imageurl.length != 0) {
+        console.log("Image taken");
+        storeData.image = imageurl;
+      } else {
+        console.log(imageurl.length);
+        console.log("Image not taken");
+      }
+
+      console.log();
 
       // console.log("Store data is: ", storeData);
       const update = await Store.updateOne(
@@ -437,6 +455,14 @@ router.post("/updateStore", async (req, res) => {
       password: pwd,
       phno: phone,
     };
+
+    if (imageurl.length != 0) {
+      console.log("Image taken");
+      storeData.image = imageurl;
+    } else {
+      console.log(imageurl.length);
+      console.log("Image not taken");
+    }
 
     const update = await Store.updateOne(
       { _id: storeId },
@@ -486,6 +512,57 @@ router.post("/changeProductRating", async (req, res) => {
     console.log("Orders: ", orders);
 
     res.status(200).send("ok");
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+async function totalNumberOfStores(params) {
+  try {
+    const totalStores = await Store.find();
+    return totalStores.length;
+  } catch (err) {
+    console.log(err);
+  }
+}
+async function totalNumberOfProducts(params) {
+  try {
+    const totalProds = await Products.find();
+    return totalProds.length;
+  } catch (err) {
+    console.log(err);
+  }
+}
+async function totalNumberOfClients(params) {
+  try {
+    const totalUsers = await Users.find();
+    return totalUsers.length;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function totalNumberOfServices(params) {
+  try {
+    const totalServices = await Service.find();
+    return totalServices.length;
+  } catch (err) {
+    console.log(err);
+  }
+}
+router.get("/indexPageStats", async (req, res) => {
+  try {
+    const totalProds = await totalNumberOfProducts();
+    const totalClient = await totalNumberOfClients();
+    const totalStores = await totalNumberOfStores();
+    const totalServices = await totalNumberOfServices();
+    const data = {
+      totalClient,
+      totalProds,
+      totalServices,
+      totalStores,
+    };
+    res.status(200).json(data);
   } catch (err) {
     console.log(err);
   }

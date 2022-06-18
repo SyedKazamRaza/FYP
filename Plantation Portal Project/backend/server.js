@@ -19,6 +19,7 @@ const services = require("./routes/service");
 const { contactRouter } = require("./routes/contactUs");
 const sellerRoute = require("./routes/seller");
 const storeRouter = require("./routes/store");
+const adminRouter = require("./routes/admin");
 
 const app = express();
 
@@ -140,6 +141,7 @@ app.post("/addStore", async (req, res) => {
   const totalEarning = 0;
   const ordersCompleted = 0;
   const status = "pending";
+  const image = "https://firebasestorage.googleapis.com/v0/b/plantationportal-6f32f.appspot.com/o/stores%2FstoreBackgroung.jpg?alt=media&token=4fde6626-7dfe-4edf-8542-1f32336ecc23";
 
   const newStore = new Store({
     username,
@@ -149,6 +151,7 @@ app.post("/addStore", async (req, res) => {
     totalEarning,
     ordersCompleted,
     status,
+    image
   });
 
   const store = await newStore.save();
@@ -169,9 +172,9 @@ app.use("/chat", chatRouter);
 app.use("/order", orderRouter);
 app.use("/services", services);
 app.use("/contact", contactRouter);
+app.use("/admin", adminRouter);
 
 const port = process.env.port || 5000;
 app.listen(port, () => {
   console.log("Server is running at port " + port);
 });
-

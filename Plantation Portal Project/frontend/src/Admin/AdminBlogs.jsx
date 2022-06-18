@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useFetch from "../useFetch";
 // import"./css/orders.css"
 import TopBar from "./TopBar";
@@ -9,10 +9,47 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import { ref, deleteObject } from "firebase/storage";
 import {storage} from '../firebase';
+import { useUser } from "../userContext";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const AdminBlogs = ({count}) => {
-  const { error, isPending, data: blogs } = useFetch('http://localhost:5000/blogs/')
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
+  const user = useUser();
+  if (!user._id) {
+    navigate("/login");
+  }
+  const [blogs, setBlogs] = useState([])    //for any data
+  var [refresh, setRefresh] = useState(0)
+    
+    //blogs is the dependency, when the blogs change, it triggers useEffect to run 
+    useEffect(() => { 
+      axios.get('http://localhost:5000/blogs/')
+        .then((response) => {
+          if (response.status!==200) { // if response failed to fetch data from server
+              throw Error('could not fetch the data for that resource');  //this error is catched by catch block
+          }   
+          setBlogs(response.data)
+        })
+        .catch((error) => {
+
+        })
+
+    }, [])
+
+    useEffect(() => { 
+      axios.get('http://localhost:5000/blogs/')
+        .then((response) => {
+          if (response.status!==200) { // if response failed to fetch data from server
+              throw Error('could not fetch the data for that resource');  //this error is catched by catch block
+          }   
+          setBlogs(response.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    }, [refresh])
 
   const handleDelete = (id)=>{   
     confirmAlert({
@@ -29,6 +66,7 @@ const AdminBlogs = ({count}) => {
 
               axios.delete('http://localhost:5000/blogs/'+id)
               .then((response) => {
+                
                
                 const pictureRef = ref(storage, `${response.data.toLocaleString()}`);
 
@@ -38,7 +76,7 @@ const AdminBlogs = ({count}) => {
                   console.log("Error deleteing file from firebase "+error)
                 });
 
-                  window.location.reload()
+                setRefresh(refresh+=1)
                 }) 
               .catch((error) => {
                   console.log(error)       
@@ -57,7 +95,6 @@ const AdminBlogs = ({count}) => {
   }
   
     return ( 
-      <div className="page">
         <section className="home-section">
         <div className="home-content">
           <TopBar/>
@@ -92,7 +129,6 @@ const AdminBlogs = ({count}) => {
           </div>
           </div>
       </section>
-      </div>
 
      );
 }

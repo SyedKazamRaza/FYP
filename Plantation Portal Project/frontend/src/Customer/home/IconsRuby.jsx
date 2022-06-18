@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
+import useFetch from "../../useFetch";
 
 const IconsRuby = () => {
+  const {
+  error,
+  isPending,
+  data: services,
+} = useFetch("http://localhost:5000/services/");
+
+
     return ( 
         <section className="section section-md bg-default section-top-image">
         <div className="container">
@@ -12,7 +20,10 @@ const IconsRuby = () => {
                     <div className="box-icon-ruby-icon linearicons-leaf"></div>
                   </div>
                   <div className="unit-body">
-                    <h4 className="box-icon-ruby-title"><div>Maali Services</div></h4>
+                  {services.slice().map((service) => (
+                    service.s_title === "Maali Services" && 
+                    <h4 className="box-icon-ruby-title"><div><Link to={`/services/${service._id}`}>Maali Services</Link></div></h4>
+                    ))}
                   </div>
                 </div>
               </article>
@@ -24,7 +35,7 @@ const IconsRuby = () => {
                     <div className="box-icon-ruby-icon linearicons-shovel"></div>
                   </div>
                   <div className="unit-body">
-                    <h4 className="box-icon-ruby-title"><div>Premium Quality Equipment</div></h4>
+                    <h4 className="box-icon-ruby-title"><div><Link to="shop">Premium Quality Equipment</Link></div></h4>
                   </div>
                 </div>
               </article>
@@ -36,7 +47,7 @@ const IconsRuby = () => {
                     <div className="box-icon-ruby-icon linearicons-sun"></div>
                   </div>
                   <div className="unit-body">
-                    <h4 className="box-icon-ruby-title"><div>Plantation Guidelines</div></h4>
+                    <h4 className="box-icon-ruby-title"><div><Link to="blogs">Plantation Guidelines</Link></div></h4>
                   </div>
                 </div>
               </article>
