@@ -19,7 +19,8 @@ const AdminStores = () => {
 
     const { error, isPending, data: stores } = useFetch('http://localhost:5000/store/')
 
-    const {  data: images } = useFetch('http://localhost:5000/store/productImage')
+    console.log("printing stores:  ", stores);
+
     //console.log(images)
     useEffect(()=>{
       {stores.slice().map((store) =>(
@@ -65,7 +66,7 @@ const AdminStores = () => {
                               margin:" -60px auto 0"
                             }}>
                                
-                              <img src="../images/plants.jpeg" alt=""
+                              <img src={store.image} alt="store"
                                style={{
                                 width: "100%",
                                 height: "100%",
