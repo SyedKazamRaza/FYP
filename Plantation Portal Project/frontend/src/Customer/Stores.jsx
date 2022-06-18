@@ -6,7 +6,7 @@ const Stores = () => {
     error,
     isPending,
     data: stores,
-  } = useFetch("http://localhost:5000/store/");
+  } = useFetch("http://localhost:5000/store/approvedStores");
   console.log("All stores: ", stores);
   return (
     <div>

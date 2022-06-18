@@ -33,6 +33,7 @@ const notifySuccess = (info) => {
     background: "#34A853",
   });
 };
+
 const notifyInfo = () => {
   toast.info("Select valid quantity of products.", {
     position: "bottom-left",

@@ -8,6 +8,10 @@ import { useUserUpdate } from "../userContext";
 import validator from "validator";
 import useFetch from "./useFetch";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { injectStyle } from "react-toastify/dist/inject-style";
+
 function Regsiter() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,6 +50,20 @@ function Regsiter() {
       return true;
     }
   };
+
+  const notifyInfo = (info) => {
+    toast.info(`${info}`, {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      background: "#34A853",
+    });
+  };
+  
 
   const handlePasswordErrors = () => {
     const regexLower = new RegExp("(?=.*[a-z])");
@@ -148,13 +166,13 @@ function Regsiter() {
           axios
             .post("http://localhost:5000/addStore", user)
             .then((response) => {
-              setLoginUser(response.data);
-              if (response.status !== 200) {
-                // if response failed to fetch data from server
-                throw Error("could not post the data for that resource"); //this error is catched by catch block
+              // setLoginUser(response.data);
+              if (response.status === 200) {
+                notifyInfo("Registration request Sent. You will be informed once Admin approve your store.");
+                navigate("/register")
               }
 
-              navigate("/seller/home"); //after the yser is added move to home page
+              // navigate("/seller/home"); //after the yser is added move to home page
             })
             .catch((error) => {
               console.log(error);

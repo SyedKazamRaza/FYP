@@ -17,7 +17,7 @@ const AdminStores = () => {
         window.scrollTo(0, 0);
       }, []);
 
-    const { error, isPending, data: stores } = useFetch('http://localhost:5000/store/')
+    const { error, isPending, data: stores } = useFetch('http://localhost:5000/store/approvedStores')
 
     console.log("printing stores:  ", stores);
 

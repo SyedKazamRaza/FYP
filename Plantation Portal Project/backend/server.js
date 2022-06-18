@@ -90,7 +90,7 @@ app.post("/loginStore", (req, res) => {
   const username = req.body.email;
   const password = req.body.password;
 
-  Store.findOne({ username: username }, (err, user) => {
+  Store.findOne({ username: username, status: "approved" }, (err, user) => {
     if (user) {
       if (password === user.password) {
         session = req.session;
@@ -101,10 +101,10 @@ app.post("/loginStore", (req, res) => {
         console.log(req.session);
         res.status(200).json({ message: "login sucess", user: user });
       } else {
-        res.status(201).json({ message: "wrong credentials" });
+        res.status(201).send("Invalid Email or Password.");
       }
     } else {
-      res.status(201).json("not register");
+      res.status(201).send("User/Store not registed.");
     }
   });
 });
@@ -141,7 +141,8 @@ app.post("/addStore", async (req, res) => {
   const totalEarning = 0;
   const ordersCompleted = 0;
   const status = "pending";
-  const image = "https://firebasestorage.googleapis.com/v0/b/plantationportal-6f32f.appspot.com/o/stores%2FstoreBackgroung.jpg?alt=media&token=4fde6626-7dfe-4edf-8542-1f32336ecc23";
+  const image =
+    "https://firebasestorage.googleapis.com/v0/b/plantationportal-6f32f.appspot.com/o/stores%2FstoreBackgroung.jpg?alt=media&token=4fde6626-7dfe-4edf-8542-1f32336ecc23";
 
   const newStore = new Store({
     username,
@@ -151,16 +152,15 @@ app.post("/addStore", async (req, res) => {
     totalEarning,
     ordersCompleted,
     status,
-    image
+    image,
   });
 
   const store = await newStore.save();
-  session = req.session;
-  session.storeName = req.body.store;
-  session.storeid = store._id;
-
-  console.log(req.session);
-  return res.status(200).json(store);
+  // session = req.session;
+  // session.storeName = req.body.store;
+  // session.storeid = store._id;
+  // console.log(req.session);
+  return res.status(200).send("requested");
 });
 
 app.use("/user", userRoute);

@@ -6,6 +6,10 @@ import { useUserUpdate } from "../userContext";
 import validator from "validator";
 import { useNavbarUpdate } from "../userContext";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { injectStyle } from "react-toastify/dist/inject-style";
+
 function Login() {
   const { setLoginUser } = useUserUpdate();
   const { changeNavBold } = useNavbarUpdate();
@@ -16,8 +20,21 @@ function Login() {
   const [passError, setPassErrors] = useState("");
   const [emailError, setEmailError] = useState("");
 
+  const notifyError = (errMsg) => {
+    toast.error(`${errMsg}`, {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      background: "#34A853",
+    });
+  };
+
   const handleSubmit = (e) => {
-    var flag = false;
+    let flag = false;
 
     if (validator.isEmpty(email)) {
       setEmailError("This field is required");
@@ -42,32 +59,39 @@ function Login() {
             console.log(res.data.user);
             setLoginUser(res.data.user);
             flag = true;
+
             if (res.data.user.type === "admin") {
               navigate("/admin/home");
+              return;
             } else {
               changeNavBold("home");
               navigate("/");
+              return;
             }
+          } else {
+            axios
+              .post("http://localhost:5000/loginStore", user)
+              .then((res) => {
+                if (res.status === 200) {
+                  flag = true;
+                  console.log("Hi" + res.data.user);
+
+                  setLoginUser(res.data.user);
+                  navigate("/seller/home");
+                } else {
+                  notifyError(res.data);
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           }
         })
         .catch((error) => {
           console.log(error);
         });
 
-      axios
-        .post("http://localhost:5000/loginStore", user)
-        .then((res) => {
-          if (res.status === 200) {
-            flag = true;
-            console.log("Hi" + res.data.user);
-
-            setLoginUser(res.data.user);
-            navigate("/seller/home");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // alert("2")
     }
     if (!flag) {
       setEmailError("Invalid email");
@@ -119,11 +143,11 @@ function Login() {
               <span className="form-validation">{passError}</span>
             </div>
           </div>
-          <p>
+          {/* <p>
             <Link to="#" style={{ color: `dodgerblue` }}>
               Forgot Your Password?
             </Link>
-          </p>
+          </p> */}
           <div className="group-md group-middle">
             <button className="button button-width-xl-230 button-primary button-pipaluk">
               Login

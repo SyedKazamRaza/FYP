@@ -3,7 +3,13 @@ let Store = require('../models/storeModel');
 
 router.route('/').get((req, res) => {
   Store.find()
-    .then(Stores => res.json(Stores))
+    .then(Stores => res.status(200).json(Stores))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/approvedStores').get((req, res) => {
+  Store.find({status: "approved"})
+    .then(Stores => res.status(200).json(Stores))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -21,7 +27,7 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post(async (req, res) => {
 
   Store.findByIdAndUpdate(req.params.id, {$set: {status : "approved"}})
-  .then(() => {res.json('Store Created')
+  .then(() => {res.status(200).send('Store Created')
     console.log("res")})
   .catch(err => res.status(400).json('Error: ' + err));
 });

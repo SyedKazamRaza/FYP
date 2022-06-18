@@ -519,7 +519,7 @@ router.post("/changeProductRating", async (req, res) => {
 
 async function totalNumberOfStores(params) {
   try {
-    const totalStores = await Store.find();
+    const totalStores = await Store.find({status: "approved"});
     return totalStores.length;
   } catch (err) {
     console.log(err);
