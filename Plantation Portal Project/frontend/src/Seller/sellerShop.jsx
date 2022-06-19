@@ -4,6 +4,8 @@ import TopBar from "./TopBar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../userContext";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 function SellerShop(props) {
   const user = useUser();
@@ -79,6 +81,35 @@ function SellerShop(props) {
 
   const runCallback = (cb) => {
     return cb();
+  };
+
+  const confirmDelete = (id) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className="custom-ui">
+            <h2 style={{ color: "red" }}>Are you sure?</h2>
+            <p>You want to delete this product?</p>
+            <button
+              className="button button-primary button-pipaluk"
+              onClick={onClose}
+            >
+              No
+            </button>
+            {"    "}
+            <button
+              className="button button-primary button-pipaluk"
+              onClick={() => {
+                deleteProduct(id);
+                onClose();
+              }}
+            >
+              Yes
+            </button>
+          </div>
+        );
+      },
+    });
   };
 
   function deleteProduct(prodId) {
@@ -170,7 +201,8 @@ function SellerShop(props) {
                               <i
                                 className="fas fa-trash"
                                 onClick={() => {
-                                  deleteProduct(prod._id);
+                                  confirmDelete(prod._id);
+                                  // deleteProduct(prod._id);
                                 }}
                               ></i>
                             </div>
@@ -186,7 +218,6 @@ function SellerShop(props) {
                                   });
                                 }}
                               ></i>
-                             
                             </div>
                           </li>
                         </ul>

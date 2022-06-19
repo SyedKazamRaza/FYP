@@ -4,6 +4,8 @@ import useFetch from "../useFetch";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../userContext";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 function SellerOrders(props) {
   const user = useUser();
@@ -14,7 +16,7 @@ function SellerOrders(props) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   const storeid = user._id;
 
   const [shopOrderProducts, setShopOrderProducts] = useState([]);
@@ -130,6 +132,36 @@ function SellerOrders(props) {
     setTemp(temp + 1);
   }
 
+  const changeStatusConfirmation = (orderid, prodId, msg, newStatus) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className="custom-ui">
+            <h2 style={{ color: "red" }}>Are you sure?</h2>
+            <p>{msg}</p>
+            <button
+              className="button button-primary button-pipaluk"
+              onClick={onClose}
+            >
+              No
+            </button>
+            {"    "}
+            <button
+              className="button button-primary button-pipaluk"
+              onClick={() => {
+                changeOrderStatus(orderid, prodId, newStatus);
+
+                onClose();
+              }}
+            >
+              Yes
+            </button>
+          </div>
+        );
+      },
+    });
+  };
+
   return (
     <section className="section">
       <section className="home-section">
@@ -223,78 +255,84 @@ function SellerOrders(props) {
                             <th></th>
                           </tr>
 
-                          {shopOrderProducts.reverse().map((singleOrder, index1) => {
-                            return singleOrder.productsDetail.map(
-                              (single, index2) => {
-                                return single.sellerId === storeid &&
-                                  single.status === "active" ? (
-                                  <tr
-                                    key={singleOrder._id + getactiveCounter()}
-                                  >
-                                    <td>{increment()}</td>
-                                    <td>
-                                      <div>
-                                        {singleOrder.userInfo[0].fname +
-                                          " " +
-                                          singleOrder.userInfo[0].lname}
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div>{singleOrder.userInfo[0].email}</div>
-                                    </td>
+                          {shopOrderProducts
+                            .reverse()
+                            .map((singleOrder, index1) => {
+                              return singleOrder.productsDetail.map(
+                                (single, index2) => {
+                                  return single.sellerId === storeid &&
+                                    single.status === "active" ? (
+                                    <tr
+                                      key={singleOrder._id + getactiveCounter()}
+                                    >
+                                      <td>{increment()}</td>
+                                      <td>
+                                        <div>
+                                          {singleOrder.userInfo[0].fname +
+                                            " " +
+                                            singleOrder.userInfo[0].lname}
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div>
+                                          {singleOrder.userInfo[0].email}
+                                        </div>
+                                      </td>
 
-                                    <td>{singleOrder.dateTime}</td>
-                                    <td>
-                                      <button
-                                        type="button"
-                                        className="btn btn-success"
-                                        onClick={() => {
-                                          navigate("/seller/singleOrder", {
-                                            state: {
-                                              product: singleOrder,
-                                              status: single.status,
-                                            },
-                                          });
-                                        }}
-                                      >
-                                        View
-                                      </button>
-                                    </td>
-                                    <td>
-                                      <button
-                                        type="button"
-                                        className="btn btn-success"
-                                        onClick={() => {
-                                          changeOrderStatus(
-                                            singleOrder._id,
-                                            single.productId,
-                                            "delivered"
-                                          );
-                                        }}
-                                      >
-                                        Complete
-                                      </button>
-                                      <button
-                                        type="button"
-                                        className="btn btn-danger"
-                                        onClick={() => {
-                                          changeOrderStatus(
-                                            singleOrder._id,
-                                            single.productId,
-                                            "canceled"
-                                          );
-                                        }}
-                                      >
-                                        Cancel
-                                      </button>
-                                    </td>
-                                  </tr>
-                                ) : (
-                                  <tr key={getKey()}></tr>
-                                );
-                              }
-                            );
-                          })}
+                                      <td>{singleOrder.dateTime}</td>
+                                      <td>
+                                        <button
+                                          type="button"
+                                          className="btn btn-success"
+                                          onClick={() => {
+                                            navigate("/seller/singleOrder", {
+                                              state: {
+                                                product: singleOrder,
+                                                status: single.status,
+                                              },
+                                            });
+                                          }}
+                                        >
+                                          View
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button
+                                          type="button"
+                                          className="btn btn-success"
+                                          onClick={() => {
+                                            changeStatusConfirmation(
+                                              singleOrder._id,
+                                              single.productId,
+                                              "You want to mark this order as Complete?",
+                                              "delivered"
+                                            );
+                                          }}
+                                        >
+                                          Complete
+                                        </button>
+                                        <button
+                                          type="button"
+                                          className="btn btn-danger"
+                                          onClick={() => {
+                                            changeStatusConfirmation(
+                                              singleOrder._id,
+                                              single.productId,
+                                              "You want to mark this order as Cancel?",
+                                              "canceled"
+                                            );
+                                          }}
+                                        >
+                                          Cancel
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  ) : (
+                                    <tr key={getKey()}></tr>
+                                  );
+                                }
+                              );
+                            })}
                         </tbody>
                       </table>
                     </div>

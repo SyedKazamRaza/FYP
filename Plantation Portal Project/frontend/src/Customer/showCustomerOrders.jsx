@@ -56,6 +56,8 @@ const ShowCustomerOrders = () => {
                   <th>Date&Time</th>
                   <th>Amount</th>
                   <th>Payment Method</th>
+                  <th>Order Status</th>
+
                   <th>Order Details</th>
                   {/* <th>Feedback</th> */}
                 </tr>
@@ -67,6 +69,8 @@ const ShowCustomerOrders = () => {
                       <td>{order.totalBill}</td>
 
                       <td>{order.paymentMethod}</td>
+                      <td>{order.orderStatus}</td>
+
                       <td>
                         <button
                           type="button"
