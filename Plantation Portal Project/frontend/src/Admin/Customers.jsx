@@ -53,7 +53,7 @@ const Customers = () => {
           return (
             <div className='custom-ui'>
               <h2 style={{color:"red"}}>Are you sure?</h2>
-              <p>You want to delete this service?</p>
+              <p>You want to delete this user?</p>
               <button className="button button-primary button-pipaluk"
               onClick={onClose}>No</button>
               {'    '}
@@ -99,7 +99,7 @@ const Customers = () => {
                                             <tr>
                                                 <th>Customer</th>
                                                 <th>Email</th>
-                                                <th>Ph #</th>
+                                                <th>Phone #</th>
                                                 <th style={{textAlign:"center"}} >Remove</th>
                                             </tr>
                                             {users.slice().map(user => (

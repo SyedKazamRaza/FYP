@@ -132,41 +132,38 @@ const Orders = () => {
                             <th>Order Details</th>
                           </tr>
 
-                          {orders
-                            .reverse()
-                            .slice()
-                            .map((order) =>
-                              order.servicesDetails.length > 0 ? (
-                                <tr key={order._id + getactiveCounter()}>
-                                  <td>
-                                    <div>
-                                      {order.shippingDetails.firstName +
-                                        " " +
-                                        order.shippingDetails.lastName}
-                                    </div>
-                                  </td>
-                                  <td>{order.shippingDetails.email}</td>
-                                  <td>{order.dateTime}</td>
-                                  <td>
-                                    <button
-                                      type="button"
-                                      className="btn btn-success"
-                                      onClick={() => {
-                                        navigate("/admin/orderdetails", {
-                                          state: {
-                                            order: order,
-                                          },
-                                        });
-                                      }}
-                                    >
-                                      View
-                                    </button>
-                                  </td>
-                                </tr>
-                              ) : (
-                                ""
-                              )
-                            )}
+                          {orders.slice().map((order) =>
+                            order.servicesDetails.length > 0 ? (
+                              <tr key={order._id + getactiveCounter()}>
+                                <td>
+                                  <div>
+                                    {order.shippingDetails.firstName +
+                                      " " +
+                                      order.shippingDetails.lastName}
+                                  </div>
+                                </td>
+                                <td>{order.shippingDetails.email}</td>
+                                <td>{order.dateTime}</td>
+                                <td>
+                                  <button
+                                    type="button"
+                                    className="btn btn-success"
+                                    onClick={() => {
+                                      navigate("/admin/orderdetails", {
+                                        state: {
+                                          order: order,
+                                        },
+                                      });
+                                    }}
+                                  >
+                                    View
+                                  </button>
+                                </td>
+                              </tr>
+                            ) : (
+                              ""
+                            )
+                          )}
                         </tbody>
                       </table>
                     </div>

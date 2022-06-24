@@ -11,7 +11,6 @@ function AdminEarning(props) {
     navigate("/login");
   }
 
-
   const {
     data: earning,
     error,
@@ -22,7 +21,6 @@ function AdminEarning(props) {
     `http://localhost:5000/admin/getTransactions`
   );
 
-  
   let counter = 0;
   function increment(params) {
     counter = counter + 1;
@@ -43,10 +41,7 @@ function AdminEarning(props) {
           <div className="box">
             <div className="right-side">
               <div className="box-topic">Net Income</div>
-              <div className="number">
-                Rs{" "}
-                {earning.totalEarning}
-              </div>
+              <div className="number">Rs {earning.totalEarning}</div>
             </div>
             <i className="bx bx-money cart"></i>
           </div>
@@ -87,10 +82,9 @@ function AdminEarning(props) {
                   <th>Payment Method</th>
                 </tr>
 
-                {transactions.map((singleOrder) => {
+                {transactions.reverse().map((singleOrder) => {
                   return singleOrder.productsDetail.map((single) => {
-                    return single.sellerId &&
-                      single.status === "delivered" ? (
+                    return single.sellerId && single.status === "delivered" ? (
                       <tr key={getCounter()}>
                         <td>{increment()}</td>
                         <td>
@@ -111,7 +105,7 @@ function AdminEarning(props) {
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </section>
   );
 }

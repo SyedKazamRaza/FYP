@@ -29,7 +29,7 @@ const Stores = () => {
                       <div className="thumbnail-mary-figure">
                         <img
                           src={store.image}
-                          alt=""
+                          alt="store"
                           width="370"
                           height="303"
                         />

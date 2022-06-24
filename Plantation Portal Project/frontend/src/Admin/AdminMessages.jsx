@@ -143,7 +143,7 @@ const AdminMessages = () => {
                           <tr>
                           <th>Message From</th>
                             <th>Email</th>
-                            <th>Ph #</th>
+                            <th>Phone #</th>
                             <th>View</th>
                           </tr>
                           

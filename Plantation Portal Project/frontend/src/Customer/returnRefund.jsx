@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 const ReturnRefund = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -10,7 +11,7 @@ const ReturnRefund = () => {
           <h2 className="breadcrumbs-custom-title">Return and Refund Policy</h2>
           <ul className="breadcrumbs-custom-path">
             <li>
-              <a href="index.html">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li className="active">Return and Refund</li>
           </ul>

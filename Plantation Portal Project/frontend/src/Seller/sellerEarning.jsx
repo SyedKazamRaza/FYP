@@ -90,7 +90,7 @@ function SellerEarning(props) {
                   <th>Payment Method</th>
                 </tr>
 
-                {storeTransactions.map((singleOrder) => {
+                {storeTransactions.reverse().map((singleOrder) => {
                   return singleOrder.productsDetail.map((single) => {
                     return single.sellerId === storeid &&
                       single.status === "delivered" ? (

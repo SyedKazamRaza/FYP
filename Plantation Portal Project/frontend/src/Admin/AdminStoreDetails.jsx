@@ -96,16 +96,22 @@ const AdminStoreDetails = () => {
                               />
                               <div className="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                 <ul className="list-unstyled d-flex justify-content-center mb-1">
-                                  <li>
-                                    <div className="btn btn-success text-white mt-2">
-                                      <i className="far fa-edit"></i>
+
+
+                                <li>
+                                    <div
+                                      className="btn btn-success text-white mt-2"
+                                      onClick={() => {
+                                        navigate("/admin/single", {
+                                          state: { product: prod },
+                                        });
+                                      }}
+                                    >
+                                      <i className="far fa-eye"></i>
                                     </div>
                                   </li>
-                                  <li>
-                                    <div className="btn btn-success text-white mt-2">
-                                      <i className="fas fa-trash"></i>
-                                    </div>
-                                  </li>
+
+
                                 </ul>
                               </div>
                             </div>

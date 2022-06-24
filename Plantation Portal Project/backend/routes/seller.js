@@ -535,7 +535,7 @@ async function totalNumberOfProducts(params) {
 }
 async function totalNumberOfClients(params) {
   try {
-    const totalUsers = await Users.find();
+    const totalUsers = await Users.find({type: "customer"});
     return totalUsers.length;
   } catch (err) {
     console.log(err);

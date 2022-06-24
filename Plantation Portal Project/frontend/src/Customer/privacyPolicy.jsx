@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const PrivacyPolicy = () => {
   useEffect(() => {
@@ -11,13 +12,13 @@ const PrivacyPolicy = () => {
           <h2 className="breadcrumbs-custom-title">Privacy Policy</h2>
           <ul className="breadcrumbs-custom-path">
             <li>
-              <a href="index.html">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li className="active">Privacy Policy</li>
           </ul>
         </div>
         <div className="box-position">
-          <img src="../images/privacy-policy.jpg" />
+          <img src="../images/privacy-policy.jpg" alt="privacy" />
         </div>
       </div>
       <div className="row row-40 flex-lg-row-reverse justify-content-xl-between">

@@ -13,6 +13,7 @@ const SearchCustomer = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  
   let categoryProducts = [];
 
   const location = useLocation();

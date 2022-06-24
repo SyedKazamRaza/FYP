@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useFetch from "./useFetch";
 import { useNavbarUpdate } from "../userContext";
@@ -10,6 +10,10 @@ const Blogs = ({ count }) => {
     data: blogs,
   } = useFetch("http://localhost:5000/blogs/");
   const { changeNavBold } = useNavbarUpdate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>

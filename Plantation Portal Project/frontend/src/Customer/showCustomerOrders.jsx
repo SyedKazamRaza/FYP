@@ -42,7 +42,7 @@ const ShowCustomerOrders = () => {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100vh',
-          marginTop: "2%",
+          marginTop: "6%",
           marginBottom: "2%"
         }}
       >

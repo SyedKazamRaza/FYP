@@ -21,7 +21,7 @@ async function getTotalOrders() {
 async function getTotalUsers() {
   try {
     let totalUsers = 0;
-    const users = await User.find().then((result) => {
+    const users = await User.find({ type: "customer" }).then((result) => {
       result.map((user) => {
         totalUsers += 1;
       });
@@ -125,9 +125,11 @@ async function calculateCanceledEarning() {
   let cancelEarning = 0;
   await Order.find().then((result) => {
     result.map((singleOrder) => {
-      if (singleOrder.orderStatus === "canceled") {
-        cancelEarning = cancelEarning + singleOrder.totalBill;
-      }
+      singleOrder.productsDetail.map((singleProd) => {
+        if (singleProd.status === "canceled") {
+          cancelEarning = cancelEarning + singleProd.total;
+        }
+      });
     });
   });
   return cancelEarning;

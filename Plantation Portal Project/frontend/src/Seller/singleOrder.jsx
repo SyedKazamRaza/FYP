@@ -156,6 +156,7 @@ function SingleOrder(props) {
                       <th scope="col">Price</th>
                       <th scope="col">Quantity</th>
                       <th scope="col">Total</th>
+                      <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -177,6 +178,9 @@ function SingleOrder(props) {
                           </td>
                           <td>
                             <p>Rs {product.total}.00</p>
+                          </td>
+                          <td>
+                            <p>{product.status}</p>
                           </td>
                         </tr>
                       ) : (

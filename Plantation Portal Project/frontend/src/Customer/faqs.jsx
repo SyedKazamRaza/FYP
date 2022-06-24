@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 const Faqs = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -10,7 +11,7 @@ const Faqs = () => {
           <h2 className="breadcrumbs-custom-title">FAQs</h2>
           <ul className="breadcrumbs-custom-path">
             <li>
-              <a href="index.html">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li className="active">FAQs</li>
           </ul>
